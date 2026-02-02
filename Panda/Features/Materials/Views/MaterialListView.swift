@@ -9,8 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct MaterialListView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
     @State private var selectedStatus: MaterialStatus?
+    @State private var showingAddMaterial = false
 
     var body: some View {
         NavigationStack {
@@ -30,6 +32,19 @@ struct MaterialListView: View {
             }
             .navigationTitle("材料管理")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                trailing: Button(action: {
+                    showingAddMaterial = true
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.primaryWood)
+                }
+            )
+            .sheet(isPresented: $showingAddMaterial) {
+                if let project = projects.first {
+                    AddMaterialView(project: project)
+                }
+            }
         }
     }
 

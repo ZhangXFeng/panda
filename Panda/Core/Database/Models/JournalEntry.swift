@@ -10,7 +10,7 @@ import SwiftData
 
 /// 装修日记模型
 @Model
-final class Journal Entry {
+final class JournalEntry {
     // MARK: - Properties
 
     /// 唯一标识符

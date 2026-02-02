@@ -95,28 +95,36 @@ struct AddExpenseView: View {
             }
             .navigationTitle("记一笔")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("取消") {
-                        dismiss()
-                    }
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(
+                leading: Button("取消") {
+                    dismiss()
+                },
+                trailing: Button("保存") {
+                    saveExpense()
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("保存") {
-                        Task {
-                            if await viewModel?.saveExpense(to: budget) == true {
-                                dismiss()
-                            }
-                        }
-                    }
-                    .disabled(viewModel?.amount.isEmpty ?? true)
-                }
-            }
+                .disabled(viewModel?.amount.isEmpty ?? true)
+            )
             .task {
                 if viewModel == nil {
                     viewModel = AddExpenseViewModel(modelContext: modelContext)
                 }
             }
+        }
+    }
+
+    // MARK: - Private Methods
+
+    private func saveExpense() {
+        _Concurrency.Task {
+            await performSave()
+        }
+    }
+
+    @MainActor
+    private func performSave() async {
+        if await viewModel?.saveExpense(to: budget) == true {
+            dismiss()
         }
     }
 }

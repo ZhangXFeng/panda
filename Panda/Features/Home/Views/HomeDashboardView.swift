@@ -10,6 +10,7 @@ import SwiftData
 
 struct HomeDashboardView: View {
     @Query private var projects: [Project]
+    @State private var showingCreateProject = false
 
     var body: some View {
         NavigationStack {
@@ -35,6 +36,17 @@ struct HomeDashboardView: View {
             }
             .navigationTitle("我的家")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                trailing: Button(action: {
+                    showingCreateProject = true
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.primaryWood)
+                }
+            )
+            .sheet(isPresented: $showingCreateProject) {
+                CreateProjectView()
+            }
         }
     }
 
@@ -196,15 +208,42 @@ struct HomeDashboardView: View {
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
+            Spacer()
+
             Image(systemName: "house")
                 .font(.system(size: 64))
                 .foregroundColor(.textHint)
+
             Text("欢迎使用 Panda 装修管家")
-                .font(.titleSmall)
-                .foregroundColor(.textSecondary)
-            Text("请先创建装修项目")
+                .font(.titleMedium)
+                .foregroundColor(.textPrimary)
+
+            Text("记录装修的每一分支出\n追踪装修的每一个进度")
                 .font(.bodyRegular)
-                .foregroundColor(.textHint)
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+
+            Button(action: {
+                showingCreateProject = true
+            }) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("创建项目")
+                }
+                .font(.bodyMedium)
+                .foregroundColor(.white)
+                .padding(.horizontal, Spacing.xl)
+                .padding(.vertical, Spacing.md)
+                .background(Color.primaryWood)
+                .cornerRadius(CornerRadius.lg)
+            }
+            .padding(.top, Spacing.md)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .sheet(isPresented: $showingCreateProject) {
+            CreateProjectView()
         }
     }
 

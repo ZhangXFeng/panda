@@ -39,8 +39,11 @@ final class BudgetRepository {
 
     /// 获取项目的预算
     func fetchBudget(for project: Project) throws -> Budget? {
+        let projectId = project.id
         let descriptor = FetchDescriptor<Budget>(
-            predicate: #Predicate { $0.project?.id == project.id }
+            predicate: #Predicate<Budget> { budget in
+                budget.project?.id == projectId
+            }
         )
         return try modelContext.fetch(descriptor).first
     }

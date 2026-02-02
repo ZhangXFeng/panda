@@ -97,6 +97,20 @@ struct MaterialsView: View {
     }
 }
 
+/// 通讯录视图
+struct ContactsView: View {
+    var body: some View {
+        ContactListView()
+    }
+}
+
+/// 日记视图
+struct JournalView: View {
+    var body: some View {
+        JournalListView()
+    }
+}
+
 /// 我的视图
 struct ProfileView: View {
     var body: some View {

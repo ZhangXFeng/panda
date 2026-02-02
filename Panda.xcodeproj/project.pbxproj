@@ -1,0 +1,659 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0212244F808A13D41E695DD7 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBF13211AAB6D1E39A451F8 /* CardView.swift */; };
+		03899CCD4691D9DF4FAF8B7C /* Phase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2085BA8218F746A0845EC2 /* Phase.swift */; };
+		084FFC9B5032CBC438142C90 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE82407FEB6EA05D4C6E4413 /* Colors.swift */; };
+		17BC689F8B1FDD5ECA3EE147 /* ScheduleOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B818DF38DFE336DDC60726 /* ScheduleOverviewView.swift */; };
+		1AAAB7EA128922B34FA23B3F /* AddExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F99B3FD4CDC05F471ECC74 /* AddExpenseViewModel.swift */; };
+		1CE59E852DD149D59A9CE627 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC3D26FB54E38BC7B1E74C5 /* ProgressRing.swift */; };
+		28301C4B430F22D9010BD3D6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07236CC2C9FC981063D9F44 /* Project.swift */; };
+		2DA77B3C0E07B5179057FC39 /* CreateProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D3A77E06B66597C255E93 /* CreateProjectView.swift */; };
+		390BF2810669650735C5B3B8 /* RecordExpenseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09957C29966B082043774FFB /* RecordExpenseUseCase.swift */; };
+		401FBB162DC62B24481E2A08 /* BudgetDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB855C8CD0C3538085CCE6C /* BudgetDashboardViewModel.swift */; };
+		42674B2AC106E089B3674F6D /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283A5FA3BE929E72BDAA2BD8 /* Budget.swift */; };
+		47DF8627676687ED5A5DEEA2 /* TaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F45F87738344EBBDCD64F98 /* TaskStatus.swift */; };
+		4AA0ED357A7B68E1505C12D9 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05B7703AAD7BB6E8E0A7BB /* ProgressBar.swift */; };
+		4B494C4B486AB3784C8DA022 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93907A2D4175AA602CC8EADA /* ExpenseCategory.swift */; };
+		50E1DF50BF96A81244D6B7E8 /* BudgetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757073D0ACC716D0FB07740 /* BudgetRepository.swift */; };
+		53CFD90FD519A83F152CCBDA /* PhaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69AA7BFA2A75EB2CFA29565D /* PhaseType.swift */; };
+		5637A3FFB7D91BB9D889F358 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7D7ED33234641D32DB0D /* Contact.swift */; };
+		590C82F89222AC6ED485FE67 /* ExpenseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5290A8AA999923B94CDDABE3 /* ExpenseListViewModel.swift */; };
+		6BEA9939579B72884CDBA1A0 /* ProfileDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0418E4DF35874874356B9F82 /* ProfileDashboardView.swift */; };
+		6F9BAAAE2400471E5450A2EA /* PandaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71132B911925647FE03A54D9 /* PandaApp.swift */; };
+		77A1E21819020B4055927543 /* MaterialStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED8DD94C5C78979F795EE21 /* MaterialStatus.swift */; };
+		80E0C89427019B4219924CEF /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C10F2553C25D14735B782 /* Material.swift */; };
+		83DF56C6E44E942CC6B103A0 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02DA5DA1E1F9CD3521E7F0 /* Spacing.swift */; };
+		88366E060739068FDD323D5B /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702EBCD2EB4FA4296019E9E2 /* Task.swift */; };
+		8B3061482293FE9A40A17822 /* HomeDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D6632ABA7D6BD76A825264 /* HomeDashboardView.swift */; };
+		A2ECC4F836A18A6277E03D5E /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DCC626E6A44B498B469706 /* TestDataGenerator.swift */; };
+		BF3102B88D1DF8E6D2E036EB /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63802411E2D60A4F395895C8 /* JournalListView.swift */; };
+		CB88BCEFD5384A43B3BE56BB /* AddMaterialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B6C7407F1987D670112BBB /* AddMaterialView.swift */; };
+		CDD25609CDEDAAB46C657BBE /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A04143EC43DF1509B7AC11 /* ContactListView.swift */; };
+		D50FBD2ECB8C931EF69654E0 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D6BC3B619540C6C5DEFDB4 /* JournalEntry.swift */; };
+		D8493978A78E6633A9BD7A10 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B16FEC81E776EDF7C83935F /* MainTabView.swift */; };
+		E17DBDB4E920DB0E519097C5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EEBB8710B8211553D50604 /* Fonts.swift */; };
+		E521AFFFCCCEB8EA381D0D31 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8778B64C44AD0ACF5AEFE2 /* Expense.swift */; };
+		EA0C463ABDB5A6B0CD0CC786 /* BudgetDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6BA80CF5DAE22BC72716C /* BudgetDashboardView.swift */; };
+		EED4DC38B662D5BAD672A771 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE0465D8467E24F48C9B5AF /* AddExpenseView.swift */; };
+		FA2C3A522725B3A63E20DD83 /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3B51963C3E2B435447856F /* ExpenseRepository.swift */; };
+		FAFF024E0AC2FF4769E9F403 /* MaterialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AFFEEDE8E3769A1273801C /* MaterialListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0418E4DF35874874356B9F82 /* ProfileDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDashboardView.swift; sourceTree = "<group>"; };
+		09957C29966B082043774FFB /* RecordExpenseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordExpenseUseCase.swift; sourceTree = "<group>"; };
+		0DE0465D8467E24F48C9B5AF /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		146FA7D256451A7680E519FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1D02DA5DA1E1F9CD3521E7F0 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		1D05B7703AAD7BB6E8E0A7BB /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		283A5FA3BE929E72BDAA2BD8 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
+		36DCC626E6A44B498B469706 /* TestDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataGenerator.swift; sourceTree = "<group>"; };
+		496D3A77E06B66597C255E93 /* CreateProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProjectView.swift; sourceTree = "<group>"; };
+		49D6BC3B619540C6C5DEFDB4 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		5290A8AA999923B94CDDABE3 /* ExpenseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListViewModel.swift; sourceTree = "<group>"; };
+		5AB855C8CD0C3538085CCE6C /* BudgetDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDashboardViewModel.swift; sourceTree = "<group>"; };
+		5E2085BA8218F746A0845EC2 /* Phase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase.swift; sourceTree = "<group>"; };
+		62AFFEEDE8E3769A1273801C /* MaterialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialListView.swift; sourceTree = "<group>"; };
+		63802411E2D60A4F395895C8 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		69AA7BFA2A75EB2CFA29565D /* PhaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseType.swift; sourceTree = "<group>"; };
+		6A3B51963C3E2B435447856F /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
+		702EBCD2EB4FA4296019E9E2 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		71132B911925647FE03A54D9 /* PandaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PandaApp.swift; sourceTree = "<group>"; };
+		74D6632ABA7D6BD76A825264 /* HomeDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardView.swift; sourceTree = "<group>"; };
+		754C10F2553C25D14735B782 /* Material.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
+		77B818DF38DFE336DDC60726 /* ScheduleOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleOverviewView.swift; sourceTree = "<group>"; };
+		7B16FEC81E776EDF7C83935F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		81A04143EC43DF1509B7AC11 /* ContactListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListView.swift; sourceTree = "<group>"; };
+		83F6BA80CF5DAE22BC72716C /* BudgetDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDashboardView.swift; sourceTree = "<group>"; };
+		8F45F87738344EBBDCD64F98 /* TaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatus.swift; sourceTree = "<group>"; };
+		93907A2D4175AA602CC8EADA /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
+		9F8778B64C44AD0ACF5AEFE2 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		A3B6C7407F1987D670112BBB /* AddMaterialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMaterialView.swift; sourceTree = "<group>"; };
+		AE82407FEB6EA05D4C6E4413 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		B07236CC2C9FC981063D9F44 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		B757073D0ACC716D0FB07740 /* BudgetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetRepository.swift; sourceTree = "<group>"; };
+		BDAE7D7ED33234641D32DB0D /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		BED8DD94C5C78979F795EE21 /* MaterialStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialStatus.swift; sourceTree = "<group>"; };
+		DEBF13211AAB6D1E39A451F8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		EE527DA3A83270D69B1271F7 /* Panda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Panda.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4EEBB8710B8211553D50604 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		F6F99B3FD4CDC05F471ECC74 /* AddExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseViewModel.swift; sourceTree = "<group>"; };
+		FBC3D26FB54E38BC7B1E74C5 /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		001D35746DF4C274B08D0619 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77B818DF38DFE336DDC60726 /* ScheduleOverviewView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		048BD252C5BF65547744602E /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				C03706FCE3658C460D627B55 /* Enums */,
+				059ABF92977E7AE9ECE23EC7 /* Models */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		059ABF92977E7AE9ECE23EC7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				283A5FA3BE929E72BDAA2BD8 /* Budget.swift */,
+				BDAE7D7ED33234641D32DB0D /* Contact.swift */,
+				9F8778B64C44AD0ACF5AEFE2 /* Expense.swift */,
+				49D6BC3B619540C6C5DEFDB4 /* JournalEntry.swift */,
+				754C10F2553C25D14735B782 /* Material.swift */,
+				5E2085BA8218F746A0845EC2 /* Phase.swift */,
+				B07236CC2C9FC981063D9F44 /* Project.swift */,
+				702EBCD2EB4FA4296019E9E2 /* Task.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0D6B0EA379BE74D963A42A23 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				496D3A77E06B66597C255E93 /* CreateProjectView.swift */,
+				74D6632ABA7D6BD76A825264 /* HomeDashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0E545597094AD8EFFCD6A515 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				001D35746DF4C274B08D0619 /* Views */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		320AFBCBB5CD638F36D36D51 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				048BD252C5BF65547744602E /* Database */,
+				727FFB83637B3E076BA970D1 /* Repositories */,
+				6328A6FE91437BFD0CD5D22B /* UseCases */,
+				DD705E0B3C81AC3F04EF18CF /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		3A5EF7AC81260D0666D2DE44 /* Budget */ = {
+			isa = PBXGroup;
+			children = (
+				09957C29966B082043774FFB /* RecordExpenseUseCase.swift */,
+			);
+			path = Budget;
+			sourceTree = "<group>";
+		};
+		3B91E332EC61B8D0104E21E1 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B2E952291B21097D879FB7E1 /* Views */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		475C58722BB2A8CA5496F3AF /* Panda */ = {
+			isa = PBXGroup;
+			children = (
+				146FA7D256451A7680E519FF /* Info.plist */,
+				87CEC13C0F32B98872CBBE75 /* App */,
+				320AFBCBB5CD638F36D36D51 /* Core */,
+				63C1DE05FEECFEA39CF77CD1 /* Features */,
+				C7FE5E8CE3AF4843147E6AE7 /* Shared */,
+			);
+			path = Panda;
+			sourceTree = "<group>";
+		};
+		60CC58FBE083EDCE41C91963 /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				F1F107E98173AC8FD2769755 /* Views */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		6328A6FE91437BFD0CD5D22B /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				3A5EF7AC81260D0666D2DE44 /* Budget */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		63C1DE05FEECFEA39CF77CD1 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				AC36DD22B23C63D1601B840C /* Budget */,
+				8A729B2C345BE988F6F27D06 /* Contacts */,
+				A0F24707E9E75C5E1C837228 /* Home */,
+				60CC58FBE083EDCE41C91963 /* Journal */,
+				8D2E4F8082B33CF6552331F9 /* Materials */,
+				3B91E332EC61B8D0104E21E1 /* Profile */,
+				0E545597094AD8EFFCD6A515 /* Schedule */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		727FFB83637B3E076BA970D1 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				B757073D0ACC716D0FB07740 /* BudgetRepository.swift */,
+				6A3B51963C3E2B435447856F /* ExpenseRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		7B81D0DE3058FBBCDF0D121A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DEBF13211AAB6D1E39A451F8 /* CardView.swift */,
+				1D05B7703AAD7BB6E8E0A7BB /* ProgressBar.swift */,
+				FBC3D26FB54E38BC7B1E74C5 /* ProgressRing.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		87CEC13C0F32B98872CBBE75 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7B16FEC81E776EDF7C83935F /* MainTabView.swift */,
+				71132B911925647FE03A54D9 /* PandaApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8A729B2C345BE988F6F27D06 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				CA4571DD3DD7808F6ECD7E63 /* Views */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		8D2E4F8082B33CF6552331F9 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				B07A95C663549C2F6810049D /* Views */,
+			);
+			path = Materials;
+			sourceTree = "<group>";
+		};
+		A0F24707E9E75C5E1C837228 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0D6B0EA379BE74D963A42A23 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		A7E404DEFE54CAEA61A43DF1 = {
+			isa = PBXGroup;
+			children = (
+				475C58722BB2A8CA5496F3AF /* Panda */,
+				DAE3B921672D6AE90AAA7A7F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AC36DD22B23C63D1601B840C /* Budget */ = {
+			isa = PBXGroup;
+			children = (
+				C42B6CBDF9C1F949CE5DF251 /* ViewModels */,
+				F30A6BA218B3117A05D828B4 /* Views */,
+			);
+			path = Budget;
+			sourceTree = "<group>";
+		};
+		B07A95C663549C2F6810049D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A3B6C7407F1987D670112BBB /* AddMaterialView.swift */,
+				62AFFEEDE8E3769A1273801C /* MaterialListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B2E952291B21097D879FB7E1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0418E4DF35874874356B9F82 /* ProfileDashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C03706FCE3658C460D627B55 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				93907A2D4175AA602CC8EADA /* ExpenseCategory.swift */,
+				BED8DD94C5C78979F795EE21 /* MaterialStatus.swift */,
+				69AA7BFA2A75EB2CFA29565D /* PhaseType.swift */,
+				8F45F87738344EBBDCD64F98 /* TaskStatus.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		C42B6CBDF9C1F949CE5DF251 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F6F99B3FD4CDC05F471ECC74 /* AddExpenseViewModel.swift */,
+				5AB855C8CD0C3538085CCE6C /* BudgetDashboardViewModel.swift */,
+				5290A8AA999923B94CDDABE3 /* ExpenseListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C7FE5E8CE3AF4843147E6AE7 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7B81D0DE3058FBBCDF0D121A /* Components */,
+				D44282EEC9723B6C4E82B34C /* Styles */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		CA4571DD3DD7808F6ECD7E63 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				81A04143EC43DF1509B7AC11 /* ContactListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D44282EEC9723B6C4E82B34C /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				AE82407FEB6EA05D4C6E4413 /* Colors.swift */,
+				F4EEBB8710B8211553D50604 /* Fonts.swift */,
+				1D02DA5DA1E1F9CD3521E7F0 /* Spacing.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		DAE3B921672D6AE90AAA7A7F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE527DA3A83270D69B1271F7 /* Panda.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD705E0B3C81AC3F04EF18CF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				36DCC626E6A44B498B469706 /* TestDataGenerator.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F1F107E98173AC8FD2769755 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				63802411E2D60A4F395895C8 /* JournalListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F30A6BA218B3117A05D828B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0DE0465D8467E24F48C9B5AF /* AddExpenseView.swift */,
+				83F6BA80CF5DAE22BC72716C /* BudgetDashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D6D3BAF9FB45DB66AC8B2B76 /* Panda */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37BD0E969E9B0C0B5A2E4081 /* Build configuration list for PBXNativeTarget "Panda" */;
+			buildPhases = (
+				F9DF5CD460ED125DD287A136 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Panda;
+			packageProductDependencies = (
+			);
+			productName = Panda;
+			productReference = EE527DA3A83270D69B1271F7 /* Panda.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EBC5130B4308CA50C01F9CCE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 6DCA7D4EFF0F46960B61A409 /* Build configuration list for PBXProject "Panda" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = A7E404DEFE54CAEA61A43DF1;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D6D3BAF9FB45DB66AC8B2B76 /* Panda */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F9DF5CD460ED125DD287A136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EED4DC38B662D5BAD672A771 /* AddExpenseView.swift in Sources */,
+				1AAAB7EA128922B34FA23B3F /* AddExpenseViewModel.swift in Sources */,
+				CB88BCEFD5384A43B3BE56BB /* AddMaterialView.swift in Sources */,
+				42674B2AC106E089B3674F6D /* Budget.swift in Sources */,
+				EA0C463ABDB5A6B0CD0CC786 /* BudgetDashboardView.swift in Sources */,
+				401FBB162DC62B24481E2A08 /* BudgetDashboardViewModel.swift in Sources */,
+				50E1DF50BF96A81244D6B7E8 /* BudgetRepository.swift in Sources */,
+				0212244F808A13D41E695DD7 /* CardView.swift in Sources */,
+				084FFC9B5032CBC438142C90 /* Colors.swift in Sources */,
+				5637A3FFB7D91BB9D889F358 /* Contact.swift in Sources */,
+				CDD25609CDEDAAB46C657BBE /* ContactListView.swift in Sources */,
+				2DA77B3C0E07B5179057FC39 /* CreateProjectView.swift in Sources */,
+				E521AFFFCCCEB8EA381D0D31 /* Expense.swift in Sources */,
+				4B494C4B486AB3784C8DA022 /* ExpenseCategory.swift in Sources */,
+				590C82F89222AC6ED485FE67 /* ExpenseListViewModel.swift in Sources */,
+				FA2C3A522725B3A63E20DD83 /* ExpenseRepository.swift in Sources */,
+				E17DBDB4E920DB0E519097C5 /* Fonts.swift in Sources */,
+				8B3061482293FE9A40A17822 /* HomeDashboardView.swift in Sources */,
+				D50FBD2ECB8C931EF69654E0 /* JournalEntry.swift in Sources */,
+				BF3102B88D1DF8E6D2E036EB /* JournalListView.swift in Sources */,
+				D8493978A78E6633A9BD7A10 /* MainTabView.swift in Sources */,
+				80E0C89427019B4219924CEF /* Material.swift in Sources */,
+				FAFF024E0AC2FF4769E9F403 /* MaterialListView.swift in Sources */,
+				77A1E21819020B4055927543 /* MaterialStatus.swift in Sources */,
+				6F9BAAAE2400471E5450A2EA /* PandaApp.swift in Sources */,
+				03899CCD4691D9DF4FAF8B7C /* Phase.swift in Sources */,
+				53CFD90FD519A83F152CCBDA /* PhaseType.swift in Sources */,
+				6BEA9939579B72884CDBA1A0 /* ProfileDashboardView.swift in Sources */,
+				4AA0ED357A7B68E1505C12D9 /* ProgressBar.swift in Sources */,
+				1CE59E852DD149D59A9CE627 /* ProgressRing.swift in Sources */,
+				28301C4B430F22D9010BD3D6 /* Project.swift in Sources */,
+				390BF2810669650735C5B3B8 /* RecordExpenseUseCase.swift in Sources */,
+				17BC689F8B1FDD5ECA3EE147 /* ScheduleOverviewView.swift in Sources */,
+				83DF56C6E44E942CC6B103A0 /* Spacing.swift in Sources */,
+				88366E060739068FDD323D5B /* Task.swift in Sources */,
+				47DF8627676687ED5A5DEEA2 /* TaskStatus.swift in Sources */,
+				A2ECC4F836A18A6277E03D5E /* TestDataGenerator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0A6226F121F4E8296C9AB0BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		0B810921E00F3C5979F7E35D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 3H29ZPLWD7;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Panda/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangxfeng.panda.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		60139B1A7F0718083B2B90A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 3H29ZPLWD7;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Panda/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangxfeng.panda.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CB7CBDBE31780920CE389C9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		37BD0E969E9B0C0B5A2E4081 /* Build configuration list for PBXNativeTarget "Panda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B810921E00F3C5979F7E35D /* Debug */,
+				60139B1A7F0718083B2B90A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6DCA7D4EFF0F46960B61A409 /* Build configuration list for PBXProject "Panda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A6226F121F4E8296C9AB0BB /* Debug */,
+				CB7CBDBE31780920CE389C9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EBC5130B4308CA50C01F9CCE /* Project object */;
+}

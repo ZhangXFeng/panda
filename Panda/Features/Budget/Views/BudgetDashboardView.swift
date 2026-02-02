@@ -13,11 +13,12 @@ struct BudgetDashboardView: View {
     @Query private var projects: [Project]
     @State private var viewModel: BudgetDashboardViewModel?
     @State private var showingAddExpense = false
+    @State private var refreshID = UUID()
 
     var body: some View {
         NavigationStack {
             Group {
-                if let viewModel = viewModel, let budget = viewModel.budget {
+                if let viewModel = viewModel, viewModel.budget != nil {
                     ScrollView {
                         VStack(spacing: Spacing.md) {
                             // 总预算卡片
@@ -31,10 +32,14 @@ struct BudgetDashboardView: View {
                         }
                         .padding()
                     }
+                    .refreshable {
+                        await loadData()
+                    }
                 } else {
                     emptyState
                 }
             }
+            .id(refreshID)
             .navigationTitle("预算管理")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -45,6 +50,17 @@ struct BudgetDashboardView: View {
                         Image(systemName: "plus")
                     }
                 }
+
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        _Concurrency.Task {
+                            await loadData()
+                            refreshID = UUID()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
             }
             .sheet(isPresented: $showingAddExpense) {
                 if let budget = viewModel?.budget {
@@ -53,6 +69,11 @@ struct BudgetDashboardView: View {
             }
             .task {
                 await loadData()
+            }
+            .onAppear {
+                _Concurrency.Task {
+                    await loadData()
+                }
             }
         }
     }
@@ -136,15 +157,50 @@ struct BudgetDashboardView: View {
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
+            Spacer()
+
             Image(systemName: "chart.pie")
                 .font(.system(size: 64))
                 .foregroundColor(.textHint)
+
             Text("暂无预算数据")
                 .font(.titleSmall)
                 .foregroundColor(.textSecondary)
-            Text("请先创建装修项目")
-                .font(.bodyRegular)
-                .foregroundColor(.textHint)
+
+            if let project = projects.first {
+                Text("为项目创建预算")
+                    .font(.bodyRegular)
+                    .foregroundColor(.textHint)
+
+                Button(action: {
+                    createBudgetForProject(project)
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                        Text("创建预算")
+                    }
+                    .font(.bodyMedium)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, Spacing.xl)
+                    .padding(.vertical, Spacing.md)
+                    .background(Color.primaryWood)
+                    .cornerRadius(CornerRadius.lg)
+                }
+                .padding(.top, Spacing.md)
+            } else {
+                Text("请先创建装修项目")
+                    .font(.bodyRegular)
+                    .foregroundColor(.textHint)
+            }
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func createBudgetForProject(_ project: Project) {
+        _Concurrency.Task {
+            await viewModel?.createBudget(for: project, amount: 180000)
         }
     }
 

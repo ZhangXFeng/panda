@@ -40,8 +40,11 @@ final class ExpenseRepository {
 
     /// 获取所有支出记录
     func fetchAll(for budget: Budget, sortBy: ExpenseSortOption = .dateDescending) throws -> [Expense] {
+        let budgetId = budget.id
         var descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { $0.budget?.id == budget.id }
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId
+            }
         )
 
         descriptor.sortBy = sortBy.sortDescriptors
@@ -51,9 +54,11 @@ final class ExpenseRepository {
 
     /// 获取指定分类的支出记录
     func fetchExpenses(for budget: Budget, category: ExpenseCategory) throws -> [Expense] {
+        let budgetId = budget.id
+        let targetCategory = category
         let descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { expense in
-                expense.budget?.id == budget.id && expense.category == category
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId && expense.category == targetCategory
             },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
@@ -67,11 +72,14 @@ final class ExpenseRepository {
         from startDate: Date,
         to endDate: Date
     ) throws -> [Expense] {
+        let budgetId = budget.id
+        let start = startDate
+        let end = endDate
         let descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { expense in
-                expense.budget?.id == budget.id &&
-                expense.date >= startDate &&
-                expense.date <= endDate
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId &&
+                expense.date >= start &&
+                expense.date <= end
             },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
@@ -81,13 +89,14 @@ final class ExpenseRepository {
 
     /// 搜索支出记录
     func search(for budget: Budget, keyword: String) throws -> [Expense] {
-        let lowercasedKeyword = keyword.lowercased()
+        let budgetId = budget.id
+        let searchKeyword = keyword.lowercased()
 
         let descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { expense in
-                expense.budget?.id == budget.id && (
-                    expense.notes.localizedStandardContains(lowercasedKeyword) ||
-                    expense.vendor.localizedStandardContains(lowercasedKeyword)
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId && (
+                    expense.notes.localizedStandardContains(searchKeyword) ||
+                    expense.vendor.localizedStandardContains(searchKeyword)
                 )
             },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
@@ -145,8 +154,11 @@ final class ExpenseRepository {
 
     /// 获取 TOP N 支出
     func fetchTopExpenses(for budget: Budget, limit: Int = 5) throws -> [Expense] {
+        let budgetId = budget.id
         var descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { $0.budget?.id == budget.id }
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId
+            }
         )
 
         descriptor.sortBy = [SortDescriptor(\.amount, order: .reverse)]
