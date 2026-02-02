@@ -67,20 +67,12 @@ extension MainTabView {
     }
 }
 
-// MARK: - Placeholder Views
+// MARK: - Tab Views
 
-/// 首页占位视图
+/// 首页视图
 struct HomeView: View {
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Text("首页")
-                    .font(.titleLarge)
-                    .padding()
-            }
-            .navigationTitle("我的家")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+        HomeDashboardView()
     }
 }
 
@@ -91,48 +83,24 @@ struct BudgetView: View {
     }
 }
 
-/// 进度占位视图
+/// 进度视图
 struct ScheduleView: View {
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Text("装修进度")
-                    .font(.titleLarge)
-                    .padding()
-            }
-            .navigationTitle("装修进度")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+        ScheduleOverviewView()
     }
 }
 
-/// 材料占位视图
+/// 材料视图
 struct MaterialsView: View {
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Text("材料管理")
-                    .font(.titleLarge)
-                    .padding()
-            }
-            .navigationTitle("材料管理")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+        MaterialListView()
     }
 }
 
-/// 我的占位视图
+/// 我的视图
 struct ProfileView: View {
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Text("我的")
-                    .font(.titleLarge)
-                    .padding()
-            }
-            .navigationTitle("我的")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+        ProfileDashboardView()
     }
 }
 

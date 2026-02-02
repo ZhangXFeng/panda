@@ -1,0 +1,194 @@
+//
+//  ScheduleOverviewView.swift
+//  Panda
+//
+//  Created on 2026-02-02.
+//
+
+import SwiftUI
+import SwiftData
+
+struct ScheduleOverviewView: View {
+    @Query private var projects: [Project]
+    @State private var selectedPhase: Phase?
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                if let project = projects.first {
+                    VStack(spacing: Spacing.md) {
+                        // 整体进度
+                        overallProgressCard(project: project)
+
+                        // 阶段列表
+                        phasesSection(project: project)
+                    }
+                    .padding()
+                } else {
+                    emptyState
+                }
+            }
+            .navigationTitle("装修进度")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    // MARK: - Components
+
+    private func overallProgressCard(project: Project) -> some View {
+        CardView {
+            VStack(spacing: Spacing.md) {
+                HStack {
+                    Text("整体进度")
+                        .font(.titleSmall)
+                    Spacer()
+                    Text("\(Int(project.overallProgress * 100))%")
+                        .font(.numberMedium)
+                        .foregroundColor(.primaryWood)
+                }
+
+                ProgressBar(progress: project.overallProgress)
+
+                HStack {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text("已完成阶段")
+                            .font(.captionRegular)
+                            .foregroundColor(.textSecondary)
+                        Text("\(project.phases.filter { $0.isCompleted }.count)/\(project.phases.count)")
+                            .font(.bodyMedium)
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .trailing, spacing: Spacing.xs) {
+                        Text("剩余天数")
+                            .font(.captionRegular)
+                            .foregroundColor(.textSecondary)
+                        Text("\(project.remainingDays) 天")
+                            .font(.bodyMedium)
+                            .foregroundColor(project.isDelayed ? .error : .success)
+                    }
+                }
+            }
+        }
+    }
+
+    private func phasesSection(project: Project) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("装修阶段")
+                .font(.titleSmall)
+                .padding(.horizontal, Spacing.sm)
+
+            ForEach(project.phases.sorted(by: Phase.sortBySortOrder)) { phase in
+                PhaseCard(phase: phase)
+            }
+        }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: Spacing.lg) {
+            Image(systemName: "calendar")
+                .font(.system(size: 64))
+                .foregroundColor(.textHint)
+            Text("暂无进度数据")
+                .font(.titleSmall)
+                .foregroundColor(.textSecondary)
+        }
+    }
+}
+
+// MARK: - Phase Card
+
+struct PhaseCard: View {
+    let phase: Phase
+
+    var body: some View {
+        CardView(padding: Spacing.md) {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                HStack {
+                    Image(systemName: phase.type.iconName)
+                        .foregroundColor(phase.isCompleted ? .success : .primaryWood)
+                    Text(phase.name)
+                        .font(.bodyMedium)
+                    Spacer()
+                    statusBadge
+                }
+
+                if !phase.isCompleted {
+                    ProgressBar(progress: phase.progress, height: 6)
+
+                    HStack {
+                        Text("进度: \(Int(phase.progress * 100))%")
+                            .font(.captionRegular)
+                            .foregroundColor(.textSecondary)
+                        Spacer()
+                        if phase.isDelayed {
+                            Text("延期 \(phase.delayedDays) 天")
+                                .font(.captionRegular)
+                                .foregroundColor(.warning)
+                        }
+                    }
+                }
+
+                if let start = phase.actualStartDate, let end = phase.actualEndDate {
+                    HStack {
+                        Text("完成时间:")
+                            .font(.captionRegular)
+                            .foregroundColor(.textSecondary)
+                        Text("\(formatDate(start)) ~ \(formatDate(end))")
+                            .font(.captionRegular)
+                    }
+                } else {
+                    HStack {
+                        Text("计划时间:")
+                            .font(.captionRegular)
+                            .foregroundColor(.textSecondary)
+                        Text("\(formatDate(phase.plannedStartDate)) ~ \(formatDate(phase.plannedEndDate))")
+                            .font(.captionRegular)
+                    }
+                }
+            }
+        }
+    }
+
+    private var statusBadge: some View {
+        Group {
+            if phase.isCompleted {
+                Text("已完成")
+                    .font(.captionMedium)
+                    .foregroundColor(.success)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+                    .background(Color.success.opacity(0.1))
+                    .cornerRadius(CornerRadius.sm)
+            } else if phase.isInProgress {
+                Text("进行中")
+                    .font(.captionMedium)
+                    .foregroundColor(.info)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+                    .background(Color.info.opacity(0.1))
+                    .cornerRadius(CornerRadius.sm)
+            } else {
+                Text("待开始")
+                    .font(.captionMedium)
+                    .foregroundColor(.textSecondary)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+                    .background(Color.bgSecondary)
+                    .cornerRadius(CornerRadius.sm)
+            }
+        }
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd"
+        return formatter.string(from: date)
+    }
+}
+
+#Preview {
+    ScheduleOverviewView()
+        .modelContainer(for: [Project.self, Phase.self], inMemory: true)
+}
