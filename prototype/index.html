@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Panda 装修管家</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- 首页 -->
+        <div id="home" class="page active">
+            <div class="navbar">
+                <span class="navbar-back"></span>
+                <span class="navbar-title">我的家</span>
+                <span class="navbar-action">编辑</span>
+            </div>
+
+            <div class="content">
+                <!-- 封面图 -->
+                <div class="cover-image">
+                    📷
+                    <div class="cover-info">
+                        <h2>两室一厅 · 建筑面积 85㎡</h2>
+                        <p>开工日期：2024-03-15 · 预计工期：90 天</p>
+                    </div>
+                </div>
+
+                <!-- 预算概览 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">预算概览</span>
+                        <span class="card-action">查看详情 ›</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-row">
+                            <span class="stat-label">总预算</span>
+                            <span class="stat-value large">¥180,000</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">已支出</span>
+                            <span class="stat-value">¥92,500</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill warning" style="width: 51%"></div>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">剩余预算</span>
+                            <span class="stat-value">¥87,500</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">预计超支</span>
+                            <span class="stat-value error">-¥5,000 ⚠️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进度概览 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">进度概览</span>
+                        <span class="card-action">查看详情 ›</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-row">
+                            <span class="stat-label">当前阶段：水电改造 🔧</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 62%"></div>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">已完成 5/8 个阶段</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">预计完成：2024-06-15 (还剩23天)</span>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            <span class="badge badge-warning">⚠️ 水电改造延期 3 天</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快捷操作 -->
+                <div class="section-title">快捷操作</div>
+                <div class="quick-actions">
+                    <div class="quick-action">
+                        <div class="quick-action-icon">➕</div>
+                        <div class="quick-action-label">记一笔</div>
+                    </div>
+                    <div class="quick-action">
+                        <div class="quick-action-icon">📝</div>
+                        <div class="quick-action-label">写日记</div>
+                    </div>
+                    <div class="quick-action">
+                        <div class="quick-action-icon">📞</div>
+                        <div class="quick-action-label">通讯录</div>
+                    </div>
+                </div>
+
+                <!-- 待办事项 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">待办事项</span>
+                        <span class="card-action">查看全部 ›</span>
+                    </div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div>
+                                    <div class="list-item-title">☐ 水电验收</div>
+                                    <div class="list-item-subtitle">明天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div>
+                                    <div class="list-item-title">☐ 瓷砖到货确认</div>
+                                    <div class="list-item-subtitle">2天后</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div>
+                                    <div class="list-item-title">☐ 支付木工工程款</div>
+                                    <div class="list-item-subtitle">5天后</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预算页面 -->
+        <div id="budget" class="page">
+            <div class="navbar">
+                <span class="navbar-back"></span>
+                <span class="navbar-title">预算管理</span>
+                <span class="navbar-action">···</span>
+            </div>
+
+            <div class="content">
+                <!-- 总预算卡片 -->
+                <div class="card">
+                    <div class="stat-row">
+                        <span class="stat-label">总预算</span>
+                        <span class="stat-value large">¥180,000</span>
+                    </div>
+
+                    <div class="circle-progress">
+                        <svg width="120" height="120">
+                            <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                            <circle class="circle-progress-fill" cx="60" cy="60" r="50"
+                                    stroke-dasharray="314.16" stroke-dashoffset="152.4"></circle>
+                        </svg>
+                        <div class="circle-progress-text">51.4%</div>
+                    </div>
+
+                    <div class="stat-row">
+                        <span class="stat-label">已支出</span>
+                        <span class="stat-value">¥92,500</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">剩余</span>
+                        <span class="stat-value success">¥87,500</span>
+                    </div>
+                    <div style="margin-top: 12px; text-align: center;">
+                        <span class="badge badge-warning">超支预警 ⚠️</span>
+                    </div>
+                </div>
+
+                <!-- 本月支出 -->
+                <div style="padding: 0 16px; margin: 16px 0;">
+                    <div class="stat-row">
+                        <span class="stat-label">本月支出</span>
+                        <span class="stat-value">¥15,200</span>
+                    </div>
+                </div>
+
+                <div class="section-title">分类预算</div>
+
+                <!-- 分类预算列表 -->
+                <div style="padding: 0 16px;">
+                    <div class="budget-category">
+                        <div class="budget-category-header">
+                            <span class="budget-category-name">硬装工程</span>
+                            <span class="budget-category-percent">64%</span>
+                        </div>
+                        <div class="budget-category-amount">¥48,000 / ¥75,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill warning" style="width: 64%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-category">
+                        <div class="budget-category-header">
+                            <span class="budget-category-name">主材采购</span>
+                            <span class="budget-category-percent">38%</span>
+                        </div>
+                        <div class="budget-category-amount">¥28,500 / ¥75,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 38%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-category">
+                        <div class="budget-category-header">
+                            <span class="budget-category-name">设计费</span>
+                            <span class="budget-category-percent">100%</span>
+                        </div>
+                        <div class="budget-category-amount">¥8,000 / ¥8,000 ✓</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill success" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-category">
+                        <div class="budget-category-header">
+                            <span class="budget-category-name">软装家具</span>
+                            <span class="budget-category-percent">23%</span>
+                        </div>
+                        <div class="budget-category-amount">¥8,000 / ¥35,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 23%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-category" style="border: 2px dashed var(--divider); background: transparent;">
+                        <div style="text-align: center; color: var(--text-secondary);">
+                            + 添加自定义分类
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 悬浮按钮 -->
+            <button class="btn-fab">➕</button>
+        </div>
+
+        <!-- 进度页面 -->
+        <div id="schedule" class="page">
+            <div class="navbar">
+                <span class="navbar-back"></span>
+                <span class="navbar-title">装修进度</span>
+                <span class="navbar-action">···</span>
+            </div>
+
+            <div class="content">
+                <!-- 整体进度 -->
+                <div class="card">
+                    <div class="stat-row">
+                        <span class="stat-label">整体进度</span>
+                        <span class="stat-value">62%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 62%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">已完成 5/8 个阶段</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">预计完成: 2024-06-15 (23天后)</span>
+                    </div>
+                </div>
+
+                <!-- 当前阶段 -->
+                <div class="section-title">当前阶段</div>
+                <div class="card">
+                    <div class="stat-row">
+                        <span class="stat-label">🔧 水电改造</span>
+                        <span class="badge badge-info">进行中</span>
+                    </div>
+                    <div class="progress-bar" style="margin: 12px 0;">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">2024-05-15 ~ 05-28</span>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <span class="badge badge-warning">⚠️ 已延期 3 天</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 16px;">
+                        <button class="btn btn-secondary" style="flex: 1;">查看任务 5/7</button>
+                        <button class="btn btn-primary" style="flex: 1;">标记完成</button>
+                    </div>
+                </div>
+
+                <!-- 装修阶段 -->
+                <div class="section-title">装修阶段</div>
+                <div class="list">
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div>
+                                <div class="list-item-title">✅ 1. 前期准备</div>
+                                <div class="list-item-subtitle">2024-03-01 ~ 03-14 (14天)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div>
+                                <div class="list-item-title">✅ 2. 拆改阶段</div>
+                                <div class="list-item-subtitle">2024-03-15 ~ 03-20 (6天)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item" style="background: var(--bg-secondary);">
+                        <div class="list-item-content">
+                            <div style="width: 100%;">
+                                <div class="list-item-title">⏰ 3. 水电改造 ← 当前阶段</div>
+                                <div class="list-item-subtitle">2024-05-15 ~ 05-28 (14天)</div>
+                                <div class="progress-bar" style="margin-top: 8px;">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                                <div style="margin-top: 4px; font-size: 12px; color: var(--primary-wood);">
+                                    进行中 75%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div>
+                                <div class="list-item-title">⏸️ 4. 泥瓦工程</div>
+                                <div class="list-item-subtitle">2024-06-01 ~ 06-15 (15天)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div>
+                                <div class="list-item-title">⏸️ 5. 木工工程</div>
+                                <div class="list-item-subtitle">2024-06-16 ~ 06-30 (15天)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div>
+                                <div class="list-item-title">⏸️ 6. 油漆工程</div>
+                                <div class="list-item-subtitle">2024-07-01 ~ 07-10 (10天)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px;">
+                    <button class="btn btn-secondary btn-block">+ 添加自定义阶段</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 材料页面 -->
+        <div id="materials" class="page">
+            <div class="navbar">
+                <span class="navbar-back"></span>
+                <span class="navbar-title">材料管理</span>
+                <span class="navbar-action">+ 添加</span>
+            </div>
+
+            <div class="content">
+                <!-- 筛选标签 -->
+                <div class="filter-tabs">
+                    <div class="filter-tab active">全部</div>
+                    <div class="filter-tab">主材</div>
+                    <div class="filter-tab">辅材</div>
+                    <div class="filter-tab">家具</div>
+                </div>
+
+                <div class="filter-tabs">
+                    <div class="filter-tab active">全部状态</div>
+                    <div class="filter-tab">待购</div>
+                    <div class="filter-tab">已购</div>
+                    <div class="filter-tab">到货</div>
+                    <div class="filter-tab">安装</div>
+                </div>
+
+                <div class="section-title">主材</div>
+
+                <!-- 材料列表 -->
+                <div style="padding: 0 16px;">
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div>
+                                <div class="material-name">地砖</div>
+                                <div class="material-spec">诺贝尔 · 800x800mm</div>
+                            </div>
+                            <span class="badge badge-success">📦 已到货</span>
+                        </div>
+                        <div class="material-price">¥280/㎡ × 32㎡ = ¥8,960</div>
+                        <div class="list-item-subtitle">客厅、餐厅</div>
+                        <div style="margin-top: 8px; font-size: 24px;">📷</div>
+                    </div>
+
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div>
+                                <div class="material-name">木地板</div>
+                                <div class="material-spec">圣象 · 多层实木</div>
+                            </div>
+                            <span class="badge badge-gray">🛒 待购买</span>
+                        </div>
+                        <div class="material-price">¥350/㎡ × 28㎡ = ¥9,800</div>
+                        <div class="list-item-subtitle">主卧、次卧</div>
+                        <div style="margin-top: 8px;">
+                            <span class="badge badge-info">💰 3个报价</span>
+                        </div>
+                    </div>
+
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div>
+                                <div class="material-name">橱柜</div>
+                                <div class="material-spec">欧派 · 定制</div>
+                            </div>
+                            <span class="badge badge-success">✅ 已安装</span>
+                        </div>
+                        <div class="material-price">¥1,200/延米 × 4.5m = ¥5,400</div>
+                        <div class="list-item-subtitle">厨房</div>
+                        <div style="margin-top: 8px; font-size: 24px;">📷</div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px;">
+                    <button class="btn btn-secondary btn-block">💡 材料计算器</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 我的页面 -->
+        <div id="profile" class="page">
+            <div class="navbar">
+                <span class="navbar-back"></span>
+                <span class="navbar-title">我的</span>
+                <span class="navbar-action"></span>
+            </div>
+
+            <div class="content">
+                <!-- 用户信息 -->
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary-wood); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white;">
+                            👤
+                        </div>
+                        <div>
+                            <div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">张三</div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">我的家 · 两室一厅 85㎡</div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">装修进度 62%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">常用功能</div>
+
+                <!-- 功能网格 -->
+                <div class="quick-actions">
+                    <div class="quick-action">
+                        <div class="quick-action-icon">📄</div>
+                        <div class="quick-action-label">合同文档</div>
+                    </div>
+                    <div class="quick-action">
+                        <div class="quick-action-icon">👥</div>
+                        <div class="quick-action-label">通讯录</div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="quick-action">
+                        <div class="quick-action-icon">📸</div>
+                        <div class="quick-action-label">装修日记</div>
+                    </div>
+                    <div class="quick-action">
+                        <div class="quick-action-icon">📊</div>
+                        <div class="quick-action-label">数据导出</div>
+                    </div>
+                </div>
+
+                <div class="section-title">项目管理</div>
+                <div class="list">
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">切换项目</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">项目设置</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">应用设置</div>
+                <div class="list">
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">通用设置</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">通知提醒</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">隐私与安全</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">帮助与反馈</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <span class="list-item-title">关于 Panda</span>
+                            <span style="color: var(--text-secondary);">›</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding: 32px; color: var(--text-secondary); font-size: 14px;">
+                    v1.0.0
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部标签栏 -->
+        <div class="tabbar">
+            <div class="tab-item active" data-page="home">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" data-page="budget">
+                <div class="tab-icon">💰</div>
+                <div class="tab-label">预算</div>
+            </div>
+            <div class="tab-item" data-page="schedule">
+                <div class="tab-icon">📅</div>
+                <div class="tab-label">进度</div>
+            </div>
+            <div class="tab-item" data-page="materials">
+                <div class="tab-icon">🧱</div>
+                <div class="tab-label">材料</div>
+            </div>
+            <div class="tab-item" data-page="profile">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
