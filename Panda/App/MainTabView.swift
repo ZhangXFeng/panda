@@ -84,18 +84,10 @@ struct HomeView: View {
     }
 }
 
-/// 预算占位视图
+/// 预算视图
 struct BudgetView: View {
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Text("预算管理")
-                    .font(.titleLarge)
-                    .padding()
-            }
-            .navigationTitle("预算管理")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+        BudgetDashboardView()
     }
 }
 
