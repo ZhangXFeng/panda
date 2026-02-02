@@ -4,9 +4,24 @@ This file provides guidance for AI assistants working with the Panda repository.
 
 ## Project Overview
 
-Panda is a new project currently in its initial development phase. This document will be updated as the project structure evolves.
+**Panda 装修管家** is an iOS app for home renovation budget and progress management. It helps homeowners track expenses, manage project timelines, and organize renovation-related information.
 
 **Repository**: ZhangXFeng/panda
+
+**Key Documents**:
+- [Product Requirements (PRD)](./docs/PRD.md) - Detailed product specifications
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Platform | iOS 17+ |
+| Language | Swift 5.9+ |
+| UI Framework | SwiftUI |
+| Architecture | MVVM + Clean Architecture |
+| Local Storage | SwiftData |
+| Cloud Sync | CloudKit |
+| Charts | Swift Charts |
 
 ## Quick Start
 
@@ -15,24 +30,53 @@ Panda is a new project currently in its initial development phase. This document
 git clone <repository-url>
 cd panda
 
-# Install dependencies (update when package manager is chosen)
-# npm install  # for Node.js
-# pip install -r requirements.txt  # for Python
-# cargo build  # for Rust
+# Open in Xcode
+open Panda.xcodeproj
+# or
+open Panda.xcworkspace
+
+# Build and run
+# Use Xcode: Cmd + R
 ```
+
+### Requirements
+- macOS 14.0+
+- Xcode 15.0+
+- iOS 17.0+ (deployment target)
 
 ## Project Structure
 
 ```
-panda/
-├── CLAUDE.md          # This file - AI assistant guidance
-├── README.md          # Project documentation (to be created)
-├── src/               # Source code (to be created)
-├── tests/             # Test files (to be created)
-└── docs/              # Documentation (to be created)
+Panda/
+├── CLAUDE.md                 # AI assistant guidance
+├── docs/
+│   └── PRD.md               # Product requirements document
+├── Panda/
+│   ├── App/
+│   │   └── PandaApp.swift   # App entry point
+│   ├── Features/
+│   │   ├── Budget/          # 预算管理
+│   │   │   ├── Views/
+│   │   │   ├── ViewModels/
+│   │   │   └── Models/
+│   │   ├── Schedule/        # 进度管理
+│   │   ├── Materials/       # 材料管理
+│   │   ├── Documents/       # 合同文档
+│   │   ├── Contacts/        # 通讯录
+│   │   └── Journal/         # 装修日记
+│   ├── Core/
+│   │   ├── Database/        # SwiftData models
+│   │   ├── CloudSync/       # CloudKit integration
+│   │   └── Extensions/      # Swift extensions
+│   ├── Shared/
+│   │   ├── Components/      # Reusable UI components
+│   │   ├── Styles/          # Design system
+│   │   └── Utils/           # Utilities
+│   └── Resources/
+│       ├── Assets.xcassets/ # Images, colors
+│       └── Localization/    # zh-Hans, en
+└── PandaTests/              # Unit tests
 ```
-
-> **Note**: Update this structure as the project develops.
 
 ## Development Workflow
 
@@ -51,8 +95,6 @@ Use conventional commits:
 <type>(<scope>): <description>
 
 [optional body]
-
-[optional footer]
 ```
 
 Types:
@@ -63,101 +105,167 @@ Types:
 - `test`: Adding or updating tests
 - `chore`: Maintenance tasks
 
-### Pull Request Process
+Scopes: `budget`, `schedule`, `materials`, `documents`, `contacts`, `journal`, `core`, `ui`
 
-1. Create a feature branch from main
-2. Make changes and commit with clear messages
-3. Push to remote and create a pull request
-4. Ensure all checks pass before requesting review
+Examples:
+```
+feat(budget): add expense recording view
+fix(schedule): correct task completion status update
+refactor(core): migrate to SwiftData
+```
 
 ## Code Conventions
 
-### General Guidelines
+### Swift Style Guide
 
-1. **Readability**: Write clear, self-documenting code
-2. **Simplicity**: Prefer simple solutions over complex ones
-3. **Testing**: Write tests for new functionality
-4. **Documentation**: Document public APIs and complex logic
+1. **Naming**: Use descriptive names, follow Swift API Design Guidelines
+2. **SwiftUI Views**: One View per file, extract subviews for reusability
+3. **MVVM Pattern**: Views observe ViewModels, ViewModels handle logic
+4. **SwiftData**: Models in `Core/Database/`, use `@Model` macro
 
 ### File Organization
 
-- Keep files focused and single-purpose
-- Group related functionality together
-- Use consistent naming conventions across the project
+```swift
+// MARK: - View Example
+struct BudgetView: View {
+    @StateObject private var viewModel: BudgetViewModel
+
+    var body: some View {
+        // View implementation
+    }
+}
+
+// MARK: - Subviews
+private extension BudgetView {
+    var headerSection: some View { ... }
+    var expenseList: some View { ... }
+}
+
+// MARK: - Preview
+#Preview {
+    BudgetView()
+}
+```
+
+### Data Models
+
+```swift
+// Core/Database/Expense.swift
+import SwiftData
+
+@Model
+final class Expense {
+    var amount: Decimal
+    var category: ExpenseCategory
+    var note: String
+    var date: Date
+    var photos: [Data]
+
+    init(amount: Decimal, category: ExpenseCategory, note: String = "") {
+        self.amount = amount
+        self.category = category
+        self.note = note
+        self.date = Date()
+        self.photos = []
+    }
+}
+```
 
 ## AI Assistant Guidelines
 
-When working with this repository:
-
 ### Do
 
-- Read and understand existing code before making changes
-- Follow established patterns and conventions
-- Write tests for new functionality
-- Keep changes focused and minimal
-- Use clear, descriptive commit messages
+- Follow SwiftUI and Swift best practices
+- Use SwiftData for persistence (not Core Data directly)
+- Keep Views declarative and logic in ViewModels
+- Use Swift's native types (Decimal for money, Date for times)
+- Localize user-facing strings (Chinese primary, English secondary)
+- Write unit tests for ViewModels and business logic
+- Use SF Symbols for icons when possible
 
 ### Don't
 
-- Make changes without understanding context
-- Over-engineer solutions
-- Add unnecessary dependencies
-- Skip tests for new features
-- Commit sensitive information (API keys, credentials)
+- Use UIKit unless absolutely necessary
+- Store sensitive data without encryption
+- Add third-party dependencies without discussion
+- Skip accessibility support
+- Hardcode strings (use Localizable.strings)
+- Create massive view files (extract subviews)
+
+### Feature Implementation Pattern
+
+1. **Model**: Create/update SwiftData model in `Core/Database/`
+2. **ViewModel**: Business logic in `Features/<Feature>/ViewModels/`
+3. **View**: UI in `Features/<Feature>/Views/`
+4. **Tests**: Unit tests in `PandaTests/`
 
 ### Common Tasks
 
-1. **Adding a feature**: Create in `src/`, add tests in `tests/`
-2. **Fixing a bug**: Understand root cause, fix, and add regression test
-3. **Refactoring**: Ensure tests pass before and after changes
-4. **Documentation**: Update relevant docs alongside code changes
+| Task | Location |
+|------|----------|
+| Add new expense category | `Core/Database/ExpenseCategory.swift` |
+| Create new screen | `Features/<Feature>/Views/` |
+| Add reusable component | `Shared/Components/` |
+| Define colors/fonts | `Shared/Styles/` |
+| Add localization | `Resources/Localization/` |
 
 ## Testing
 
 ```bash
-# Run all tests (update with actual test command)
-# npm test
-# pytest
-# cargo test
+# Run tests via Xcode
+# Cmd + U
+
+# Or via command line
+xcodebuild test -scheme Panda -destination 'platform=iOS Simulator,name=iPhone 15'
 ```
 
-### Test Coverage
+### Test Structure
+- Unit tests for ViewModels
+- UI tests for critical user flows
+- Snapshot tests for UI consistency (optional)
 
-- Aim for meaningful test coverage
-- Focus on critical paths and edge cases
-- Integration tests for key workflows
+## Localization
 
-## Environment Setup
+Primary: Simplified Chinese (zh-Hans)
+Secondary: English (en)
 
-### Required Tools
+```swift
+// Usage
+Text("budget_title", comment: "Budget screen title")
 
-- Git
-- (Add language-specific tools as project develops)
+// Localizable.strings (zh-Hans)
+"budget_title" = "预算管理";
 
-### Environment Variables
-
-Document any required environment variables here:
-
-```bash
-# Example:
-# export PANDA_ENV=development
-# export PANDA_DEBUG=true
+// Localizable.strings (en)
+"budget_title" = "Budget";
 ```
 
-## Troubleshooting
+## Design System
 
-### Common Issues
+### Colors (defined in Assets.xcassets)
+- `AccentColor`: Primary brand color (warm wood tone)
+- `SuccessColor`: Completion/progress (green)
+- `WarningColor`: Alerts/over-budget (orange)
+- `BackgroundPrimary`: Main background
+- `BackgroundSecondary`: Card backgrounds
 
-1. **Build failures**: Ensure all dependencies are installed
-2. **Test failures**: Check for environment-specific issues
-3. **Merge conflicts**: Rebase on latest main branch
+### Typography
+Use system fonts with Dynamic Type support:
+```swift
+.font(.title)      // Screen titles
+.font(.headline)   // Section headers
+.font(.body)       // Content
+.font(.caption)    // Secondary info
+```
 
 ## Resources
 
-- [Project Documentation](./docs/) (to be created)
-- [Contributing Guidelines](./CONTRIBUTING.md) (to be created)
+- [Product Requirements](./docs/PRD.md)
+- [Apple HIG](https://developer.apple.com/design/human-interface-guidelines/)
+- [SwiftUI Docs](https://developer.apple.com/documentation/swiftui/)
+- [SwiftData Docs](https://developer.apple.com/documentation/swiftdata/)
+- [CloudKit Docs](https://developer.apple.com/documentation/cloudkit/)
 
 ---
 
 *Last updated: 2026-02-02*
-*This document should be updated as the project evolves.*
