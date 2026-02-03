@@ -9,8 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct ProfileDashboardView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(ProjectManager.self) private var projectManager
     @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+
+    @State private var showingGenerateDataAlert = false
+    @State private var showingDataGeneratedAlert = false
 
     /// 当前选中的项目
     private var currentProject: Project? {
@@ -120,6 +124,24 @@ struct ProfileDashboardView: View {
                     }
                 }
 
+                // 开发者选项
+                #if DEBUG
+                Section("开发者选项") {
+                    Button {
+                        showingGenerateDataAlert = true
+                    } label: {
+                        Label("生成测试数据", systemImage: "wand.and.stars")
+                    }
+
+                    Button(role: .destructive) {
+                        SampleDataGenerator.clearAllData(in: modelContext)
+                        projectManager.clearSelection()
+                    } label: {
+                        Label("清除所有数据", systemImage: "trash")
+                    }
+                }
+                #endif
+
                 // 版本信息
                 Section {
                     HStack {
@@ -138,6 +160,22 @@ struct ProfileDashboardView: View {
             }
             .navigationTitle("我的")
             .navigationBarTitleDisplayMode(.inline)
+            .alert("生成测试数据", isPresented: $showingGenerateDataAlert) {
+                Button("取消", role: .cancel) {}
+                Button("生成") {
+                    SampleDataGenerator.generateAllSampleData(in: modelContext)
+                    projectManager.clearSelection()
+                    projectManager.autoSelectIfNeeded(from: projects)
+                    showingDataGeneratedAlert = true
+                }
+            } message: {
+                Text("这将清除现有数据并创建 4 个测试项目，确定继续吗？")
+            }
+            .alert("测试数据已生成", isPresented: $showingDataGeneratedAlert) {
+                Button("好的") {}
+            } message: {
+                Text("已创建 4 个测试项目：\n• 我的家（进行中）\n• 爸妈的房子（刚开始）\n• 出租公寓（即将完工）\n• 新婚小窝（已完工）")
+            }
         }
     }
 }
