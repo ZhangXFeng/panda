@@ -70,7 +70,7 @@ struct ProfileDashboardView: View {
                     }
 
                     NavigationLink {
-                        Text("数据导出")
+                        DataExportView()
                     } label: {
                         Label("数据导出", systemImage: "square.and.arrow.up")
                     }
@@ -79,13 +79,13 @@ struct ProfileDashboardView: View {
                 // 项目管理
                 Section("项目管理") {
                     NavigationLink {
-                        Text("项目设置")
+                        ProjectSettingsView()
                     } label: {
                         Label("项目设置", systemImage: "gearshape")
                     }
 
                     NavigationLink {
-                        ProjectListView()
+                        ProjectListView(modelContext: modelContext)
                     } label: {
                         Label("切换项目", systemImage: "arrow.triangle.2.circlepath")
                     }
@@ -94,25 +94,25 @@ struct ProfileDashboardView: View {
                 // 应用设置
                 Section("应用设置") {
                     NavigationLink {
-                        Text("通用设置")
+                        GeneralSettingsView()
                     } label: {
                         Label("通用设置", systemImage: "slider.horizontal.3")
                     }
 
                     NavigationLink {
-                        Text("通知提醒")
+                        NotificationSettingsView()
                     } label: {
                         Label("通知提醒", systemImage: "bell")
                     }
 
                     NavigationLink {
-                        Text("隐私与安全")
+                        PrivacySecurityView()
                     } label: {
                         Label("隐私与安全", systemImage: "lock")
                     }
 
                     NavigationLink {
-                        Text("帮助与反馈")
+                        HelpFeedbackView()
                     } label: {
                         Label("帮助与反馈", systemImage: "questionmark.circle")
                     }

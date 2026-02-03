@@ -85,6 +85,49 @@ extension Color {
     }
 }
 
+// MARK: - Colors Enum (for consistency with Spacing/CornerRadius)
+
+enum Colors {
+    /// 主色调
+    static let primary = Color.primaryWood
+
+    /// 主色调 - 深色
+    static let primaryDark = Color.primaryDark
+
+    /// 成功色
+    static let success = Color.success
+
+    /// 警告色
+    static let warning = Color.warning
+
+    /// 错误色
+    static let error = Color.error
+
+    /// 信息色
+    static let info = Color.info
+
+    /// 主要文字颜色
+    static let textPrimary = Color.textPrimary
+
+    /// 次要文字颜色
+    static let textSecondary = Color.textSecondary
+
+    /// 提示文字颜色
+    static let textHint = Color.textHint
+
+    /// 分割线颜色
+    static let divider = Color.divider
+
+    /// 主背景色
+    static let backgroundPrimary = Color.bgPrimary
+
+    /// 次背景色
+    static let backgroundSecondary = Color.bgSecondary
+
+    /// 卡片背景色
+    static let backgroundCard = Color.bgCard
+}
+
 // MARK: - Preview
 
 #Preview("Colors") {
