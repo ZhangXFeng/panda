@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ScheduleOverviewView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(ProjectManager.self) private var projectManager
     @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
     @State private var selectedPhase: Phase?
@@ -36,6 +37,9 @@ struct ScheduleOverviewView: View {
             }
             .navigationTitle("装修进度")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(item: $selectedPhase) { phase in
+                PhaseDetailView(phase: phase, modelContext: modelContext)
+            }
         }
     }
 
@@ -87,6 +91,9 @@ struct ScheduleOverviewView: View {
 
             ForEach(project.phases.sorted(by: Phase.sortBySortOrder)) { phase in
                 PhaseCard(phase: phase)
+                    .onTapGesture {
+                        selectedPhase = phase
+                    }
             }
         }
     }
