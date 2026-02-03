@@ -9,12 +9,18 @@ import SwiftUI
 import SwiftData
 
 struct HomeDashboardView: View {
-    @Query private var projects: [Project]
+    @Environment(ProjectManager.self) private var projectManager
+    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+
+    /// 当前选中的项目
+    private var currentProject: Project? {
+        projectManager.currentProject(from: projects)
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                if let project = projects.first {
+                if let project = currentProject {
                     VStack(spacing: Spacing.md) {
                         // 项目信息卡片
                         projectInfoCard(project: project)
@@ -33,8 +39,14 @@ struct HomeDashboardView: View {
                     emptyState
                 }
             }
-            .navigationTitle("我的家")
-            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    ProjectSelectorView()
+                }
+            }
+        }
+        .onAppear {
+            projectManager.autoSelectIfNeeded(from: projects)
         }
     }
 

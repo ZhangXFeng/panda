@@ -9,13 +9,19 @@ import SwiftUI
 import SwiftData
 
 struct ScheduleOverviewView: View {
-    @Query private var projects: [Project]
+    @Environment(ProjectManager.self) private var projectManager
+    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
     @State private var selectedPhase: Phase?
+
+    /// 当前选中的项目
+    private var currentProject: Project? {
+        projectManager.currentProject(from: projects)
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                if let project = projects.first {
+                if let project = currentProject {
                     VStack(spacing: Spacing.md) {
                         // 整体进度
                         overallProgressCard(project: project)
