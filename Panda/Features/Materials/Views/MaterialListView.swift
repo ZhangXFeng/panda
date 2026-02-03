@@ -186,25 +186,6 @@ struct MaterialCard: View {
     }
 }
 
-// MARK: - Filter Chip
-
-struct FilterChip: View {
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.captionMedium)
-                .foregroundColor(isSelected ? .white : .textPrimary)
-                .padding(.horizontal, Spacing.md)
-                .padding(.vertical, Spacing.sm)
-                .background(isSelected ? Color.primaryWood : Color.bgCard)
-                .cornerRadius(CornerRadius.lg)
-        }
-    }
-}
 
 #Preview {
     MaterialListView()

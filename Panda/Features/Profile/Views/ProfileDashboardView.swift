@@ -58,7 +58,7 @@ struct ProfileDashboardView: View {
                     }
 
                     NavigationLink {
-                        Text("通讯录")
+                        ContactListView(modelContext: modelContext)
                     } label: {
                         Label("通讯录", systemImage: "person.crop.circle")
                     }
