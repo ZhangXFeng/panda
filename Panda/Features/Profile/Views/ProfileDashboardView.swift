@@ -52,7 +52,7 @@ struct ProfileDashboardView: View {
                 // 常用功能
                 Section("常用功能") {
                     NavigationLink {
-                        Text("合同文档")
+                        DocumentListView(modelContext: modelContext)
                     } label: {
                         Label("合同文档", systemImage: "doc.text")
                     }
