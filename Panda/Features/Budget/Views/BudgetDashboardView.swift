@@ -10,9 +10,15 @@ import SwiftData
 
 struct BudgetDashboardView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var projects: [Project]
+    @Environment(ProjectManager.self) private var projectManager
+    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
     @State private var viewModel: BudgetDashboardViewModel?
     @State private var showingAddExpense = false
+
+    /// 当前选中的项目
+    private var currentProject: Project? {
+        projectManager.currentProject(from: projects)
+    }
 
     var body: some View {
         NavigationStack {
@@ -155,7 +161,7 @@ struct BudgetDashboardView: View {
             viewModel = BudgetDashboardViewModel(modelContext: modelContext)
         }
 
-        if let project = projects.first {
+        if let project = currentProject {
             await viewModel?.loadBudget(for: project)
         }
     }

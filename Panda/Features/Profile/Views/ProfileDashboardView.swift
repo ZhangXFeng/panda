@@ -9,13 +9,19 @@ import SwiftUI
 import SwiftData
 
 struct ProfileDashboardView: View {
-    @Query private var projects: [Project]
+    @Environment(ProjectManager.self) private var projectManager
+    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+
+    /// 当前选中的项目
+    private var currentProject: Project? {
+        projectManager.currentProject(from: projects)
+    }
 
     var body: some View {
         NavigationStack {
             List {
                 // 项目信息
-                if let project = projects.first {
+                if let project = currentProject {
                     Section {
                         HStack(spacing: Spacing.md) {
                             Image(systemName: "house.circle.fill")
@@ -75,7 +81,7 @@ struct ProfileDashboardView: View {
                     }
 
                     NavigationLink {
-                        Text("切换项目")
+                        ProjectListView()
                     } label: {
                         Label("切换项目", systemImage: "arrow.triangle.2.circlepath")
                     }
