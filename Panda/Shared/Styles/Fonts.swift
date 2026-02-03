@@ -53,6 +53,49 @@ extension Font {
     static let numberSmall = Font.system(size: 18, weight: .medium, design: .rounded)
 }
 
+// MARK: - Fonts Enum (for consistency with Colors/Spacing)
+
+enum Fonts {
+    /// 大标题
+    static let titleLarge = Font.titleLarge
+
+    /// 中标题
+    static let titleMedium = Font.titleMedium
+
+    /// 小标题
+    static let titleSmall = Font.titleSmall
+
+    /// 正文
+    static let body = Font.bodyRegular
+
+    /// 正文加粗
+    static let bodyMedium = Font.bodyMedium
+
+    /// 说明文字
+    static let caption = Font.captionRegular
+
+    /// 说明文字加粗
+    static let captionMedium = Font.captionMedium
+
+    /// 小文字
+    static let small = Font.smallRegular
+
+    /// 小文字加粗
+    static let smallMedium = Font.smallMedium
+
+    /// 大数字
+    static let numberLarge = Font.numberLarge
+
+    /// 中数字
+    static let numberMedium = Font.numberMedium
+
+    /// 小数字
+    static let numberSmall = Font.numberSmall
+
+    /// 标题样式（等同于 titleSmall）
+    static let headline = Font.titleSmall
+}
+
 // MARK: - Text Modifiers
 
 extension Text {
