@@ -262,5 +262,6 @@ struct AboutView: View {
 
 #Preview {
     ProfileDashboardView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self], inMemory: true)
 }

@@ -208,5 +208,6 @@ struct FilterChip: View {
 
 #Preview {
     MaterialListView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self, Material.self], inMemory: true)
 }

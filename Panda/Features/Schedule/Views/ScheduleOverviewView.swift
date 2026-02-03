@@ -196,5 +196,6 @@ struct PhaseCard: View {
 
 #Preview {
     ScheduleOverviewView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self, Phase.self], inMemory: true)
 }
