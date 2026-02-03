@@ -64,7 +64,7 @@ struct ProfileDashboardView: View {
                     }
 
                     NavigationLink {
-                        Text("装修日记")
+                        JournalListView(modelContext: modelContext)
                     } label: {
                         Label("装修日记", systemImage: "photo")
                     }
