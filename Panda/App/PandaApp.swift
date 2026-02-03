@@ -15,6 +15,9 @@ struct PandaApp: App {
     /// SwiftData 模型容器
     let modelContainer: ModelContainer
 
+    /// 项目管理器 - 管理当前选中的项目
+    @State private var projectManager = ProjectManager()
+
     // MARK: - Initialization
 
     init() {
@@ -54,6 +57,7 @@ struct PandaApp: App {
         WindowGroup {
             MainTabView()
                 .modelContainer(modelContainer)
+                .environment(projectManager)
         }
     }
 }

@@ -2,140 +2,316 @@
 //  ContactListView.swift
 //  Panda
 //
-//  Created on 2026-02-02.
+//  Created on 2026-02-03.
 //
 
 import SwiftUI
 import SwiftData
 
 struct ContactListView: View {
-    @Query private var projects: [Project]
-    @State private var searchText = ""
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var viewModel: ContactListViewModel
+    @State private var showingAddContact = false
+    @State private var selectedContact: Contact?
+
+    init(modelContext: ModelContext) {
+        _viewModel = StateObject(wrappedValue: ContactListViewModel(modelContext: modelContext))
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                if let project = projects.first {
-                    VStack(spacing: Spacing.md) {
-                        // 联系人列表
-                        contactsSection(project: project)
-                    }
-                    .padding()
-                } else {
+            VStack(spacing: 0) {
+                // Search bar
+                searchBar
+
+                // Role filter chips
+                if !viewModel.searchText.isEmpty || viewModel.selectedRole != nil {
+                    filterSection
+                }
+
+                // Contact list
+                if viewModel.filteredContacts.isEmpty {
                     emptyState
+                } else {
+                    contactList
                 }
             }
             .navigationTitle("通讯录")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "搜索联系人")
-        }
-    }
-
-    // MARK: - Components
-
-    private func contactsSection(project: Project) -> some View {
-        VStack(spacing: Spacing.md) {
-            let contacts = filteredContacts(project: project)
-
-            if contacts.isEmpty {
-                Text("暂无联系人")
-                    .font(.bodyRegular)
-                    .foregroundColor(.textSecondary)
-                    .padding()
-            } else {
-                ForEach(contacts) { contact in
-                    ContactCard(contact: contact)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingAddContact = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
+            }
+            .sheet(isPresented: $showingAddContact) {
+                AddContactView(modelContext: modelContext)
+                    .onDisappear {
+                        viewModel.loadContacts()
+                    }
+            }
+            .sheet(item: $selectedContact) { contact in
+                ContactDetailView(contact: contact, modelContext: modelContext)
+                    .onDisappear {
+                        viewModel.loadContacts()
+                    }
+            }
+            .onAppear {
+                viewModel.loadContacts()
             }
         }
     }
+
+    // MARK: - Search Bar
+
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+
+            TextField("搜索姓名、公司或电话", text: $viewModel.searchText)
+                .textFieldStyle(.plain)
+
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(.horizontal, Spacing.md)
+        .padding(.vertical, Spacing.sm)
+        .background(Colors.backgroundSecondary)
+        .cornerRadius(CornerRadius.md)
+        .padding(.horizontal, Spacing.md)
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Filter Section
+
+    private var filterSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Spacing.sm) {
+                // All button
+                FilterChip(
+                    title: "全部",
+                    isSelected: viewModel.selectedRole == nil
+                ) {
+                    viewModel.selectedRole = nil
+                }
+
+                // Role filters
+                ForEach(ContactRole.allCases) { role in
+                    FilterChip(
+                        title: role.displayName,
+                        isSelected: viewModel.selectedRole == role
+                    ) {
+                        viewModel.selectedRole = role
+                    }
+                }
+            }
+            .padding(.horizontal, Spacing.md)
+        }
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Contact List
+
+    private var contactList: some View {
+        List {
+            // Recommended section
+            if !viewModel.recommendedContacts.isEmpty && viewModel.selectedRole == nil {
+                Section {
+                    ForEach(viewModel.recommendedContacts) { contact in
+                        ContactRow(contact: contact, viewModel: viewModel)
+                            .onTapGesture {
+                                selectedContact = contact
+                            }
+                    }
+                } header: {
+                    HStack {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                            .font(.caption)
+                        Text("推荐")
+                            .font(.headline)
+                    }
+                }
+            }
+
+            // Grouped by role
+            ForEach(viewModel.groupedContacts, id: \.role) { group in
+                Section {
+                    ForEach(group.contacts) { contact in
+                        ContactRow(contact: contact, viewModel: viewModel)
+                            .onTapGesture {
+                                selectedContact = contact
+                            }
+                    }
+                    .onDelete { offsets in
+                        viewModel.deleteContacts(at: offsets, from: group.contacts)
+                    }
+                } header: {
+                    HStack {
+                        Image(systemName: group.role.iconName)
+                            .foregroundColor(Colors.primary)
+                            .font(.caption)
+                        Text(group.role.displayName)
+                            .font(.headline)
+                    }
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+    }
+
+    // MARK: - Empty State
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
-            Image(systemName: "person.crop.circle")
-                .font(.system(size: 64))
-                .foregroundColor(.textHint)
-            Text("暂无联系人")
-                .font(.titleSmall)
-                .foregroundColor(.textSecondary)
-        }
-    }
+            Image(systemName: "person.2.slash")
+                .font(.system(size: 60))
+                .foregroundColor(.secondary)
 
-    // MARK: - Helpers
+            Text(viewModel.searchText.isEmpty ? "还没有联系人" : "未找到匹配的联系人")
+                .font(.headline)
+                .foregroundColor(.secondary)
 
-    private func filteredContacts(project: Project) -> [Contact] {
-        if searchText.isEmpty {
-            return project.contacts
+            if viewModel.searchText.isEmpty {
+                Text("点击右上角 + 添加联系人")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
         }
-        return project.contacts.filter {
-            $0.name.localizedCaseInsensitiveContains(searchText) ||
-            $0.company.localizedCaseInsensitiveContains(searchText)
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
 }
 
-// MARK: - Contact Card
+// MARK: - Contact Row
 
-struct ContactCard: View {
+private struct ContactRow: View {
     let contact: Contact
+    let viewModel: ContactListViewModel
 
     var body: some View {
-        CardView {
-            HStack(spacing: Spacing.md) {
-                // 头像
+        HStack(spacing: Spacing.md) {
+            // Role icon
+            ZStack {
                 Circle()
-                    .fill(Color.primaryWood.opacity(0.2))
-                    .frame(width: 50, height: 50)
-                    .overlay(
-                        Text(String(contact.name.prefix(1)))
-                            .font(.titleSmall)
-                            .foregroundColor(.primaryWood)
-                    )
+                    .fill(Colors.primary.opacity(0.1))
+                    .frame(width: 44, height: 44)
 
-                // 信息
-                VStack(alignment: .leading, spacing: Spacing.xs) {
+                Image(systemName: contact.role.iconName)
+                    .foregroundColor(Colors.primary)
+                    .font(.system(size: 20))
+            }
+
+            // Contact info
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
                     Text(contact.name)
-                        .font(.bodyMedium)
+                        .font(.headline)
 
+                    if contact.isRecommended {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                            .font(.caption)
+                    }
+                }
+
+                HStack(spacing: Spacing.sm) {
                     if !contact.company.isEmpty {
                         Text(contact.company)
-                            .font(.captionRegular)
-                            .foregroundColor(.textSecondary)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
 
-                    HStack(spacing: Spacing.md) {
-                        if !contact.phoneNumber.isEmpty {
-                            HStack(spacing: Spacing.xs) {
-                                Image(systemName: "phone.fill")
-                                    .font(.caption)
-                                Text(contact.phoneNumber)
-                                    .font(.captionRegular)
+                    if contact.rating > 0 {
+                        HStack(spacing: 2) {
+                            ForEach(0..<contact.rating, id: \.self) { _ in
+                                Image(systemName: "star.fill")
+                                    .font(.caption2)
+                                    .foregroundColor(.yellow)
                             }
-                            .foregroundColor(.info)
                         }
                     }
                 }
 
-                Spacer()
+                Text(contact.phoneNumber)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
 
-                // 快捷操作
-                if !contact.phoneNumber.isEmpty {
-                    Button(action: {
-                        if let url = URL(string: "tel://\(contact.phoneNumber)") {
-                            UIApplication.shared.open(url)
-                        }
-                    }) {
-                        Image(systemName: "phone.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundColor(.success)
+            Spacer()
+
+            // Quick actions
+            HStack(spacing: Spacing.sm) {
+                // Phone button
+                Button {
+                    viewModel.makePhoneCall(contact.phoneNumber)
+                } label: {
+                    Image(systemName: "phone.fill")
+                        .foregroundColor(.white)
+                        .font(.system(size: 14))
+                        .frame(width: 32, height: 32)
+                        .background(Colors.success)
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+
+                // WeChat button (if available)
+                if !contact.wechatID.isEmpty {
+                    Button {
+                        viewModel.openWechat(contact.wechatID)
+                    } label: {
+                        Image(systemName: "message.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 14))
+                            .frame(width: 32, height: 32)
+                            .background(Color.green)
+                            .clipShape(Circle())
                     }
+                    .buttonStyle(.plain)
                 }
             }
         }
+        .padding(.vertical, Spacing.xs)
     }
 }
 
+// MARK: - Preview
+
 #Preview {
-    ContactListView()
-        .modelContainer(for: [Project.self, Contact.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: config)
+    let context = container.mainContext
+
+    // Create sample project
+    let project = Project(
+        name: "我的新家",
+        houseType: "三室两厅",
+        area: 120.0
+    )
+    context.insert(project)
+
+    // Create sample contacts
+    let contacts = [
+        Contact(name: "张工长", role: .foreman, phoneNumber: "13800138001", company: "专业装修队", rating: 5, isRecommended: true),
+        Contact(name: "李设计师", role: .designer, phoneNumber: "13800138002", company: "品牌设计公司", rating: 5),
+        Contact(name: "王电工", role: .electrician, phoneNumber: "13800138003", rating: 4),
+        Contact(name: "陈材料商", role: .vendor, phoneNumber: "13800138004", company: "建材市场", wechatID: "chencailiao")
+    ]
+
+    for contact in contacts {
+        contact.project = project
+        context.insert(contact)
+    }
+
+    return ContactListView(modelContext: context)
 }

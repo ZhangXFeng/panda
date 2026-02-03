@@ -9,13 +9,18 @@ import SwiftUI
 import SwiftData
 
 struct HomeDashboardView: View {
-    @Query private var projects: [Project]
-    @State private var showingCreateProject = false
+    @Environment(ProjectManager.self) private var projectManager
+    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+
+    /// 当前选中的项目
+    private var currentProject: Project? {
+        projectManager.currentProject(from: projects)
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                if let project = projects.first {
+                if let project = currentProject {
                     VStack(spacing: Spacing.md) {
                         // 项目信息卡片
                         projectInfoCard(project: project)
@@ -34,19 +39,14 @@ struct HomeDashboardView: View {
                     emptyState
                 }
             }
-            .navigationTitle("我的家")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    showingCreateProject = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.primaryWood)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    ProjectSelectorView()
                 }
-            )
-            .sheet(isPresented: $showingCreateProject) {
-                CreateProjectView()
             }
+        }
+        .onAppear {
+            projectManager.autoSelectIfNeeded(from: projects)
         }
     }
 
@@ -208,42 +208,15 @@ struct HomeDashboardView: View {
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
-            Spacer()
-
             Image(systemName: "house")
                 .font(.system(size: 64))
                 .foregroundColor(.textHint)
-
             Text("欢迎使用 Panda 装修管家")
-                .font(.titleMedium)
-                .foregroundColor(.textPrimary)
-
-            Text("记录装修的每一分支出\n追踪装修的每一个进度")
-                .font(.bodyRegular)
+                .font(.titleSmall)
                 .foregroundColor(.textSecondary)
-                .multilineTextAlignment(.center)
-
-            Button(action: {
-                showingCreateProject = true
-            }) {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("创建项目")
-                }
-                .font(.bodyMedium)
-                .foregroundColor(.white)
-                .padding(.horizontal, Spacing.xl)
-                .padding(.vertical, Spacing.md)
-                .background(Color.primaryWood)
-                .cornerRadius(CornerRadius.lg)
-            }
-            .padding(.top, Spacing.md)
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(isPresented: $showingCreateProject) {
-            CreateProjectView()
+            Text("请先创建装修项目")
+                .font(.bodyRegular)
+                .foregroundColor(.textHint)
         }
     }
 
@@ -293,5 +266,6 @@ struct QuickActionButton: View {
 
 #Preview {
     HomeDashboardView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self, Budget.self, Phase.self], inMemory: true)
 }

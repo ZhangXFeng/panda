@@ -1,5 +1,5 @@
 //
-//  AddMaterialView.swift
+//  AddTaskView.swift
 //  Panda
 //
 //  Created on 2026-02-03.
@@ -9,12 +9,16 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct AddMaterialView: View {
+struct AddTaskView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: AddMaterialViewModel
+    @StateObject private var viewModel: AddTaskViewModel
 
-    init(modelContext: ModelContext, material: Material? = nil) {
-        _viewModel = StateObject(wrappedValue: AddMaterialViewModel(modelContext: modelContext, material: material))
+    init(modelContext: ModelContext, task: Task? = nil, phase: Phase? = nil) {
+        _viewModel = StateObject(wrappedValue: AddTaskViewModel(
+            modelContext: modelContext,
+            task: task,
+            phase: phase
+        ))
     }
 
     var body: some View {
@@ -22,17 +26,11 @@ struct AddMaterialView: View {
             Form {
                 // Basic info
                 Section("基本信息") {
-                    TextField("材料名称", text: $viewModel.name)
-                        .autocorrectionDisabled()
-
-                    TextField("品牌（可选）", text: $viewModel.brand)
-                        .autocorrectionDisabled()
-
-                    TextField("规格型号（可选）", text: $viewModel.specification)
+                    TextField("任务标题", text: $viewModel.title)
                         .autocorrectionDisabled()
 
                     Picker("状态", selection: $viewModel.status) {
-                        ForEach(MaterialStatus.allCases) { status in
+                        ForEach(TaskStatus.allCases) { status in
                             HStack {
                                 Image(systemName: status.iconName)
                                 Text(status.displayName)
@@ -42,49 +40,25 @@ struct AddMaterialView: View {
                     }
                 }
 
-                // Price and quantity
-                Section {
-                    HStack {
-                        TextField("单价", text: $viewModel.unitPrice)
-                            .keyboardType(.decimalPad)
-
-                        Picker("单位", selection: $viewModel.unit) {
-                            ForEach(AddMaterialViewModel.commonUnits, id: \.self) { unit in
-                                Text(unit).tag(unit)
-                            }
-                        }
-                        .labelsHidden()
-                    }
-
-                    TextField("数量", text: $viewModel.quantity)
-                        .keyboardType(.decimalPad)
-
-                    if viewModel.totalPrice > 0 {
-                        HStack {
-                            Text("总价")
-                                .foregroundColor(.secondary)
-
-                            Spacer()
-
-                            Text(viewModel.formattedTotalPrice)
-                                .font(.headline)
-                                .foregroundColor(Colors.primary)
-                        }
-                    }
-                } header: {
-                    Text("价格与数量")
-                } footer: {
-                    Text("单价、数量为必填项")
+                // Description
+                Section("任务描述") {
+                    TextEditor(text: $viewModel.taskDescription)
+                        .frame(minHeight: 100)
                 }
 
-                // Location
-                Section("使用位置") {
-                    Picker("位置", selection: $viewModel.location) {
-                        Text("选择位置").tag("")
-                        ForEach(AddMaterialViewModel.commonLocations, id: \.self) { location in
-                            Text(location).tag(location)
-                        }
-                    }
+                // Schedule
+                Section("时间安排") {
+                    DatePicker("计划开始", selection: $viewModel.plannedStartDate, displayedComponents: .date)
+                    DatePicker("计划结束", selection: $viewModel.plannedEndDate, displayedComponents: .date)
+                }
+
+                // Assignee
+                Section("负责人") {
+                    TextField("姓名", text: $viewModel.assignee)
+                        .autocorrectionDisabled()
+                    TextField("联系方式（可选）", text: $viewModel.assigneeContact)
+                        .keyboardType(.phonePad)
+                        .autocorrectionDisabled()
                 }
 
                 // Photos
@@ -117,16 +91,34 @@ struct AddMaterialView: View {
                 } header: {
                     Text("照片")
                 } footer: {
-                    Text("材料照片、样品照片等")
+                    Text("施工照片、验收照片等")
                 }
 
-                // Notes
-                Section("备注") {
-                    TextEditor(text: $viewModel.notes)
-                        .frame(minHeight: 80)
+                // Quick actions (edit mode only)
+                if viewModel.isEditMode {
+                    Section("快捷操作") {
+                        Button {
+                            viewModel.markAsInProgress()
+                        } label: {
+                            Label("标记为进行中", systemImage: "play.circle")
+                        }
+
+                        Button {
+                            viewModel.markAsCompleted()
+                        } label: {
+                            Label("标记为已完成", systemImage: "checkmark.circle")
+                        }
+
+                        Button {
+                            viewModel.markAsIssue()
+                        } label: {
+                            Label("标记为有问题", systemImage: "exclamationmark.triangle")
+                                .foregroundColor(Colors.warning)
+                        }
+                    }
                 }
             }
-            .navigationTitle(viewModel.title)
+            .navigationTitle(viewModel.title_)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -186,38 +178,56 @@ struct AddMaterialView: View {
 
 // MARK: - Preview
 
-#Preview("Add Material") {
+#Preview("Add Task") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
+    let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
     let context = container.mainContext
 
     let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
     context.insert(project)
-    ProjectManager.shared.currentProject = project
 
-    return AddMaterialView(modelContext: context)
+    let phase = Phase(
+        name: "水电改造",
+        type: .plumbing,
+        sortOrder: 1,
+        plannedStartDate: Date(),
+        plannedEndDate: Date().addingTimeInterval(86400 * 15)
+    )
+    phase.project = project
+    context.insert(phase)
+
+    return AddTaskView(modelContext: context, phase: phase)
 }
 
-#Preview("Edit Material") {
+#Preview("Edit Task") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
+    let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
     let context = container.mainContext
 
     let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
     context.insert(project)
 
-    let material = Material(
-        name: "马可波罗瓷砖",
-        brand: "马可波罗",
-        specification: "800x800mm",
-        unitPrice: 89.90,
-        quantity: 120,
-        unit: "块",
-        status: .ordered,
-        location: "客厅"
+    let phase = Phase(
+        name: "水电改造",
+        type: .plumbing,
+        sortOrder: 1,
+        plannedStartDate: Date(),
+        plannedEndDate: Date().addingTimeInterval(86400 * 15)
     )
-    material.project = project
-    context.insert(material)
+    phase.project = project
+    context.insert(phase)
 
-    return AddMaterialView(modelContext: context, material: material)
+    let task = Task(
+        title: "水管布线",
+        taskDescription: "冷热水管布线，确保间距符合规范",
+        status: .inProgress,
+        assignee: "张师傅",
+        assigneeContact: "13800138000",
+        plannedStartDate: Date(),
+        plannedEndDate: Date().addingTimeInterval(86400 * 3)
+    )
+    task.phase = phase
+    context.insert(task)
+
+    return AddTaskView(modelContext: context, task: task)
 }

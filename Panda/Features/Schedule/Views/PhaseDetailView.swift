@@ -1,0 +1,313 @@
+//
+//  PhaseDetailView.swift
+//  Panda
+//
+//  Created on 2026-02-03.
+//
+
+import SwiftUI
+import SwiftData
+
+struct PhaseDetailView: View {
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var viewModel: PhaseDetailViewModel
+    @State private var showingAddTask = false
+    @State private var selectedTask: Task?
+
+    let phase: Phase
+
+    init(phase: Phase, modelContext: ModelContext) {
+        self.phase = phase
+        _viewModel = StateObject(wrappedValue: PhaseDetailViewModel(phase: phase, modelContext: modelContext))
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Search bar (if has tasks)
+                if !viewModel.tasks.isEmpty {
+                    searchBar
+                }
+
+                // Status filter (if has tasks)
+                if !viewModel.tasks.isEmpty && (viewModel.selectedStatus != nil || !viewModel.searchText.isEmpty) {
+                    statusFilterSection
+                }
+
+                // Task list
+                if viewModel.filteredTasks.isEmpty {
+                    emptyState
+                } else {
+                    taskList
+                }
+            }
+            .navigationTitle(phase.name)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingAddTask = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .safeAreaInset(edge: .top) {
+                phaseProgressCard
+                    .padding(.horizontal, Spacing.md)
+                    .padding(.top, Spacing.sm)
+            }
+            .sheet(isPresented: $showingAddTask) {
+                AddTaskView(modelContext: modelContext, phase: phase)
+                    .onDisappear {
+                        viewModel.loadTasks()
+                    }
+            }
+            .sheet(item: $selectedTask) { task in
+                TaskDetailView(task: task)
+                    .onDisappear {
+                        viewModel.loadTasks()
+                    }
+            }
+            .onAppear {
+                viewModel.loadTasks()
+            }
+        }
+    }
+
+    // MARK: - Phase Progress Card
+
+    private var phaseProgressCard: some View {
+        CardView {
+            VStack(spacing: Spacing.md) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("任务进度")
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
+
+                        Text("\(viewModel.completedTasks.count)/\(viewModel.tasks.count) 已完成")
+                            .font(Fonts.headline)
+                            .foregroundColor(Colors.primary)
+                    }
+
+                    Spacer()
+
+                    Text("\(Int(viewModel.taskProgress * 100))%")
+                        .font(Fonts.numberMedium)
+                        .foregroundColor(Colors.primary)
+                }
+
+                ProgressBar(value: viewModel.taskProgress)
+
+                if !viewModel.overdueTasks.isEmpty {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(Colors.warning)
+                        Text("\(viewModel.overdueTasks.count) 个任务逾期")
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.warning)
+                        Spacer()
+                    }
+                }
+            }
+            .padding(Spacing.md)
+        }
+        .background(Colors.backgroundPrimary)
+    }
+
+    // MARK: - Search Bar
+
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+
+            TextField("搜索任务", text: $viewModel.searchText)
+                .textFieldStyle(.plain)
+
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(.horizontal, Spacing.md)
+        .padding(.vertical, Spacing.sm)
+        .background(Colors.backgroundSecondary)
+        .cornerRadius(CornerRadius.md)
+        .padding(.horizontal, Spacing.md)
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Status Filter Section
+
+    private var statusFilterSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Spacing.sm) {
+                // All button
+                FilterChip(
+                    title: "全部",
+                    isSelected: viewModel.selectedStatus == nil
+                ) {
+                    viewModel.selectedStatus = nil
+                }
+
+                // Status filters
+                ForEach(TaskStatus.allCases) { status in
+                    FilterChip(
+                        title: status.displayName,
+                        isSelected: viewModel.selectedStatus == status
+                    ) {
+                        viewModel.selectedStatus = status
+                    }
+                }
+            }
+            .padding(.horizontal, Spacing.md)
+        }
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Task List
+
+    private var taskList: some View {
+        List {
+            ForEach(viewModel.filteredTasks) { task in
+                TaskRow(task: task, viewModel: viewModel)
+                    .onTapGesture {
+                        selectedTask = task
+                    }
+            }
+            .onDelete { offsets in
+                viewModel.deleteTasks(at: offsets, from: viewModel.filteredTasks)
+            }
+        }
+        .listStyle(.insetGrouped)
+    }
+
+    // MARK: - Empty State
+
+    private var emptyState: some View {
+        VStack(spacing: Spacing.lg) {
+            Image(systemName: "checklist")
+                .font(.system(size: 60))
+                .foregroundColor(.secondary)
+
+            Text(viewModel.searchText.isEmpty ? "还没有任务" : "未找到匹配的任务")
+                .font(.headline)
+                .foregroundColor(.secondary)
+
+            if viewModel.searchText.isEmpty {
+                Text("点击右上角 + 添加任务")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+}
+
+// MARK: - Task Row
+
+private struct TaskRow: View {
+    let task: Task
+    let viewModel: PhaseDetailViewModel
+
+    var body: some View {
+        HStack(spacing: Spacing.md) {
+            // Status icon
+            ZStack {
+                Circle()
+                    .fill(task.status.color.opacity(0.1))
+                    .frame(width: 40, height: 40)
+
+                Image(systemName: task.status.iconName)
+                    .foregroundColor(task.status.color)
+                    .font(.system(size: 18))
+            }
+
+            // Task info
+            VStack(alignment: .leading, spacing: 4) {
+                Text(task.title)
+                    .font(Fonts.headline)
+                    .lineLimit(2)
+
+                HStack {
+                    if !task.assignee.isEmpty {
+                        Label(task.assignee, systemImage: "person")
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
+                    }
+
+                    if task.hasPhotos {
+                        Label("\(task.photoCount)", systemImage: "photo")
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
+                    }
+                }
+
+                if let dateRange = task.formattedDateRange {
+                    Text(dateRange)
+                        .font(Fonts.caption)
+                        .foregroundColor(task.isOverdue ? Colors.error : Colors.textSecondary)
+                }
+            }
+
+            Spacer()
+
+            // Quick action button
+            Button {
+                viewModel.toggleTaskStatus(task)
+            } label: {
+                Image(systemName: task.isCompleted ? "arrow.counterclockwise" : "checkmark")
+                    .font(.system(size: 18))
+                    .foregroundColor(.white)
+                    .frame(width: 32, height: 32)
+                    .background(task.isCompleted ? Colors.textSecondary : Colors.success)
+                    .clipShape(Circle())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.vertical, Spacing.xs)
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
+    let context = container.mainContext
+
+    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
+    context.insert(project)
+
+    let phase = Phase(
+        name: "水电改造",
+        type: .plumbing,
+        sortOrder: 1,
+        plannedStartDate: Date(),
+        plannedEndDate: Date().addingTimeInterval(86400 * 15)
+    )
+    phase.project = project
+    context.insert(phase)
+
+    // Create sample tasks
+    let tasks = [
+        Task(title: "水管布线", status: .completed, assignee: "张师傅"),
+        Task(title: "电线布线", status: .inProgress, assignee: "李师傅"),
+        Task(title: "开关插座定位", status: .pending, assignee: "王师傅"),
+        Task(title: "打压测试", status: .pending)
+    ]
+
+    for task in tasks {
+        task.phase = phase
+        context.insert(task)
+    }
+
+    return PhaseDetailView(phase: phase, modelContext: context)
+}
