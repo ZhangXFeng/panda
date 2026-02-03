@@ -2,193 +2,269 @@
 //  MaterialListView.swift
 //  Panda
 //
-//  Created on 2026-02-02.
+//  Enhanced on 2026-02-03.
 //
 
 import SwiftUI
 import SwiftData
 
 struct MaterialListView: View {
-    @Environment(ProjectManager.self) private var projectManager
-    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
-    @State private var selectedStatus: MaterialStatus?
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var viewModel: MaterialListViewModel
+    @State private var showingAddMaterial = false
+    @State private var showingCalculator = false
+    @State private var selectedMaterial: Material?
 
-    /// 当前选中的项目
-    private var currentProject: Project? {
-        projectManager.currentProject(from: projects)
+    init(modelContext: ModelContext) {
+        _viewModel = StateObject(wrappedValue: MaterialListViewModel(modelContext: modelContext))
     }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                if let project = currentProject {
-                    VStack(spacing: Spacing.md) {
-                        // 筛选器
-                        statusFilterSection()
+            VStack(spacing: 0) {
+                // Total cost banner
+                if !viewModel.materials.isEmpty {
+                    totalCostBanner
+                }
 
-                        // 材料列表
-                        materialsSection(project: project)
-                    }
-                    .padding()
-                } else {
+                // Status filter chips
+                statusFilterSection
+
+                // Material list
+                if viewModel.filteredMaterials.isEmpty {
                     emptyState
+                } else {
+                    materialList
                 }
             }
             .navigationTitle("材料管理")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button {
+                            showingAddMaterial = true
+                        } label: {
+                            Label("添加材料", systemImage: "plus")
+                        }
+
+                        Button {
+                            showingCalculator = true
+                        } label: {
+                            Label("材料计算器", systemImage: "function")
+                        }
+                    } label: {
+                        Image(systemName: "plus.circle")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddMaterial) {
+                AddMaterialView(modelContext: modelContext)
+                    .onDisappear {
+                        viewModel.loadMaterials()
+                    }
+            }
+            .sheet(isPresented: $showingCalculator) {
+                MaterialCalculatorView()
+            }
+            .sheet(item: $selectedMaterial) { material in
+                MaterialDetailView(material: material)
+                    .onDisappear {
+                        viewModel.loadMaterials()
+                    }
+            }
+            .onAppear {
+                viewModel.loadMaterials()
+            }
         }
     }
 
-    // MARK: - Components
+    // MARK: - Total Cost Banner
 
-    private func statusFilterSection() -> some View {
+    private var totalCostBanner: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("材料总成本")
+                    .font(Fonts.caption)
+                    .foregroundColor(Colors.textSecondary)
+
+                Text(viewModel.formatCurrency(viewModel.totalCost))
+                    .font(Fonts.titleMedium)
+                    .foregroundColor(Colors.primary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text("总计")
+                    .font(Fonts.caption)
+                    .foregroundColor(Colors.textSecondary)
+
+                Text("\(viewModel.materials.count) 项")
+                    .font(Fonts.headline)
+            }
+        }
+        .padding(Spacing.md)
+        .background(Colors.primary.opacity(0.1))
+    }
+
+    // MARK: - Status Filter Section
+
+    private var statusFilterSection: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Spacing.sm) {
-                FilterChip(title: "全部", isSelected: selectedStatus == nil) {
-                    selectedStatus = nil
+                FilterChip(
+                    title: "全部",
+                    isSelected: viewModel.selectedStatus == nil
+                ) {
+                    viewModel.selectedStatus = nil
                 }
 
                 ForEach(MaterialStatus.allCases) { status in
-                    FilterChip(title: status.displayName, isSelected: selectedStatus == status) {
-                        selectedStatus = status
+                    FilterChip(
+                        title: status.displayName,
+                        isSelected: viewModel.selectedStatus == status
+                    ) {
+                        viewModel.selectedStatus = status
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, Spacing.md)
         }
+        .padding(.vertical, Spacing.sm)
     }
 
-    private func materialsSection(project: Project) -> some View {
-        VStack(spacing: Spacing.md) {
-            let materials = filteredMaterials(project: project)
+    // MARK: - Material List
 
-            if materials.isEmpty {
-                Text("暂无材料记录")
-                    .font(.bodyRegular)
-                    .foregroundColor(.textSecondary)
-                    .padding()
-            } else {
-                ForEach(materials) { material in
-                    MaterialCard(material: material)
+    private var materialList: some View {
+        List {
+            ForEach(viewModel.groupedByStatus, id: \.status) { group in
+                Section {
+                    ForEach(group.materials) { material in
+                        MaterialRow(material: material, viewModel: viewModel)
+                            .onTapGesture {
+                                selectedMaterial = material
+                            }
+                    }
+                    .onDelete { offsets in
+                        viewModel.deleteMaterials(at: offsets, from: group.materials)
+                    }
+                } header: {
+                    HStack {
+                        Image(systemName: group.status.iconName)
+                            .foregroundColor(group.status.color)
+                            .font(.caption)
+                        Text(group.status.displayName)
+                            .font(.headline)
+                    }
                 }
             }
         }
+        .listStyle(.insetGrouped)
     }
+
+    // MARK: - Empty State
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
-            Image(systemName: "cube.box")
-                .font(.system(size: 64))
-                .foregroundColor(.textHint)
-            Text("暂无材料数据")
-                .font(.titleSmall)
-                .foregroundColor(.textSecondary)
-        }
-    }
+            Image(systemName: "shippingbox")
+                .font(.system(size: 60))
+                .foregroundColor(.secondary)
 
-    // MARK: - Helpers
+            Text("还没有材料")
+                .font(.headline)
+                .foregroundColor(.secondary)
 
-    private func filteredMaterials(project: Project) -> [Material] {
-        if let status = selectedStatus {
-            return project.materials.filter { $0.status == status }
+            Text("点击右上角 + 添加材料")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
         }
-        return project.materials
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
 }
 
-// MARK: - Material Card
+// MARK: - Material Row
 
-struct MaterialCard: View {
+private struct MaterialRow: View {
     let material: Material
+    let viewModel: MaterialListViewModel
 
     var body: some View {
-        CardView {
-            VStack(alignment: .leading, spacing: Spacing.sm) {
-                HStack {
-                    VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text(material.name)
-                            .font(.bodyMedium)
-                        if !material.brand.isEmpty {
-                            Text(material.brand)
-                                .font(.captionRegular)
-                                .foregroundColor(.textSecondary)
-                        }
-                    }
+        HStack(spacing: Spacing.md) {
+            // Status icon
+            ZStack {
+                Circle()
+                    .fill(material.status.color.opacity(0.1))
+                    .frame(width: 40, height: 40)
 
-                    Spacer()
+                Image(systemName: material.status.iconName)
+                    .foregroundColor(material.status.color)
+                    .font(.system(size: 18))
+            }
 
-                    statusBadge(for: material.status)
+            // Material info
+            VStack(alignment: .leading, spacing: 4) {
+                Text(material.name)
+                    .font(Fonts.headline)
+                    .lineLimit(2)
+
+                if !material.brand.isEmpty {
+                    Text(material.brand)
+                        .font(Fonts.caption)
+                        .foregroundColor(Colors.textSecondary)
                 }
-
-                if !material.specification.isEmpty {
-                    Text(material.specification)
-                        .font(.captionRegular)
-                        .foregroundColor(.textSecondary)
-                }
-
-                Divider()
 
                 HStack {
-                    VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text("单价")
-                            .font(.smallRegular)
-                            .foregroundColor(.textSecondary)
-                        Text(material.formattedUnitPrice)
-                            .font(.captionMedium)
+                    if !material.location.isEmpty {
+                        Label(material.location, systemImage: "location")
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
                     }
 
-                    Spacer()
-
-                    VStack(alignment: .center, spacing: Spacing.xs) {
-                        Text("数量")
-                            .font(.smallRegular)
-                            .foregroundColor(.textSecondary)
-                        Text("\(String(format: "%.1f", material.quantity)) \(material.unit)")
-                            .font(.captionMedium)
-                    }
-
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: Spacing.xs) {
-                        Text("总价")
-                            .font(.smallRegular)
-                            .foregroundColor(.textSecondary)
-                        Text(material.formattedTotalPrice)
-                            .font(.captionMedium)
-                            .foregroundColor(.primaryWood)
-                    }
-                }
-
-                if !material.location.isEmpty {
-                    HStack {
-                        Image(systemName: "mappin.circle")
-                            .foregroundColor(.textSecondary)
-                        Text(material.location)
-                            .font(.captionRegular)
-                            .foregroundColor(.textSecondary)
-                    }
+                    Text("\(material.quantity, specifier: "%.0f") \(material.unit)")
+                        .font(Fonts.caption)
+                        .foregroundColor(Colors.textSecondary)
                 }
             }
-        }
-    }
 
-    private func statusBadge(for status: MaterialStatus) -> some View {
-        HStack(spacing: Spacing.xs) {
-            Image(systemName: status.iconName)
-            Text(status.displayName)
+            Spacer()
+
+            // Price
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(material.formattedTotalPrice)
+                    .font(Fonts.headline)
+                    .foregroundColor(Colors.primary)
+
+                Text(material.formattedUnitPrice)
+                    .font(Fonts.caption)
+                    .foregroundColor(Colors.textSecondary)
+            }
         }
-        .font(.captionMedium)
-        .foregroundColor(.white)
-        .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.xs)
-        .background(status.color)
-        .cornerRadius(CornerRadius.sm)
     }
 }
 
+// MARK: - Preview
 
 #Preview {
-    MaterialListView()
-        .environment(ProjectManager())
-        .modelContainer(for: [Project.self, Material.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
+    let context = container.mainContext
+
+    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
+    context.insert(project)
+
+    let materials = [
+        Material(name: "马可波罗瓷砖", brand: "马可波罗", specification: "800x800mm", unitPrice: 89.90, quantity: 120, unit: "块", status: .delivered, location: "客厅"),
+        Material(name: "立邦乳胶漆", brand: "立邦", unitPrice: 268.00, quantity: 3, unit: "桶", status: .purchased, location: "全屋"),
+        Material(name: "圣象地板", brand: "圣象", unitPrice: 189.00, quantity: 85, unit: "㎡", status: .ordered, location: "卧室")
+    ]
+
+    for material in materials {
+        material.project = project
+        context.insert(material)
+    }
+
+    return MaterialListView(modelContext: context)
 }
