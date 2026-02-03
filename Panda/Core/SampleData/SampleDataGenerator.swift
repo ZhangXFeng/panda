@@ -100,7 +100,7 @@ enum SampleDataGenerator {
         // 设计费
         expenses.append(Expense(
             amount: 8000,
-            category: .designFee,
+            category: .design,
             note: "全屋设计方案",
             date: startDate
         ))
@@ -113,42 +113,34 @@ enum SampleDataGenerator {
             date: Calendar.current.date(byAdding: .day, value: 15, to: startDate)!
         ))
 
-        // 水电材料
+        // 水电
         expenses.append(Expense(
-            amount: 12000,
-            category: .plumbingMaterial,
-            note: "全屋水电材料",
+            amount: 20000,
+            category: .plumbing,
+            note: "全屋水电改造（材料+人工）",
             date: Calendar.current.date(byAdding: .day, value: 20, to: startDate)!
         ))
 
-        // 水电人工
-        expenses.append(Expense(
-            amount: 8000,
-            category: .plumbingLabor,
-            note: "水电改造人工费",
-            date: Calendar.current.date(byAdding: .day, value: 25, to: startDate)!
-        ))
-
-        // 瓷砖
+        // 瓷砖/地板
         expenses.append(Expense(
             amount: 15000,
-            category: .tile,
+            category: .flooring,
             note: "客厅+厨卫瓷砖",
             date: Calendar.current.date(byAdding: .day, value: 30, to: startDate)!
         ))
 
-        // 泥瓦人工
+        // 泥瓦
         expenses.append(Expense(
             amount: 9000,
-            category: .masonryLabor,
+            category: .masonry,
             note: "贴砖人工费",
             date: Calendar.current.date(byAdding: .day, value: 35, to: startDate)!
         ))
 
-        // 木工材料
+        // 木工
         expenses.append(Expense(
             amount: 18000,
-            category: .woodMaterial,
+            category: .carpentry,
             note: "吊顶+柜体板材",
             date: Calendar.current.date(byAdding: .day, value: 40, to: startDate)!
         ))
@@ -245,7 +237,7 @@ enum SampleDataGenerator {
 
     private static func createContactsForMyHome() -> [Contact] {
         [
-            Contact(name: "王师傅", role: .contractor, phoneNumber: "138-1234-5678", notes: "整体施工负责人"),
+            Contact(name: "王师傅", role: .foreman, phoneNumber: "138-1234-5678", notes: "整体施工负责人"),
             Contact(name: "李设计师", role: .designer, phoneNumber: "139-8765-4321", notes: "室内设计"),
             Contact(name: "张电工", role: .electrician, phoneNumber: "137-1111-2222", notes: "水电改造")
         ]
@@ -273,7 +265,7 @@ enum SampleDataGenerator {
         // 添加少量支出
         budget.addExpense(Expense(
             amount: 5000,
-            category: .designFee,
+            category: .design,
             note: "设计方案费",
             date: startDate
         ))
@@ -335,15 +327,14 @@ enum SampleDataGenerator {
 
         // 添加支出（已花费约 78%）
         let expenseData: [(Decimal, ExpenseCategory, String)] = [
-            (3000, .designFee, "简单设计"),
+            (3000, .design, "简单设计"),
             (2000, .demolition, "局部拆改"),
-            (5000, .plumbingMaterial, "水电材料"),
-            (4000, .plumbingLabor, "水电人工"),
-            (6000, .tile, "瓷砖"),
-            (4000, .masonryLabor, "贴砖人工"),
-            (8000, .woodMaterial, "板材"),
-            (3000, .carpentryLabor, "木工人工"),
-            (4000, .paint, "乳胶漆")
+            (9000, .plumbing, "水电改造"),
+            (6000, .flooring, "瓷砖"),
+            (4000, .masonry, "贴砖人工"),
+            (8000, .carpentry, "木工"),
+            (4000, .painting, "乳胶漆"),
+            (3000, .other, "杂项")
         ]
 
         var dayOffset = 0
@@ -410,20 +401,18 @@ enum SampleDataGenerator {
 
         // 添加完整的支出记录
         let expenseData: [(Decimal, ExpenseCategory, String)] = [
-            (12000, .designFee, "全屋设计"),
+            (12000, .design, "全屋设计"),
             (4000, .demolition, "拆改工程"),
-            (15000, .plumbingMaterial, "水电材料"),
-            (10000, .plumbingLabor, "水电人工"),
-            (18000, .tile, "全屋瓷砖"),
-            (12000, .masonryLabor, "泥瓦人工"),
-            (25000, .woodMaterial, "定制柜体"),
-            (8000, .carpentryLabor, "木工人工"),
-            (6000, .paint, "进口乳胶漆"),
-            (4000, .paintingLabor, "油漆人工"),
-            (15000, .door, "室内门+入户门"),
-            (8000, .floor, "实木复合地板"),
-            (12000, .cabinet, "橱柜"),
-            (6000, .sanitaryWare, "卫浴洁具")
+            (25000, .plumbing, "水电改造"),
+            (18000, .flooring, "全屋瓷砖"),
+            (12000, .masonry, "泥瓦人工"),
+            (25000, .carpentry, "定制柜体"),
+            (10000, .painting, "油漆工程"),
+            (15000, .doors, "室内门+入户门"),
+            (12000, .cabinets, "橱柜"),
+            (6000, .bathroom, "卫浴洁具"),
+            (8000, .lighting, "灯具"),
+            (8000, .furniture, "部分家具")
         ]
 
         var dayOffset = 0

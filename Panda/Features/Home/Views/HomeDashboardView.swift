@@ -266,5 +266,6 @@ struct QuickActionButton: View {
 
 #Preview {
     HomeDashboardView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self, Budget.self, Phase.self], inMemory: true)
 }

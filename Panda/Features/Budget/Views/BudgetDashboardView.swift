@@ -201,5 +201,6 @@ struct CategoryCard: View {
 
 #Preview {
     BudgetDashboardView()
+        .environment(ProjectManager())
         .modelContainer(for: [Project.self, Budget.self, Expense.self], inMemory: true)
 }
