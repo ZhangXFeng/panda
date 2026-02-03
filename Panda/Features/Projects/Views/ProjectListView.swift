@@ -2,136 +2,288 @@
 //  ProjectListView.swift
 //  Panda
 //
-//  Created on 2026-02-03.
+//  Enhanced on 2026-02-03.
 //
 
 import SwiftUI
 import SwiftData
 
-/// 项目列表视图 - 管理所有装修项目
 struct ProjectListView: View {
-    // MARK: - Properties
-
     @Environment(\.modelContext) private var modelContext
     @Environment(ProjectManager.self) private var projectManager
-    @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+    @StateObject private var viewModel: ProjectListViewModel
 
     @State private var showingAddProject = false
-    @State private var projectToDelete: Project?
     @State private var showingDeleteConfirmation = false
+    @State private var projectToDelete: Project?
+    @State private var selectedProject: Project?
 
-    // MARK: - Body
+    init(modelContext: ModelContext) {
+        _viewModel = StateObject(wrappedValue: ProjectListViewModel(modelContext: modelContext))
+    }
 
     var body: some View {
-        List {
-            if projects.isEmpty {
-                emptyState
-            } else {
-                projectsSection
-            }
-        }
-        .listStyle(.insetGrouped)
-        .navigationTitle("我的项目")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingAddProject = true
-                } label: {
-                    Image(systemName: "plus")
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Search bar
+                if viewModel.hasProjects {
+                    searchBar
+                }
+
+                // Filter chips
+                if viewModel.hasProjects {
+                    filterSection
+                }
+
+                // Project list
+                if viewModel.filteredProjects.isEmpty {
+                    emptyState
+                } else {
+                    projectList
                 }
             }
-        }
-        .sheet(isPresented: $showingAddProject) {
-            AddProjectView()
-        }
-        .alert("删除项目", isPresented: $showingDeleteConfirmation) {
-            Button("取消", role: .cancel) {}
-            Button("删除", role: .destructive) {
+            .navigationTitle("我的项目")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button {
+                            showingAddProject = true
+                        } label: {
+                            Label("新建项目", systemImage: "plus")
+                        }
+
+                        Menu("排序") {
+                            ForEach(ProjectSortOrder.allCases) { order in
+                                Button {
+                                    viewModel.sortOrder = order
+                                } label: {
+                                    Label(order.rawValue, systemImage: viewModel.sortOrder == order ? "checkmark" : "")
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddProject) {
+                AddProjectView(modelContext: modelContext)
+                    .onDisappear {
+                        viewModel.loadProjects()
+                    }
+            }
+            .sheet(item: $selectedProject) { project in
+                NavigationStack {
+                    ProjectDetailView(project: project)
+                }
+                .onDisappear {
+                    viewModel.loadProjects()
+                }
+            }
+            .alert("删除项目", isPresented: $showingDeleteConfirmation) {
+                Button("取消", role: .cancel) { }
+                Button("删除", role: .destructive) {
+                    if let project = projectToDelete {
+                        deleteProject(project)
+                    }
+                }
+            } message: {
                 if let project = projectToDelete {
-                    deleteProject(project)
+                    Text("确定要删除「\(project.name)」吗？\n此操作不可撤销，所有相关数据将被永久删除。")
                 }
             }
-        } message: {
-            if let project = projectToDelete {
-                Text("确定要删除「\(project.name)」吗？\n此操作不可撤销，所有相关数据将被永久删除。")
+            .onAppear {
+                viewModel.loadProjects()
+                projectManager.autoSelectIfNeeded(from: viewModel.projects)
             }
-        }
-        .onAppear {
-            projectManager.autoSelectIfNeeded(from: projects)
         }
     }
 
-    // MARK: - Subviews
+    // MARK: - Search Bar
+
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(Colors.textSecondary)
+
+            TextField("搜索项目", text: $viewModel.searchText)
+                .autocorrectionDisabled()
+
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(Colors.textSecondary)
+                }
+            }
+        }
+        .padding(Spacing.sm)
+        .background(Colors.backgroundSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.sm))
+        .padding(.horizontal, Spacing.md)
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Filter Section
+
+    private var filterSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Spacing.sm) {
+                ForEach(ProjectFilter.allCases) { filter in
+                    FilterChip(
+                        title: filter.rawValue,
+                        isSelected: viewModel.selectedFilter == filter,
+                        icon: filter.iconName
+                    ) {
+                        viewModel.selectedFilter = filter
+                    }
+                }
+            }
+            .padding(.horizontal, Spacing.md)
+        }
+        .padding(.vertical, Spacing.sm)
+    }
+
+    // MARK: - Project List
+
+    private var projectList: some View {
+        List {
+            // Statistics header
+            Section {
+                statisticsRow
+            }
+
+            // Projects
+            Section {
+                ForEach(viewModel.filteredProjects) { project in
+                    ProjectCardView(
+                        project: project,
+                        isSelected: project.id == projectManager.currentProjectId
+                    ) {
+                        projectManager.selectProject(project)
+                    }
+                    .onTapGesture {
+                        selectedProject = project
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            projectToDelete = project
+                            showingDeleteConfirmation = true
+                        } label: {
+                            Label("删除", systemImage: "trash")
+                        }
+
+                        Button {
+                            viewModel.toggleProjectActive(project)
+                        } label: {
+                            Label(project.isActive ? "归档" : "激活", systemImage: project.isActive ? "archivebox" : "arrow.up.bin")
+                        }
+                        .tint(.orange)
+                    }
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button {
+                            viewModel.duplicateProject(project)
+                        } label: {
+                            Label("复制", systemImage: "doc.on.doc")
+                        }
+                        .tint(.blue)
+                    }
+                }
+            } header: {
+                HStack {
+                    Text("\(viewModel.filteredProjects.count) 个项目")
+                    Spacer()
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+    }
+
+    // MARK: - Statistics Row
+
+    private var statisticsRow: some View {
+        HStack(spacing: Spacing.md) {
+            StatBadge(
+                icon: "house.fill",
+                label: "总计",
+                value: "\(viewModel.totalProjects)",
+                color: .blue
+            )
+
+            StatBadge(
+                icon: "hammer.fill",
+                label: "进行中",
+                value: "\(viewModel.totalActiveProjects)",
+                color: .orange
+            )
+
+            StatBadge(
+                icon: "checkmark.circle.fill",
+                label: "已完工",
+                value: "\(viewModel.totalCompletedProjects)",
+                color: .green
+            )
+
+            if viewModel.totalDelayedProjects > 0 {
+                StatBadge(
+                    icon: "exclamationmark.triangle.fill",
+                    label: "延期",
+                    value: "\(viewModel.totalDelayedProjects)",
+                    color: .red
+                )
+            }
+        }
+        .padding(.vertical, Spacing.xs)
+    }
+
+    // MARK: - Empty State
 
     private var emptyState: some View {
-        Section {
-            VStack(spacing: Spacing.lg) {
-                Image(systemName: "house")
-                    .font(.system(size: 64))
-                    .foregroundColor(.textHint)
+        VStack(spacing: Spacing.lg) {
+            Image(systemName: viewModel.searchText.isEmpty ? "house" : "magnifyingglass")
+                .font(.system(size: 60))
+                .foregroundColor(.secondary)
 
-                Text("还没有装修项目")
-                    .font(.titleSmall)
-                    .foregroundColor(.textSecondary)
+            Text(viewModel.searchText.isEmpty ? "还没有装修项目" : "未找到匹配的项目")
+                .font(.headline)
+                .foregroundColor(.secondary)
 
-                Text("点击右上角「+」创建你的第一个装修项目")
-                    .font(.captionRegular)
-                    .foregroundColor(.textHint)
+            if viewModel.searchText.isEmpty {
+                Text("点击右上角菜单创建你的第一个装修项目")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
 
                 Button {
                     showingAddProject = true
                 } label: {
                     Label("创建项目", systemImage: "plus.circle.fill")
-                        .font(.titleSmall)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.primaryWood)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, Spacing.xl)
-        }
-        .listRowBackground(Color.clear)
-    }
-
-    private var projectsSection: some View {
-        Section {
-            ForEach(projects, id: \.id) { project in
-                ProjectCardView(
-                    project: project,
-                    isSelected: project.id == projectManager.currentProjectId
-                ) {
-                    projectManager.selectProject(project)
+            } else {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Text("清除搜索")
                 }
-                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(role: .destructive) {
-                        projectToDelete = project
-                        showingDeleteConfirmation = true
-                    } label: {
-                        Label("删除", systemImage: "trash")
-                    }
-                }
-            }
-        } header: {
-            HStack {
-                Text("共 \(projects.count) 个项目")
-                Spacer()
+                .buttonStyle(.bordered)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
 
-    // MARK: - Methods
+    // MARK: - Helper Methods
 
     private func deleteProject(_ project: Project) {
-        // 如果删除的是当前选中的项目，需要更新选择
         let wasSelected = project.id == projectManager.currentProjectId
 
-        modelContext.delete(project)
+        viewModel.deleteProject(project)
 
         if wasSelected {
-            // 选择下一个可用的项目
-            if let nextProject = projects.first(where: { $0.id != project.id }) {
+            if let nextProject = viewModel.projects.first(where: { $0.id != project.id }) {
                 projectManager.selectProject(nextProject)
             } else {
                 projectManager.clearSelection()
@@ -142,7 +294,6 @@ struct ProjectListView: View {
 
 // MARK: - Project Card View
 
-/// 项目卡片视图
 struct ProjectCardView: View {
     let project: Project
     let isSelected: Bool
@@ -151,15 +302,15 @@ struct ProjectCardView: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: Spacing.md) {
-                // 项目封面
+                // Cover image
                 projectCover
 
-                // 项目信息
+                // Project info
                 VStack(alignment: .leading, spacing: Spacing.sm) {
                     HStack {
                         Text(project.name)
-                            .font(.titleSmall)
-                            .foregroundColor(.textPrimary)
+                            .font(Fonts.headline)
+                            .foregroundColor(Colors.textPrimary)
 
                         Spacer()
 
@@ -169,52 +320,50 @@ struct ProjectCardView: View {
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
-                                .background(Color.primaryWood)
+                                .background(Colors.primary)
                                 .cornerRadius(4)
                         }
                     }
 
                     Text("\(project.houseType) · \(Int(project.area))㎡")
-                        .font(.bodyRegular)
-                        .foregroundColor(.textSecondary)
+                        .font(Fonts.body)
+                        .foregroundColor(Colors.textSecondary)
 
-                    // 进度和状态
+                    // Progress bar
                     HStack {
-                        // 进度条
                         ProgressView(value: project.overallProgress)
                             .progressViewStyle(.linear)
                             .tint(progressColor)
                             .frame(maxWidth: 120)
 
                         Text("\(Int(project.overallProgress * 100))%")
-                            .font(.captionMedium)
-                            .foregroundColor(.textSecondary)
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
 
                         Spacer()
 
-                        // 状态标签
                         statusLabel
                     }
 
-                    // 开工信息
+                    // Date info
                     HStack {
                         Image(systemName: "calendar")
                             .font(.system(size: 12))
-                            .foregroundColor(.textHint)
+                            .foregroundColor(Colors.textSecondary)
                         Text(formatDate(project.startDate))
-                            .font(.captionRegular)
-                            .foregroundColor(.textHint)
+                            .font(Fonts.caption)
+                            .foregroundColor(Colors.textSecondary)
 
                         Spacer()
 
                         if project.remainingDays > 0 {
                             Text("剩余 \(project.remainingDays) 天")
-                                .font(.captionRegular)
-                                .foregroundColor(project.isDelayed ? .error : .textHint)
+                                .font(Fonts.caption)
+                                .foregroundColor(project.isDelayed ? Colors.error : Colors.textSecondary)
                         } else if project.overallProgress >= 1.0 {
                             Text("已完工")
-                                .font(.captionRegular)
-                                .foregroundColor(.success)
+                                .font(Fonts.caption)
+                                .foregroundColor(Colors.success)
                         }
                     }
                 }
@@ -233,18 +382,18 @@ struct ProjectCardView: View {
                     .scaledToFill()
             } else {
                 ZStack {
-                    Color.bgSecondary
+                    Colors.backgroundSecondary
                     Image(systemName: "house.fill")
                         .font(.system(size: 28))
-                        .foregroundColor(.primaryWood)
+                        .foregroundColor(Colors.primary)
                 }
             }
         }
         .frame(width: 72, height: 72)
-        .cornerRadius(CornerRadius.md)
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md))
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.md)
-                .stroke(isSelected ? Color.primaryWood : Color.clear, lineWidth: 2)
+                .stroke(isSelected ? Colors.primary : Color.clear, lineWidth: 2)
         )
     }
 
@@ -253,26 +402,26 @@ struct ProjectCardView: View {
             if project.overallProgress >= 1.0 {
                 Label("完工", systemImage: "checkmark.circle.fill")
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.success)
+                    .foregroundColor(Colors.success)
             } else if project.isDelayed {
                 Label("延期", systemImage: "exclamationmark.triangle.fill")
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.error)
+                    .foregroundColor(Colors.error)
             } else if project.isActive {
                 Label("进行中", systemImage: "play.circle.fill")
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.primaryWood)
+                    .foregroundColor(Colors.primary)
             }
         }
     }
 
     private var progressColor: Color {
         if project.overallProgress >= 1.0 {
-            return .success
+            return Colors.success
         } else if project.isDelayed {
-            return .error
+            return Colors.error
         } else {
-            return .primaryWood
+            return Colors.primary
         }
     }
 
@@ -283,113 +432,51 @@ struct ProjectCardView: View {
     }
 }
 
-// MARK: - Add Project View (Placeholder)
+// MARK: - Supporting Views
 
-/// 添加项目视图（占位）
-struct AddProjectView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    @Environment(ProjectManager.self) private var projectManager
-
-    @State private var name = ""
-    @State private var houseType = "两室一厅"
-    @State private var area: Double = 100
-    @State private var startDate = Date()
-    @State private var estimatedDuration: Int = 90
-
-    private let houseTypes = ["一室一厅", "两室一厅", "两室两厅", "三室一厅", "三室两厅", "四室两厅", "复式", "别墅", "其他"]
+private struct StatBadge: View {
+    let icon: String
+    let label: String
+    let value: String
+    let color: Color
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("基本信息") {
-                    TextField("项目名称", text: $name)
-                        .textInputAutocapitalization(.never)
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .foregroundColor(color)
+                .font(.caption)
 
-                    Picker("房屋类型", selection: $houseType) {
-                        ForEach(houseTypes, id: \.self) { type in
-                            Text(type).tag(type)
-                        }
-                    }
+            Text(value)
+                .font(Fonts.headline)
+                .foregroundColor(Colors.textPrimary)
 
-                    HStack {
-                        Text("建筑面积")
-                        Spacer()
-                        TextField("面积", value: $area, format: .number)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 80)
-                        Text("㎡")
-                            .foregroundColor(.textSecondary)
-                    }
-                }
-
-                Section("时间规划") {
-                    DatePicker("开工日期", selection: $startDate, displayedComponents: .date)
-
-                    Stepper("预计工期：\(estimatedDuration) 天", value: $estimatedDuration, in: 30...365, step: 15)
-                }
-
-                Section {
-                    VStack(alignment: .leading, spacing: Spacing.sm) {
-                        Text("预计完工")
-                            .font(.captionRegular)
-                            .foregroundColor(.textSecondary)
-                        Text(formatDate(estimatedEndDate))
-                            .font(.titleSmall)
-                    }
-                }
-            }
-            .navigationTitle("新建项目")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("取消") {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("创建") {
-                        createProject()
-                    }
-                    .disabled(name.isEmpty)
-                }
-            }
+            Text(label)
+                .font(Fonts.caption)
+                .foregroundColor(Colors.textSecondary)
         }
-    }
-
-    private var estimatedEndDate: Date {
-        Calendar.current.date(byAdding: .day, value: estimatedDuration, to: startDate) ?? startDate
-    }
-
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.locale = Locale(identifier: "zh_CN")
-        return formatter.string(from: date)
-    }
-
-    private func createProject() {
-        let project = Project(
-            name: name,
-            houseType: houseType,
-            area: area,
-            startDate: startDate,
-            estimatedDuration: estimatedDuration
-        )
-
-        modelContext.insert(project)
-        projectManager.selectProject(project)
-        dismiss()
+        .frame(maxWidth: .infinity)
     }
 }
 
 // MARK: - Preview
 
-#Preview("Project List") {
-    NavigationStack {
-        ProjectListView()
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Project.self, Budget.self, Phase.self, configurations: config)
+    let context = container.mainContext
+
+    let projects = [
+        Project(name: "我的新家", houseType: "三室两厅", area: 120.0, startDate: Date().addingTimeInterval(-86400 * 30), estimatedDuration: 90),
+        Project(name: "父母的房子", houseType: "两室一厅", area: 85.0, startDate: Date().addingTimeInterval(-86400 * 60), estimatedDuration: 60)
+    ]
+
+    for project in projects {
+        context.insert(project)
+    }
+
+    return NavigationStack {
+        ProjectListView(modelContext: context)
     }
     .environment(ProjectManager())
-    .modelContainer(for: [Project.self, Budget.self, Phase.self], inMemory: true)
+    .modelContainer(container)
 }
