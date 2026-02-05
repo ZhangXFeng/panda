@@ -172,6 +172,16 @@ Panda/
 
 **解决**：确认 `Colors.swift` 已正确添加到项目中即可。
 
+### Q: 编译报错 "has copy command from ... README.md"
+
+**原因**：项目中多个目录下存在同名的 `README.md` 文件（如 `Features/Contacts/README.md` 和 `Features/Journal/README.md`），Xcode 将它们都加入了 Copy Bundle Resources，导致复制目标冲突。
+
+**解决**：
+1. 选择 Target → **Build Phases** 标签页
+2. 展开 **Copy Bundle Resources**
+3. 找到所有 `README.md` 文件，选中后点 **-** 号移除
+4. 重新编译即可（⌘ + B）
+
 ### Q: CloudKit 相关报错
 
 **原因**：CloudKit 需要有效的 Apple Developer 账号和配置。
