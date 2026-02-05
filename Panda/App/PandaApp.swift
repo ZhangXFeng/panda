@@ -16,7 +16,7 @@ struct PandaApp: App {
     let modelContainer: ModelContainer
 
     /// 项目管理器 - 管理当前选中的项目
-    @State private var projectManager = ProjectManager()
+    @State private var projectManager = ProjectManager.shared
 
     // MARK: - Initialization
 

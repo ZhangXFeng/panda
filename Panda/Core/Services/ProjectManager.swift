@@ -11,7 +11,22 @@ import SwiftData
 /// 项目管理器 - 管理当前选中的项目
 @Observable
 final class ProjectManager {
+    // MARK: - Singleton
+
+    static let shared = ProjectManager()
+
     // MARK: - Properties
+
+    /// 当前选中的项目（直接引用）
+    var currentProject: Project? {
+        didSet {
+            if let project = currentProject {
+                currentProjectId = project.id
+            } else {
+                currentProjectId = nil
+            }
+        }
+    }
 
     /// 当前选中项目的 ID
     private(set) var currentProjectId: UUID? {
@@ -41,7 +56,7 @@ final class ProjectManager {
 
     /// 选择项目
     func selectProject(_ project: Project) {
-        currentProjectId = project.id
+        currentProject = project
     }
 
     /// 选择项目（通过 ID）
@@ -51,7 +66,7 @@ final class ProjectManager {
 
     /// 清除选中的项目
     func clearSelection() {
-        currentProjectId = nil
+        currentProject = nil
     }
 
     /// 获取当前项目（需要传入项目列表）
@@ -59,16 +74,20 @@ final class ProjectManager {
         // 优先返回已选中的项目
         if let currentId = currentProjectId,
            let project = projects.first(where: { $0.id == currentId }) {
+            currentProject = project
             return project
         }
 
         // 如果没有选中项目，返回活跃项目
         if let activeProject = projects.first(where: { $0.isActive }) {
+            currentProject = activeProject
             return activeProject
         }
 
         // 都没有则返回第一个项目
-        return projects.first
+        let first = projects.first
+        currentProject = first
+        return first
     }
 
     /// 自动选择项目（如果当前没有选中或选中的项目已被删除）
