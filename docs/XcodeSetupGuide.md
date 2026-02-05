@@ -126,7 +126,14 @@ Panda/
 
 1. 选择 **Signing & Capabilities** 标签页
 2. 勾选 **Automatically manage signing**
-3. 选择你的 **Team**（需要 Apple Developer 账号，免费账号即可在模拟器上运行）
+3. 选择你的 **Team**：
+   - 如果没有 Team，点击下拉菜单中的 **Add an Account...**，用你的 Apple ID 登录
+   - 登录后会出现 "Personal Team"，选择即可
+4. **修改 Bundle Identifier**：将默认的 Bundle Identifier 改为你自己的唯一值，例如 `com.<你的名字>.Panda`
+
+> **重要**：Bundle Identifier 必须全局唯一。如果使用了别人已注册的 identifier（如 `com.riverbank.Panda`），会报错 "No profiles for 'xxx' were found"。换一个未被占用的 identifier 即可解决。
+
+> **提示**：如果你只在模拟器上运行，可以跳过签名配置。签名只在真机运行时才需要。
 
 ## 步骤五：构建并运行
 
@@ -170,6 +177,16 @@ Panda/
 **原因**：CloudKit 需要有效的 Apple Developer 账号和配置。
 
 **解决**：如果暂时不需要云同步，可以忽略相关警告。项目在本地使用 SwiftData 存储数据，不影响基本功能。
+
+### Q: 提示 "No profiles for 'com.xxx.Panda' were found"
+
+**原因**：Bundle Identifier 已被其他开发者注册，Xcode 无法为其创建 provisioning profile。
+
+**解决**：
+1. 选择 Target → **Signing & Capabilities**
+2. 修改 **Bundle Identifier** 为一个唯一值（如 `com.<你的名字>.Panda`）
+3. 确认 **Automatically manage signing** 已勾选，并选择了正确的 Team
+4. Xcode 会自动为新的 Bundle Identifier 创建 provisioning profile
 
 ### Q: 提示 "Signing for 'Panda' requires a development team"
 
