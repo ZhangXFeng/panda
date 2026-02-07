@@ -8,6 +8,11 @@
 import SwiftUI
 import SwiftData
 
+private struct PhotoSelection: Identifiable {
+    let index: Int
+    var id: Int { index }
+}
+
 struct JournalDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -15,7 +20,7 @@ struct JournalDetailView: View {
     let entry: JournalEntry
     @State private var showingEditSheet = false
     @State private var showingDeleteAlert = false
-    @State private var selectedPhotoIndex: Int?
+    @State private var selectedPhotoIndex: PhotoSelection?
 
     var body: some View {
         NavigationStack {
@@ -69,8 +74,8 @@ struct JournalDetailView: View {
             .sheet(isPresented: $showingEditSheet) {
                 AddJournalEntryView(modelContext: modelContext, entry: entry)
             }
-            .sheet(item: $selectedPhotoIndex) { index in
-                PhotoDetailView(photoData: entry.photoData, initialIndex: index)
+            .sheet(item: $selectedPhotoIndex) { selection in
+                PhotoDetailView(photoData: entry.photoData, initialIndex: selection.index)
             }
             .alert("确认删除", isPresented: $showingDeleteAlert) {
                 Button("取消", role: .cancel) { }
@@ -146,7 +151,7 @@ struct JournalDetailView: View {
                 ForEach(Array(entry.photoData.enumerated()), id: \.offset) { index, data in
                     if let uiImage = UIImage(data: data) {
                         Button {
-                            selectedPhotoIndex = index
+                            selectedPhotoIndex = PhotoSelection(index: index)
                         } label: {
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -255,12 +260,6 @@ private struct PhotoDetailView: View {
             }
         }
     }
-}
-
-// MARK: - Int Identifiable Extension
-
-extension Int: Identifiable {
-    public var id: Int { self }
 }
 
 // MARK: - Preview

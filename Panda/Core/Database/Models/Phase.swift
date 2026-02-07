@@ -213,6 +213,26 @@ extension Phase {
         guard !tasks.isEmpty else { return false }
         return tasks.allSatisfy { $0.status == .completed }
     }
+
+    /// 根据任务状态同步阶段状态
+    func syncStatusFromTasks() {
+        guard !tasks.isEmpty else { return }
+
+        if tasks.allSatisfy({ $0.status == .completed }) {
+            complete()
+            return
+        }
+
+        if isCompleted {
+            isCompleted = false
+            actualEndDate = nil
+            updateTimestamp()
+        }
+
+        if tasks.contains(where: { $0.status == .inProgress || $0.status == .completed }) {
+            start()
+        }
+    }
 }
 
 // MARK: - Sorting

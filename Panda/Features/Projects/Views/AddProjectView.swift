@@ -66,6 +66,20 @@ struct AddProjectView: View {
                     }
                 }
 
+                // Budget
+                Section {
+                    HStack {
+                        Text("¥")
+                            .foregroundColor(Colors.textSecondary)
+                        TextField("总预算", text: $viewModel.totalBudget)
+                            .keyboardType(.decimalPad)
+                    }
+                } header: {
+                    Text("预算设置")
+                } footer: {
+                    Text("建议预算：中档装修约 1500-2000 元/㎡")
+                }
+
                 // Cover image
                 Section {
                     if let imageData = viewModel.coverImageData,

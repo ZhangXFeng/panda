@@ -23,8 +23,9 @@ class TestDataGenerator {
 
         // 创建预算
         let budget = createTestBudget()
-        modelContext.insert(budget)
+        budget.project = project
         project.budget = budget
+        modelContext.insert(budget)
 
         // 创建支出记录
         let expenses = createTestExpenses(for: budget)

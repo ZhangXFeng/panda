@@ -121,6 +121,7 @@ class AddTaskViewModel: ObservableObject {
         task.photoData = photoData
         task.phase = phase
         modelContext.insert(task)
+        phase.syncStatusFromTasks()
     }
 
     private func updateExistingTask(_ task: Task) {
@@ -133,6 +134,7 @@ class AddTaskViewModel: ObservableObject {
         task.plannedEndDate = plannedEndDate
         task.photoData = photoData
         task.updateTimestamp()
+        task.phase?.syncStatusFromTasks()
     }
 
     private func showError(_ message: String) {

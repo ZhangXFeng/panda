@@ -92,7 +92,7 @@ class MaterialListViewModel: ObservableObject {
     // MARK: - Methods
 
     func loadMaterials() {
-        guard let currentProject = projectManager.currentProject else {
+        guard let currentProject = projectManager.currentProject(in: modelContext) else {
             materials = []
             return
         }

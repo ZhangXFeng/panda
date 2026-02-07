@@ -28,7 +28,11 @@ struct ScheduleOverviewView: View {
                         overallProgressCard(project: project)
 
                         // 阶段列表
-                        phasesSection(project: project)
+                        if project.phases.isEmpty {
+                            emptyPhasesState
+                        } else {
+                            phasesSection(project: project)
+                        }
                     }
                     .padding()
                 } else {
@@ -96,6 +100,22 @@ struct ScheduleOverviewView: View {
                     }
             }
         }
+    }
+
+    private var emptyPhasesState: some View {
+        VStack(spacing: Spacing.md) {
+            Image(systemName: "timeline.selection")
+                .font(.system(size: 48))
+                .foregroundColor(.textHint)
+            Text("尚未生成装修阶段")
+                .font(.titleSmall)
+                .foregroundColor(.textSecondary)
+            Text("请在编辑项目时创建阶段")
+                .font(.captionRegular)
+                .foregroundColor(.textHint)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.lg)
     }
 
     private var emptyState: some View {

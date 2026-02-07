@@ -108,7 +108,7 @@ class AddDocumentViewModel: ObservableObject {
             return false
         }
 
-        guard let currentProject = projectManager.currentProject else {
+        guard let currentProject = projectManager.currentProject(in: modelContext) else {
             showError("请先选择或创建项目")
             return false
         }

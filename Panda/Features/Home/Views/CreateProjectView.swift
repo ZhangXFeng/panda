@@ -141,6 +141,7 @@ struct CreateProjectView: View {
         // 创建预算
         let budget = Budget(totalAmount: budgetValue)
         project.budget = budget
+        budget.project = project
 
         // 保存到数据库
         modelContext.insert(project)

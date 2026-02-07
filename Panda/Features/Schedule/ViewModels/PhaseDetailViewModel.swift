@@ -86,6 +86,7 @@ class PhaseDetailViewModel: ObservableObject {
         modelContext.delete(task)
 
         do {
+            phase.syncStatusFromTasks()
             try modelContext.save()
             loadTasks()
         } catch {
@@ -113,6 +114,7 @@ class PhaseDetailViewModel: ObservableObject {
         }
 
         do {
+            phase.syncStatusFromTasks()
             try modelContext.save()
             loadTasks()
         } catch {

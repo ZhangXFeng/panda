@@ -81,7 +81,7 @@ class DocumentListViewModel: ObservableObject {
     // MARK: - Methods
 
     func loadDocuments() {
-        guard let currentProject = projectManager.currentProject else {
+        guard let currentProject = projectManager.currentProject(in: modelContext) else {
             documents = []
             return
         }

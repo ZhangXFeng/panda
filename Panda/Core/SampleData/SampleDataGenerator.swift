@@ -71,6 +71,7 @@ enum SampleDataGenerator {
 
         // 添加预算
         let budget = Budget(totalAmount: 180000, warningThreshold: 0.8)
+        budget.project = project
         project.budget = budget
 
         // 添加支出记录
@@ -260,6 +261,7 @@ enum SampleDataGenerator {
 
         // 添加预算
         let budget = Budget(totalAmount: 100000, warningThreshold: 0.8)
+        budget.project = project
         project.budget = budget
 
         // 添加少量支出
@@ -323,6 +325,7 @@ enum SampleDataGenerator {
 
         // 添加预算（接近预警线）
         let budget = Budget(totalAmount: 50000, warningThreshold: 0.8)
+        budget.project = project
         project.budget = budget
 
         // 添加支出（已花费约 78%）
@@ -397,6 +400,7 @@ enum SampleDataGenerator {
 
         // 添加预算（略超预算）
         let budget = Budget(totalAmount: 150000, warningThreshold: 0.8)
+        budget.project = project
         project.budget = budget
 
         // 添加完整的支出记录

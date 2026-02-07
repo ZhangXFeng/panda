@@ -15,6 +15,10 @@ struct BudgetDashboardView: View {
     @State private var viewModel: BudgetDashboardViewModel?
     @State private var showingAddExpense = false
     @State private var refreshID = UUID()
+    @State private var showingEditBudget = false
+    @State private var editBudgetText = ""
+    @State private var showingBudgetError = false
+    @State private var budgetErrorMessage = ""
 
     /// 当前选中的项目
     private var currentProject: Project? {
@@ -57,6 +61,15 @@ struct BudgetDashboardView: View {
                     }
                 }
 
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        prepareEditBudget()
+                        showingEditBudget = true
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                }
+
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         _Concurrency.Task {
@@ -72,6 +85,21 @@ struct BudgetDashboardView: View {
                 if let budget = viewModel?.budget {
                     AddExpenseView(budget: budget)
                 }
+            }
+            .alert("设置总预算", isPresented: $showingEditBudget) {
+                TextField("总预算", text: $editBudgetText)
+                    .keyboardType(.decimalPad)
+                Button("取消", role: .cancel) { }
+                Button("保存") {
+                    saveEditedBudget()
+                }
+            } message: {
+                Text("请输入新的总预算金额")
+            }
+            .alert("错误", isPresented: $showingBudgetError) {
+                Button("确定", role: .cancel) { }
+            } message: {
+                Text(budgetErrorMessage)
             }
             .task {
                 await loadData()
@@ -207,6 +235,29 @@ struct BudgetDashboardView: View {
     private func createBudgetForProject(_ project: Project) {
         _Concurrency.Task {
             await viewModel?.createBudget(for: project, amount: 180000)
+        }
+    }
+
+    private func prepareEditBudget() {
+        guard let budget = viewModel?.budget else {
+            editBudgetText = ""
+            return
+        }
+
+        let number = NSDecimalNumber(decimal: budget.totalAmount)
+        editBudgetText = number.stringValue
+    }
+
+    private func saveEditedBudget() {
+        guard let amount = Decimal(string: editBudgetText), amount > 0 else {
+            budgetErrorMessage = "请输入有效的总预算"
+            showingBudgetError = true
+            return
+        }
+
+        _Concurrency.Task {
+            await viewModel?.updateTotalBudget(amount: amount)
+            await loadData()
         }
     }
 

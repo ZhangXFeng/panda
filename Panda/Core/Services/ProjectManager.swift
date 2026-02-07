@@ -49,6 +49,7 @@ final class ProjectManager {
 
     /// 选择项目
     func selectProject(_ project: Project) {
+        currentProject = project
         currentProjectId = project.id
     }
 
@@ -59,6 +60,7 @@ final class ProjectManager {
 
     /// 清除选中的项目
     func clearSelection() {
+        currentProject = nil
         currentProjectId = nil
     }
 
@@ -94,6 +96,23 @@ final class ProjectManager {
             selectProject(firstProject)
         } else {
             clearSelection()
+        }
+    }
+
+    /// 通过 ModelContext 获取当前项目
+    func currentProject(in modelContext: ModelContext) -> Project? {
+        let descriptor = FetchDescriptor<Project>(
+            sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
+        )
+
+        do {
+            let projects = try modelContext.fetch(descriptor)
+            autoSelectIfNeeded(from: projects)
+            let project = currentProject(from: projects)
+            currentProject = project
+            return project
+        } catch {
+            return nil
         }
     }
 }

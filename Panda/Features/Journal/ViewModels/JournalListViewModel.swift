@@ -75,7 +75,7 @@ class JournalListViewModel: ObservableObject {
     // MARK: - Methods
 
     func loadEntries() {
-        guard let currentProject = projectManager.currentProject else {
+        guard let currentProject = projectManager.currentProject(in: modelContext) else {
             entries = []
             return
         }

@@ -19,6 +19,7 @@ class AddProjectViewModel: ObservableObject {
     @Published var area: Double = 100.0
     @Published var startDate: Date = Date()
     @Published var estimatedDuration: Int = 90
+    @Published var totalBudget: String = ""
     @Published var notes: String = ""
     @Published var coverImageData: Data?
     @Published var selectedPhoto: PhotosPickerItem?
@@ -41,7 +42,8 @@ class AddProjectViewModel: ObservableObject {
     var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         area > 0 &&
-        estimatedDuration > 0
+        estimatedDuration > 0 &&
+        !totalBudget.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     var estimatedEndDate: Date {
@@ -85,6 +87,11 @@ class AddProjectViewModel: ObservableObject {
         area = project.area
         startDate = project.startDate
         estimatedDuration = project.estimatedDuration
+        if let budget = project.budget {
+            totalBudget = budget.totalAmount.description
+        } else {
+            totalBudget = ""
+        }
         notes = project.notes
         coverImageData = project.coverImageData
         isActive = project.isActive
@@ -106,13 +113,18 @@ class AddProjectViewModel: ObservableObject {
             return false
         }
 
+        guard let budgetAmount = Decimal(string: totalBudget), budgetAmount > 0 else {
+            showError("请输入有效的总预算")
+            return false
+        }
+
         do {
             if let projectToEdit = projectToEdit {
                 // Edit mode
-                updateExistingProject(projectToEdit)
+                updateExistingProject(projectToEdit, budgetAmount: budgetAmount)
             } else {
                 // Add mode
-                createNewProject()
+                createNewProject(budgetAmount: budgetAmount)
             }
 
             try modelContext.save()
@@ -123,7 +135,7 @@ class AddProjectViewModel: ObservableObject {
         }
     }
 
-    private func createNewProject() {
+    private func createNewProject(budgetAmount: Decimal) {
         let project = Project(
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
             houseType: houseType,
@@ -137,15 +149,15 @@ class AddProjectViewModel: ObservableObject {
 
         modelContext.insert(project)
 
-        // Create default budget if needed
-        if project.budget == nil {
-            let budget = Budget(totalAmount: 0)
-            budget.project = project
-            modelContext.insert(budget)
-        }
+        let budget = Budget(totalAmount: budgetAmount)
+        budget.project = project
+        project.budget = budget
+        modelContext.insert(budget)
+
+        createDefaultPhases(for: project)
     }
 
-    private func updateExistingProject(_ project: Project) {
+    private func updateExistingProject(_ project: Project, budgetAmount: Decimal) {
         project.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         project.houseType = houseType
         project.area = area
@@ -155,6 +167,54 @@ class AddProjectViewModel: ObservableObject {
         project.coverImageData = coverImageData
         project.isActive = isActive
         project.updateTimestamp()
+
+        if let budget = project.budget {
+            budget.updateTotalAmount(budgetAmount)
+        } else {
+            let budget = Budget(totalAmount: budgetAmount)
+            budget.project = project
+            project.budget = budget
+            modelContext.insert(budget)
+        }
+    }
+
+    private func createDefaultPhases(for project: Project) {
+        let phaseTypes: [PhaseType] = [
+            .preparation,
+            .demolition,
+            .plumbing,
+            .masonry,
+            .carpentry,
+            .painting,
+            .installation,
+            .softDecoration,
+            .cleaning,
+            .ventilation
+        ]
+
+        var currentDate = startDate
+        let calendar = Calendar.current
+
+        for phaseType in phaseTypes {
+            let duration = phaseType.estimatedDays
+            guard let endDate = calendar.date(byAdding: .day, value: duration, to: currentDate) else {
+                continue
+            }
+
+            let phase = Phase(
+                name: phaseType.displayName,
+                type: phaseType,
+                sortOrder: phaseType.sortOrder,
+                plannedStartDate: currentDate,
+                plannedEndDate: endDate,
+                notes: phaseType.description
+            )
+
+            modelContext.insert(phase)
+            project.addPhase(phase)
+
+            currentDate = endDate
+        }
     }
 
     private func showError(_ message: String) {
@@ -185,6 +245,7 @@ class AddProjectViewModel: ObservableObject {
         area = 100.0
         startDate = Date()
         estimatedDuration = 90
+        totalBudget = ""
         notes = ""
         coverImageData = nil
         selectedPhoto = nil
