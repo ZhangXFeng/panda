@@ -41,7 +41,26 @@ final class ExpenseListViewModel {
                 monthGroups = try expenseRepository.fetchGroupedByMonth(for: budget)
             }
         } catch {
-            errorMessage = "加载支出记录失败: \(error.localizedDescription)"
+            // Fallback to in-memory filtering if predicate fails on device
+            do {
+                let allExpenses = try expenseRepository.fetchAll(for: budget, sortBy: sortOption)
+                if !searchText.isEmpty {
+                    let keyword = searchText.lowercased()
+                    expenses = allExpenses.filter { expense in
+                        expense.notes.localizedStandardContains(keyword) ||
+                        expense.vendor.localizedStandardContains(keyword)
+                    }
+                } else if let category = selectedCategory {
+                    expenses = allExpenses.filter { $0.category == category }
+                } else {
+                    expenses = allExpenses
+                }
+                monthGroups = []
+                errorMessage = nil
+            } catch {
+                let nsError = error as NSError
+                errorMessage = "加载支出记录失败: \(error.localizedDescription)（\(nsError.domain) \(nsError.code)）"
+            }
         }
 
         isLoading = false

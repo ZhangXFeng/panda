@@ -13,6 +13,7 @@ struct ScheduleOverviewView: View {
     @Environment(ProjectManager.self) private var projectManager
     @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
     @State private var selectedPhase: Phase?
+    @State private var showDisabledPhases = false
 
     /// 当前选中的项目
     private var currentProject: Project? {
@@ -28,7 +29,7 @@ struct ScheduleOverviewView: View {
                         overallProgressCard(project: project)
 
                         // 阶段列表
-                        if project.phases.isEmpty {
+                        if project.phases.filter({ $0.isEnabled }).isEmpty {
                             emptyPhasesState
                         } else {
                             phasesSection(project: project)
@@ -68,7 +69,8 @@ struct ScheduleOverviewView: View {
                         Text("已完成阶段")
                             .font(.captionRegular)
                             .foregroundColor(.textSecondary)
-                        Text("\(project.phases.filter { $0.isCompleted }.count)/\(project.phases.count)")
+                        let enabled = project.phases.filter { $0.isEnabled }
+                        Text("\(enabled.filter { $0.isCompleted }.count)/\(enabled.count)")
                             .font(.bodyMedium)
                     }
 
@@ -88,16 +90,32 @@ struct ScheduleOverviewView: View {
     }
 
     private func phasesSection(project: Project) -> some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
+        let enabledPhases = project.phases.filter { $0.isEnabled }
+        let disabledPhases = project.phases.filter { !$0.isEnabled }
+        let phasesToShow = showDisabledPhases ? project.phases : enabledPhases
+
+        return VStack(alignment: .leading, spacing: Spacing.md) {
             Text("装修阶段")
                 .font(.titleSmall)
                 .padding(.horizontal, Spacing.sm)
 
-            ForEach(project.phases.sorted(by: Phase.sortBySortOrder)) { phase in
+            ForEach(phasesToShow.sorted(by: Phase.sortBySortOrder)) { phase in
                 PhaseCard(phase: phase)
                     .onTapGesture {
                         selectedPhase = phase
                     }
+            }
+
+            if !disabledPhases.isEmpty {
+                Button {
+                    showDisabledPhases.toggle()
+                } label: {
+                    Text(showDisabledPhases ? "隐藏已禁用阶段" : "显示已禁用阶段 (\(disabledPhases.count))")
+                        .font(.captionMedium)
+                        .foregroundColor(.textSecondary)
+                        .padding(.vertical, Spacing.xs)
+                }
+                .frame(maxWidth: .infinity)
             }
         }
     }
@@ -147,7 +165,7 @@ struct PhaseCard: View {
                     statusBadge
                 }
 
-                if !phase.isCompleted {
+                if phase.isEnabled && !phase.isCompleted {
                     ProgressBar(progress: phase.progress, height: 6)
 
                     HStack {
@@ -186,7 +204,15 @@ struct PhaseCard: View {
 
     private var statusBadge: some View {
         Group {
-            if phase.isCompleted {
+            if !phase.isEnabled {
+                Text("已禁用")
+                    .font(.captionMedium)
+                    .foregroundColor(.textHint)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+                    .background(Color.bgSecondary)
+                    .cornerRadius(CornerRadius.sm)
+            } else if phase.isCompleted {
                 Text("已完成")
                     .font(.captionMedium)
                     .foregroundColor(.success)

@@ -36,14 +36,25 @@ struct PandaApp: App {
 
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false,
-                allowsSave: true
+                isStoredInMemoryOnly: false
             )
 
-            modelContainer = try ModelContainer(
-                for: schema,
-                configurations: [modelConfiguration]
-            )
+            do {
+                modelContainer = try ModelContainer(
+                    for: schema,
+                    configurations: [modelConfiguration]
+                )
+            } catch {
+                // 开发期兜底：使用内存数据库避免启动崩溃
+                let inMemoryConfig = ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: true
+                )
+                modelContainer = try ModelContainer(
+                    for: schema,
+                    configurations: [inMemoryConfig]
+                )
+            }
 
             print("✅ SwiftData 模型容器初始化成功")
         } catch {
@@ -60,4 +71,5 @@ struct PandaApp: App {
                 .environment(projectManager)
         }
     }
+
 }

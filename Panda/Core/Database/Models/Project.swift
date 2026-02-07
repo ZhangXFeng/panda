@@ -119,10 +119,11 @@ final class Project {
 
     /// 整体进度百分比（基于已完成阶段）
     var overallProgress: Double {
-        guard !phases.isEmpty else { return 0 }
+        let enabledPhases = phases.filter { $0.isEnabled }
+        guard !enabledPhases.isEmpty else { return 0 }
 
-        let completedPhases = phases.filter { $0.isCompleted }.count
-        return Double(completedPhases) / Double(phases.count)
+        let completedPhases = enabledPhases.filter { $0.isCompleted }.count
+        return Double(completedPhases) / Double(enabledPhases.count)
     }
 
     /// 是否延期

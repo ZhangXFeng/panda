@@ -63,6 +63,7 @@ class PhaseDetailViewModel: ObservableObject {
     }
 
     var taskProgress: Double {
+        guard phase.isEnabled else { return 0 }
         guard !tasks.isEmpty else { return 0 }
         let completed = completedTasks.count
         return Double(completed) / Double(tasks.count)
@@ -143,6 +144,16 @@ class PhaseDetailViewModel: ObservableObject {
             try modelContext.save()
         } catch {
             print("Failed to start phase: \(error)")
+        }
+    }
+
+    func setPhaseEnabled(_ isEnabled: Bool) {
+        phase.isEnabled = isEnabled
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to update phase enabled: \(error)")
         }
     }
 }

@@ -55,10 +55,9 @@ final class ExpenseRepository {
     /// 获取指定分类的支出记录
     func fetchExpenses(for budget: Budget, category: ExpenseCategory) throws -> [Expense] {
         let budgetId = budget.id
-        let targetRawValue = category.rawValue
         let descriptor = FetchDescriptor<Expense>(
             predicate: #Predicate<Expense> { expense in
-                expense.budget?.id == budgetId && expense.category.rawValue == targetRawValue
+                expense.budget?.id == budgetId && expense.category == category
             },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )

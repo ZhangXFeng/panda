@@ -43,6 +43,9 @@ final class Phase {
     /// 是否已完成
     var isCompleted: Bool
 
+    /// 是否启用阶段
+    var isEnabled: Bool
+
     /// 创建时间
     var createdAt: Date
 
@@ -76,6 +79,7 @@ final class Phase {
         self.plannedEndDate = plannedEndDate
         self.notes = notes
         self.isCompleted = false
+        self.isEnabled = true
         self.createdAt = Date()
         self.updatedAt = Date()
         self.tasks = []
@@ -149,6 +153,7 @@ final class Phase {
 
     /// 阶段进度（基于任务完成情况）
     var progress: Double {
+        guard isEnabled else { return 0.0 }
         guard !tasks.isEmpty else { return isCompleted ? 1.0 : 0.0 }
 
         let completedTasks = tasks.filter { $0.status == .completed }.count
@@ -157,12 +162,14 @@ final class Phase {
 
     /// 已完成任务数
     var completedTasksCount: Int {
-        tasks.filter { $0.status == .completed }.count
+        guard isEnabled else { return 0 }
+        return tasks.filter { $0.status == .completed }.count
     }
 
     /// 总任务数
     var totalTasksCount: Int {
-        tasks.count
+        guard isEnabled else { return 0 }
+        return tasks.count
     }
 }
 

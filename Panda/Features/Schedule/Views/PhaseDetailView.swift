@@ -9,9 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct PhaseDetailView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel: PhaseDetailViewModel
     @State private var showingAddTask = false
+    @State private var showingEditPhase = false
+    @State private var showingDeletePhase = false
     @State private var selectedTask: Task?
 
     let phase: Phase
@@ -51,6 +54,26 @@ struct PhaseDetailView: View {
                         Image(systemName: "plus")
                     }
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button {
+                            showingEditPhase = true
+                        } label: {
+                            Label("编辑阶段", systemImage: "pencil")
+                        }
+
+                        if phase.type == .custom {
+                            Button(role: .destructive) {
+                                showingDeletePhase = true
+                            } label: {
+                                Label("删除阶段", systemImage: "trash")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
             }
             .safeAreaInset(edge: .top) {
                 phaseProgressCard
@@ -64,10 +87,24 @@ struct PhaseDetailView: View {
                     }
             }
             .sheet(item: $selectedTask) { task in
-                TaskDetailView(task: task)
+                AddTaskView(modelContext: modelContext, task: task)
                     .onDisappear {
                         viewModel.loadTasks()
                     }
+            }
+            .sheet(isPresented: $showingEditPhase) {
+                EditPhaseView(phase: phase)
+                    .onDisappear {
+                        viewModel.loadTasks()
+                    }
+            }
+            .alert("删除阶段", isPresented: $showingDeletePhase) {
+                Button("取消", role: .cancel) { }
+                Button("删除", role: .destructive) {
+                    deletePhase()
+                }
+            } message: {
+                Text("确定要删除此阶段吗？此操作将删除该阶段下所有任务，且不可撤销。")
             }
             .onAppear {
                 viewModel.loadTasks()
@@ -80,6 +117,14 @@ struct PhaseDetailView: View {
     private var phaseProgressCard: some View {
         CardView {
             VStack(spacing: Spacing.md) {
+                Toggle("启用此阶段", isOn: Binding(
+                    get: { phase.isEnabled },
+                    set: { newValue in
+                        viewModel.setPhaseEnabled(newValue)
+                    }
+                ))
+                .tint(Colors.primary)
+
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("任务进度")
@@ -208,6 +253,17 @@ struct PhaseDetailView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+    }
+
+    private func deletePhase() {
+        modelContext.delete(phase)
+
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            print("Failed to delete phase: \(error)")
+        }
     }
 }
 

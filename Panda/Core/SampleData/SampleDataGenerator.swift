@@ -16,24 +16,25 @@ enum SampleDataGenerator {
     /// 生成所有测试数据
     @MainActor
     static func generateAllSampleData(in context: ModelContext) {
-        // 清除现有数据
         clearAllData(in: context)
 
-        // 创建多个测试项目
-        let projects = [
-            createMyHomeProject(),
-            createParentsHomeProject(),
-            createRentalApartmentProject(),
-            createNewlywedHomeProject()
+        let bundles = [
+            makeMyHomeBundle(),
+            makeParentsHomeBundle(),
+            makeRentalApartmentBundle(),
+            makeNewlywedHomeBundle()
         ]
 
-        // 插入项目
-        for project in projects {
-            context.insert(project)
+        for bundle in bundles {
+            insert(bundle: bundle, into: context)
         }
 
-        try? context.save()
-        print("✅ 测试数据生成完成，共创建 \(projects.count) 个项目")
+        do {
+            try context.save()
+            print("✅ 测试数据生成完成，共创建 \(bundles.count) 个项目")
+        } catch {
+            print("⚠️ 测试数据保存失败: \(error)")
+        }
     }
 
     /// 清除所有数据
@@ -54,11 +55,29 @@ enum SampleDataGenerator {
         }
     }
 
+    // MARK: - Bundles
+
+    private struct ProjectBundle {
+        let project: Project
+        let budget: Budget
+        let expenses: [Expense]
+        let phases: [Phase]
+        let tasks: [Task]
+        let materials: [Material]
+        let contacts: [Contact]
+        let journals: [JournalEntry]
+    }
+
+    private enum PhaseStatus {
+        case pending
+        case inProgress
+        case completed
+    }
+
     // MARK: - Project 1: 我的家（进行中，50%进度）
 
-    private static func createMyHomeProject() -> Project {
-        let startDate = Calendar.current.date(byAdding: .day, value: -45, to: Date())!
-
+    private static func makeMyHomeBundle() -> ProjectBundle {
+        let startDate = dateByAdding(days: -45)
         let project = Project(
             name: "我的家",
             houseType: "三室两厅",
@@ -69,390 +88,431 @@ enum SampleDataGenerator {
             isActive: true
         )
 
-        // 添加预算
-        let budget = Budget(totalAmount: 180000, warningThreshold: 0.8)
-        budget.project = project
-        project.budget = budget
+        let budget = makeBudget(amount: 180000, warning: 0.8, project: project)
 
-        // 添加支出记录
-        let expenses = createExpensesForMyHome(startDate: startDate)
-        for expense in expenses {
-            budget.addExpense(expense)
-        }
-
-        // 添加装修阶段
-        let phases = createPhasesForMyHome(startDate: startDate)
-        for phase in phases {
-            project.addPhase(phase)
-        }
-
-        // 添加联系人
-        let contacts = createContactsForMyHome()
-        for contact in contacts {
-            project.addContact(contact)
-        }
-
-        return project
-    }
-
-    private static func createExpensesForMyHome(startDate: Date) -> [Expense] {
-        var expenses: [Expense] = []
-
-        // 设计费
-        expenses.append(Expense(
-            amount: 8000,
-            category: .design,
-            date: startDate,
-            notes: "全屋设计方案"
-        ))
-
-        // 拆改费用
-        expenses.append(Expense(
-            amount: 5500,
-            category: .demolition,
-            date: Calendar.current.date(byAdding: .day, value: 15, to: startDate)!,
-            notes: "客厅阳台打通"
-        ))
-
-        // 水电
-        expenses.append(Expense(
-            amount: 20000,
-            category: .plumbing,
-            date: Calendar.current.date(byAdding: .day, value: 20, to: startDate)!,
-            notes: "全屋水电改造（材料+人工）"
-        ))
-
-        // 瓷砖/地板
-        expenses.append(Expense(
-            amount: 15000,
-            category: .flooring,
-            date: Calendar.current.date(byAdding: .day, value: 30, to: startDate)!,
-            notes: "客厅+厨卫瓷砖"
-        ))
-
-        // 泥瓦
-        expenses.append(Expense(
-            amount: 9000,
-            category: .masonry,
-            date: Calendar.current.date(byAdding: .day, value: 35, to: startDate)!,
-            notes: "贴砖人工费"
-        ))
-
-        // 木工
-        expenses.append(Expense(
-            amount: 18000,
-            category: .carpentry,
-            date: Calendar.current.date(byAdding: .day, value: 40, to: startDate)!,
-            notes: "吊顶+柜体板材"
-        ))
-
-        return expenses
-    }
-
-    private static func createPhasesForMyHome(startDate: Date) -> [Phase] {
-        var phases: [Phase] = []
-        var currentDate = startDate
-
-        // 前期准备 - 已完成
-        let preparation = Phase(
-            name: "前期准备",
-            type: .preparation,
-            sortOrder: 1,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 14, to: currentDate)!
-        )
-        preparation.actualStartDate = currentDate
-        preparation.actualEndDate = Calendar.current.date(byAdding: .day, value: 12, to: currentDate)!
-        preparation.isCompleted = true
-        phases.append(preparation)
-
-        currentDate = Calendar.current.date(byAdding: .day, value: 14, to: currentDate)!
-
-        // 拆改阶段 - 已完成
-        let demolition = Phase(
-            name: "拆改阶段",
-            type: .demolition,
-            sortOrder: 2,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 5, to: currentDate)!
-        )
-        demolition.actualStartDate = currentDate
-        demolition.actualEndDate = Calendar.current.date(byAdding: .day, value: 4, to: currentDate)!
-        demolition.isCompleted = true
-        phases.append(demolition)
-
-        currentDate = Calendar.current.date(byAdding: .day, value: 5, to: currentDate)!
-
-        // 水电改造 - 已完成
-        let plumbing = Phase(
-            name: "水电改造",
-            type: .plumbing,
-            sortOrder: 3,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 10, to: currentDate)!
-        )
-        plumbing.actualStartDate = currentDate
-        plumbing.actualEndDate = Calendar.current.date(byAdding: .day, value: 10, to: currentDate)!
-        plumbing.isCompleted = true
-        phases.append(plumbing)
-
-        currentDate = Calendar.current.date(byAdding: .day, value: 10, to: currentDate)!
-
-        // 泥瓦工程 - 进行中
-        let masonry = Phase(
-            name: "泥瓦工程",
-            type: .masonry,
-            sortOrder: 4,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
-        )
-        masonry.actualStartDate = currentDate
-        phases.append(masonry)
-
-        currentDate = Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
-
-        // 木工工程 - 待开始
-        let carpentry = Phase(
-            name: "木工工程",
-            type: .carpentry,
-            sortOrder: 5,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
-        )
-        phases.append(carpentry)
-
-        currentDate = Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
-
-        // 油漆工程 - 待开始
-        let painting = Phase(
-            name: "油漆工程",
-            type: .painting,
-            sortOrder: 6,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 10, to: currentDate)!
-        )
-        phases.append(painting)
-
-        return phases
-    }
-
-    private static func createContactsForMyHome() -> [Contact] {
-        [
-            Contact(name: "王师傅", role: .foreman, phoneNumber: "138-1234-5678", notes: "整体施工负责人"),
-            Contact(name: "李设计师", role: .designer, phoneNumber: "139-8765-4321", notes: "室内设计"),
-            Contact(name: "张电工", role: .electrician, phoneNumber: "137-1111-2222", notes: "水电改造")
+        let expenses = [
+            makeExpense(8000, .design, -40, "全屋设计方案", "张设计工作室", .deposit, budget),
+            makeExpense(5500, .demolition, -32, "客厅阳台打通", "李师傅施工队", .fullPayment, budget),
+            makeExpense(20000, .plumbing, -25, "水电改造（材料+人工）", "水电工程公司", .deposit, budget),
+            makeExpense(15000, .flooring, -18, "客厅+厨卫瓷砖", "马可波罗", .deposit, budget),
+            makeExpense(9000, .masonry, -12, "贴砖人工费", "王师傅瓦工队", .fullPayment, budget)
         ]
+
+        let phases = makeDefaultPhases(for: project)
+        let phaseByType = phasesByType(phases)
+
+        applyPhaseStatus(phaseByType[.preparation], .completed)
+        applyPhaseStatus(phaseByType[.demolition], .completed)
+        applyPhaseStatus(phaseByType[.plumbing], .inProgress)
+
+        let tasks: [Task] = [
+            makeTask("确定设计方案", .completed, phaseByType[.preparation]),
+            makeTask("签订施工合同", .completed, phaseByType[.preparation]),
+            makeTask("水电定位", .completed, phaseByType[.plumbing]),
+            makeTask("材料进场", .inProgress, phaseByType[.plumbing]),
+            makeTask("隐蔽工程验收", .pending, phaseByType[.plumbing])
+        ]
+
+        let materials = [
+            makeMaterial("马可波罗瓷砖", "马可波罗", "800x800", 89.9, 120, "块", .ordered, "客厅", project),
+            makeMaterial("多乐士乳胶漆", "多乐士", "20L", 480, 3, "桶", .pending, "全屋", project)
+        ]
+
+        let contacts = [
+            makeContact("张设计师", .designer, "13800001111", "设计工作室", project),
+            makeContact("李工长", .foreman, "13900002222", "施工队", project)
+        ]
+
+        let journals = [
+            makeJournal("开工第一天", "水电定位完成，沟通顺利。", ["开工", "水电"], -25, project),
+            makeJournal("瓦工进场", "瓷砖到货，现场开始贴砖。", ["瓦工", "材料"], -12, project)
+        ]
+
+        return ProjectBundle(
+            project: project,
+            budget: budget,
+            expenses: expenses,
+            phases: phases,
+            tasks: tasks,
+            materials: materials,
+            contacts: contacts,
+            journals: journals
+        )
     }
 
-    // MARK: - Project 2: 爸妈的房子（刚开始，10%进度）
+    // MARK: - Project 2: 爸妈的房子（刚开始）
 
-    private static func createParentsHomeProject() -> Project {
-        let startDate = Calendar.current.date(byAdding: .day, value: -10, to: Date())!
-
+    private static func makeParentsHomeBundle() -> ProjectBundle {
+        let startDate = dateByAdding(days: -7)
         let project = Project(
             name: "爸妈的房子",
             houseType: "两室一厅",
-            area: 85,
+            area: 78,
             startDate: startDate,
-            estimatedDuration: 60,
-            notes: "适老化装修，注重安全和便利性",
-            isActive: true
+            estimatedDuration: 75,
+            notes: "老房翻新，注重实用",
+            isActive: false
         )
 
-        // 添加预算
-        let budget = Budget(totalAmount: 100000, warningThreshold: 0.8)
-        budget.project = project
-        project.budget = budget
+        let budget = makeBudget(amount: 120000, warning: 0.75, project: project)
 
-        // 添加少量支出
-        budget.addExpense(Expense(
-            amount: 5000,
-            category: .design,
-            date: startDate,
-            notes: "设计方案费"
-        ))
+        let expenses = [
+            makeExpense(3000, .design, -5, "初步设计方案", "张设计工作室", .deposit, budget)
+        ]
 
-        budget.addExpense(Expense(
-            amount: 2000,
-            category: .other,
-            date: Calendar.current.date(byAdding: .day, value: 3, to: startDate)!,
-            notes: "前期勘测费"
-        ))
+        let phases = makeDefaultPhases(for: project)
+        let phaseByType = phasesByType(phases)
+        applyPhaseStatus(phaseByType[.preparation], .inProgress)
 
-        // 添加阶段 - 只有前期准备进行中
-        let preparation = Phase(
-            name: "前期准备",
-            type: .preparation,
-            sortOrder: 1,
-            plannedStartDate: startDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 14, to: startDate)!
+        let tasks: [Task] = [
+            makeTask("量房", .completed, phaseByType[.preparation]),
+            makeTask("预算评估", .inProgress, phaseByType[.preparation])
+        ]
+
+        let materials = [
+            makeMaterial("墙面涂料", "立邦", "15L", 320, 2, "桶", .pending, "客厅", project)
+        ]
+
+        let contacts = [
+            makeContact("王师傅", .foreman, "13700003333", "施工队", project)
+        ]
+
+        let journals = [
+            makeJournal("量房完成", "初步沟通了布局与预算。", ["量房", "沟通"], -5, project)
+        ]
+
+        return ProjectBundle(
+            project: project,
+            budget: budget,
+            expenses: expenses,
+            phases: phases,
+            tasks: tasks,
+            materials: materials,
+            contacts: contacts,
+            journals: journals
         )
-        preparation.actualStartDate = startDate
-        project.addPhase(preparation)
-
-        // 添加后续阶段（待开始）
-        var currentDate = Calendar.current.date(byAdding: .day, value: 14, to: startDate)!
-
-        for phaseType in [PhaseType.demolition, .plumbing, .masonry, .painting, .installation] {
-            let phase = Phase(
-                name: phaseType.displayName,
-                type: phaseType,
-                sortOrder: phaseType.sortOrder,
-                plannedStartDate: currentDate,
-                plannedEndDate: Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
-            )
-            project.addPhase(phase)
-            currentDate = Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
-        }
-
-        return project
     }
 
-    // MARK: - Project 3: 出租公寓（即将完工，85%进度）
+    // MARK: - Project 3: 出租公寓（即将完工）
 
-    private static func createRentalApartmentProject() -> Project {
-        let startDate = Calendar.current.date(byAdding: .day, value: -75, to: Date())!
-
+    private static func makeRentalApartmentBundle() -> ProjectBundle {
+        let startDate = dateByAdding(days: -80)
         let project = Project(
             name: "出租公寓",
             houseType: "一室一厅",
-            area: 50,
+            area: 45,
             startDate: startDate,
-            estimatedDuration: 45,
-            notes: "简装出租，控制成本",
-            isActive: true
+            estimatedDuration: 85,
+            notes: "简装快装，控制成本",
+            isActive: false
         )
 
-        // 添加预算（接近预警线）
-        let budget = Budget(totalAmount: 50000, warningThreshold: 0.8)
-        budget.project = project
-        project.budget = budget
+        let budget = makeBudget(amount: 80000, warning: 0.85, project: project)
 
-        // 添加支出（已花费约 78%）
-        let expenseData: [(Decimal, ExpenseCategory, String)] = [
-            (3000, .design, "简单设计"),
-            (2000, .demolition, "局部拆改"),
-            (9000, .plumbing, "水电改造"),
-            (6000, .flooring, "瓷砖"),
-            (4000, .masonry, "贴砖人工"),
-            (8000, .carpentry, "木工"),
-            (4000, .painting, "乳胶漆"),
-            (3000, .other, "杂项")
+        let expenses = [
+            makeExpense(4000, .design, -70, "简易设计", "张设计工作室", .fullPayment, budget),
+            makeExpense(9000, .demolition, -65, "拆旧与清运", "拆改队", .fullPayment, budget),
+            makeExpense(15000, .plumbing, -55, "水电改造", "水电工程公司", .deposit, budget),
+            makeExpense(12000, .masonry, -40, "贴砖与找平", "王师傅瓦工队", .fullPayment, budget),
+            makeExpense(18000, .cabinets, -15, "橱柜与门安装", "欧派橱柜", .deposit, budget)
         ]
 
-        var dayOffset = 0
-        for (amount, category, note) in expenseData {
-            budget.addExpense(Expense(
-                amount: amount,
-                category: category,
-                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!,
-                notes: note
-            ))
-            dayOffset += 7
+        let phases = makeDefaultPhases(for: project)
+        let phaseByType = phasesByType(phases)
+        applyPhaseStatus(phaseByType[.preparation], .completed)
+        applyPhaseStatus(phaseByType[.demolition], .completed)
+        applyPhaseStatus(phaseByType[.plumbing], .completed)
+        applyPhaseStatus(phaseByType[.masonry], .completed)
+        applyPhaseStatus(phaseByType[.carpentry], .completed)
+        applyPhaseStatus(phaseByType[.painting], .completed)
+        applyPhaseStatus(phaseByType[.installation], .inProgress)
+
+        // 禁用通风阶段（出租房不做长时间通风）
+        if let ventilation = phaseByType[.ventilation] {
+            ventilation.isEnabled = false
         }
 
-        // 添加已完成的阶段
-        var currentDate = startDate
+        let tasks: [Task] = [
+            makeTask("安装橱柜", .inProgress, phaseByType[.installation]),
+            makeTask("安装门套", .pending, phaseByType[.installation])
+        ]
 
-        for phaseType in [PhaseType.preparation, .demolition, .plumbing, .masonry, .carpentry, .painting] {
-            let phase = Phase(
-                name: phaseType.displayName,
-                type: phaseType,
-                sortOrder: phaseType.sortOrder,
-                plannedStartDate: currentDate,
-                plannedEndDate: Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
-            )
-            phase.actualStartDate = currentDate
-            phase.actualEndDate = Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays - 1, to: currentDate)!
-            phase.isCompleted = true
-            project.addPhase(phase)
-            currentDate = Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
-        }
+        let materials = [
+            makeMaterial("复合地板", "圣象", "12mm", 128, 40, "㎡", .delivered, "卧室", project),
+            makeMaterial("厨房橱柜", "欧派", "定制", 12000, 1, "套", .ordered, "厨房", project)
+        ]
 
-        // 安装阶段 - 进行中
-        let installation = Phase(
-            name: "安装阶段",
-            type: .installation,
-            sortOrder: 7,
-            plannedStartDate: currentDate,
-            plannedEndDate: Calendar.current.date(byAdding: .day, value: 10, to: currentDate)!
+        let contacts = [
+            makeContact("刘工长", .foreman, "13600004444", "施工队", project)
+        ]
+
+        let journals = [
+            makeJournal("安装阶段", "橱柜进场，准备安装。", ["安装", "橱柜"], -15, project)
+        ]
+
+        return ProjectBundle(
+            project: project,
+            budget: budget,
+            expenses: expenses,
+            phases: phases,
+            tasks: tasks,
+            materials: materials,
+            contacts: contacts,
+            journals: journals
         )
-        installation.actualStartDate = currentDate
-        project.addPhase(installation)
-
-        return project
     }
 
     // MARK: - Project 4: 新婚小窝（已完工）
 
-    private static func createNewlywedHomeProject() -> Project {
-        let startDate = Calendar.current.date(byAdding: .month, value: -4, to: Date())!
-
+    private static func makeNewlywedHomeBundle() -> ProjectBundle {
+        let startDate = dateByAdding(days: -120)
         let project = Project(
             name: "新婚小窝",
-            houseType: "两室两厅",
-            area: 95,
+            houseType: "三室两厅",
+            area: 110,
             startDate: startDate,
-            estimatedDuration: 75,
-            notes: "婚房装修，浪漫温馨风格，已顺利完工入住",
+            estimatedDuration: 100,
+            notes: "温馨舒适，已完工入住",
             isActive: false
         )
 
-        // 添加预算（略超预算）
-        let budget = Budget(totalAmount: 150000, warningThreshold: 0.8)
-        budget.project = project
-        project.budget = budget
+        let budget = makeBudget(amount: 160000, warning: 0.8, project: project)
 
-        // 添加完整的支出记录
-        let expenseData: [(Decimal, ExpenseCategory, String)] = [
-            (12000, .design, "全屋设计"),
-            (4000, .demolition, "拆改工程"),
-            (25000, .plumbing, "水电改造"),
-            (18000, .flooring, "全屋瓷砖"),
-            (12000, .masonry, "泥瓦人工"),
-            (25000, .carpentry, "定制柜体"),
-            (10000, .painting, "油漆工程"),
-            (15000, .doors, "室内门+入户门"),
-            (12000, .cabinets, "橱柜"),
-            (6000, .bathroom, "卫浴洁具"),
-            (8000, .lighting, "灯具"),
-            (8000, .furniture, "部分家具")
+        let expenses = [
+            makeExpense(10000, .design, -110, "设计方案", "张设计工作室", .deposit, budget),
+            makeExpense(8000, .demolition, -100, "拆改工程", "拆改队", .fullPayment, budget),
+            makeExpense(22000, .plumbing, -90, "水电改造", "水电工程公司", .deposit, budget),
+            makeExpense(16000, .masonry, -70, "贴砖工程", "王师傅瓦工队", .fullPayment, budget),
+            makeExpense(12000, .painting, -50, "墙面乳胶漆", "多乐士专卖店", .fullPayment, budget),
+            makeExpense(20000, .cabinets, -30, "安装阶段", "欧派橱柜", .deposit, budget),
+            makeExpense(15000, .furniture, -10, "软装家具", "宜家", .fullPayment, budget)
         ]
 
-        var dayOffset = 0
-        for (amount, category, note) in expenseData {
-            budget.addExpense(Expense(
-                amount: amount,
-                category: category,
-                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!,
-                notes: note
-            ))
-            dayOffset += 5
+        let phases = makeDefaultPhases(for: project)
+        for phase in phases {
+            applyPhaseStatus(phase, .completed)
         }
 
-        // 添加全部已完成的阶段
-        var currentDate = startDate
-
-        let allPhaseTypes: [PhaseType] = [
-            .preparation, .demolition, .plumbing, .masonry,
-            .carpentry, .painting, .installation, .softDecoration, .cleaning
+        let tasks: [Task] = [
+            makeTask("验收完成", .completed, phases.last)
         ]
 
-        for phaseType in allPhaseTypes {
+        let materials = [
+            makeMaterial("定制衣柜", "索菲亚", "定制", 20000, 1, "套", .delivered, "主卧", project)
+        ]
+
+        let contacts = [
+            makeContact("陈设计师", .designer, "13500005555", "设计工作室", project),
+            makeContact("赵工长", .foreman, "13400006666", "施工队", project)
+        ]
+
+        let journals = [
+            makeJournal("完工入住", "终于完工啦，准备入住。", ["完工", "入住"], -1, project)
+        ]
+
+        return ProjectBundle(
+            project: project,
+            budget: budget,
+            expenses: expenses,
+            phases: phases,
+            tasks: tasks,
+            materials: materials,
+            contacts: contacts,
+            journals: journals
+        )
+    }
+
+    // MARK: - Builders
+
+    private static func insert(bundle: ProjectBundle, into context: ModelContext) {
+        context.insert(bundle.project)
+        context.insert(bundle.budget)
+        bundle.expenses.forEach { context.insert($0) }
+        bundle.phases.forEach { context.insert($0) }
+        bundle.tasks.forEach { context.insert($0) }
+        bundle.materials.forEach { context.insert($0) }
+        bundle.contacts.forEach { context.insert($0) }
+        bundle.journals.forEach { context.insert($0) }
+    }
+
+    private static func makeBudget(amount: Decimal, warning: Double, project: Project) -> Budget {
+        let budget = Budget(totalAmount: amount, warningThreshold: warning)
+        budget.project = project
+        project.budget = budget
+        return budget
+    }
+
+    private static func makeExpense(
+        _ amount: Decimal,
+        _ category: ExpenseCategory,
+        _ daysOffset: Int,
+        _ notes: String,
+        _ vendor: String,
+        _ paymentType: PaymentType,
+        _ budget: Budget
+    ) -> Expense {
+        let expense = Expense(
+            amount: amount,
+            category: category,
+            date: dateByAdding(days: daysOffset),
+            notes: notes,
+            paymentType: paymentType,
+            vendor: vendor
+        )
+        expense.budget = budget
+        budget.addExpense(expense)
+        return expense
+    }
+
+    private static func makeDefaultPhases(for project: Project) -> [Phase] {
+        let phaseTypes: [PhaseType] = [
+            .preparation,
+            .demolition,
+            .plumbing,
+            .masonry,
+            .carpentry,
+            .painting,
+            .installation,
+            .softDecoration,
+            .cleaning,
+            .ventilation
+        ]
+
+        var currentDate = project.startDate
+        var phases: [Phase] = []
+
+        for phaseType in phaseTypes {
+            let duration = phaseType.estimatedDays
+            let endDate = Calendar.current.date(byAdding: .day, value: duration, to: currentDate) ?? currentDate
+
             let phase = Phase(
                 name: phaseType.displayName,
                 type: phaseType,
                 sortOrder: phaseType.sortOrder,
                 plannedStartDate: currentDate,
-                plannedEndDate: Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
+                plannedEndDate: endDate,
+                notes: phaseType.description
             )
-            phase.actualStartDate = currentDate
-            phase.actualEndDate = Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
-            phase.isCompleted = true
+
+            phase.project = project
             project.addPhase(phase)
-            currentDate = Calendar.current.date(byAdding: .day, value: phaseType.estimatedDays, to: currentDate)!
+            phases.append(phase)
+
+            currentDate = endDate
         }
 
-        return project
+        return phases
+    }
+
+    private static func phasesByType(_ phases: [Phase]) -> [PhaseType: Phase] {
+        var result: [PhaseType: Phase] = [:]
+        for phase in phases {
+            result[phase.type] = phase
+        }
+        return result
+    }
+
+    private static func applyPhaseStatus(_ phase: Phase?, _ status: PhaseStatus) {
+        guard let phase = phase else { return }
+        switch status {
+        case .pending:
+            break
+        case .inProgress:
+            phase.actualStartDate = phase.plannedStartDate
+        case .completed:
+            phase.actualStartDate = phase.plannedStartDate
+            phase.actualEndDate = phase.plannedEndDate
+            phase.isCompleted = true
+        }
+    }
+
+    private static func makeTask(_ title: String, _ status: TaskStatus, _ phase: Phase?) -> Task {
+        let task = Task(
+            title: title,
+            taskDescription: "",
+            status: status,
+            assignee: "",
+            assigneeContact: "",
+            plannedStartDate: phase?.plannedStartDate,
+            plannedEndDate: phase?.plannedEndDate
+        )
+
+        if status == .completed {
+            task.actualCompletionDate = phase?.plannedEndDate ?? Date()
+        }
+
+        if let phase = phase {
+            task.phase = phase
+            phase.addTask(task)
+            phase.syncStatusFromTasks()
+        }
+
+        return task
+    }
+
+    private static func makeMaterial(
+        _ name: String,
+        _ brand: String,
+        _ specification: String,
+        _ unitPrice: Decimal,
+        _ quantity: Double,
+        _ unit: String,
+        _ status: MaterialStatus,
+        _ location: String,
+        _ project: Project
+    ) -> Material {
+        let material = Material(
+            name: name,
+            brand: brand,
+            specification: specification,
+            unitPrice: unitPrice,
+            quantity: quantity,
+            unit: unit,
+            status: status,
+            location: location
+        )
+        material.project = project
+        project.addMaterial(material)
+        return material
+    }
+
+    private static func makeContact(
+        _ name: String,
+        _ role: ContactRole,
+        _ phone: String,
+        _ company: String,
+        _ project: Project
+    ) -> Contact {
+        let contact = Contact(
+            name: name,
+            role: role,
+            phoneNumber: phone,
+            company: company
+        )
+        contact.project = project
+        project.addContact(contact)
+        return contact
+    }
+
+    private static func makeJournal(
+        _ title: String,
+        _ content: String,
+        _ tags: [String],
+        _ daysOffset: Int,
+        _ project: Project
+    ) -> JournalEntry {
+        let entry = JournalEntry(
+            title: title,
+            content: content,
+            tags: tags,
+            date: dateByAdding(days: daysOffset)
+        )
+        entry.project = project
+        project.addJournalEntry(entry)
+        return entry
+    }
+
+    private static func dateByAdding(days: Int) -> Date {
+        Calendar.current.date(byAdding: .day, value: days, to: Date()) ?? Date()
     }
 }

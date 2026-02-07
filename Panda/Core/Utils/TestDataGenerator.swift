@@ -107,6 +107,7 @@ class TestDataGenerator {
                 paymentType: amount > 10000 ? .deposit : .fullPayment,
                 vendor: vendor
             )
+            expense.budget = budget
             budget.addExpense(expense)
             return expense
         }
@@ -143,6 +144,7 @@ class TestDataGenerator {
                 plannedEndDate: endDate,
                 notes: type.description
             )
+            phase.project = project
 
             if isCompleted {
                 phase.actualStartDate = startDate
@@ -178,7 +180,7 @@ class TestDataGenerator {
         ]
 
         return materialsData.map { name, brand, spec, price, qty, unit, status, location in
-            Material(
+            let material = Material(
                 name: name,
                 brand: brand,
                 specification: spec,
@@ -188,6 +190,8 @@ class TestDataGenerator {
                 status: status,
                 location: location
             )
+            material.project = project
+            return material
         }
     }
 
@@ -215,6 +219,7 @@ class TestDataGenerator {
                 rating: rating
             )
             contact.notes = notes
+            contact.project = project
             return contact
         }
     }
@@ -232,12 +237,14 @@ class TestDataGenerator {
         ]
 
         return journalsData.map { title, content, tags, daysAgo in
-            JournalEntry(
+            let entry = JournalEntry(
                 title: title,
                 content: content,
                 tags: tags,
                 date: Calendar.current.date(byAdding: .day, value: daysAgo, to: Date())!
             )
+            entry.project = project
+            return entry
         }
     }
 }

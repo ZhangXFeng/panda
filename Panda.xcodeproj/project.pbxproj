@@ -74,6 +74,7 @@
 		A10001010000000000000065 /* PhaseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000065 /* PhaseDetailViewModel.swift */; };
 		A10001010000000000000066 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000066 /* AddTaskView.swift */; };
 		A10001010000000000000067 /* PhaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000067 /* PhaseDetailView.swift */; };
+		A10001010000000000000082 /* EditPhaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000082 /* EditPhaseView.swift */; };
 		A10001010000000000000068 /* ScheduleOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000068 /* ScheduleOverviewView.swift */; };
 		A10001010000000000000069 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000069 /* TaskDetailView.swift */; };
 		A10001010000000000000070 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000070 /* CardView.swift */; };
@@ -158,6 +159,7 @@
 		A20001010000000000000065 /* PhaseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseDetailViewModel.swift; sourceTree = "<group>"; };
 		A20001010000000000000066 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		A20001010000000000000067 /* PhaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000082 /* EditPhaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhaseView.swift; sourceTree = "<group>"; };
 		A20001010000000000000068 /* ScheduleOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleOverviewView.swift; sourceTree = "<group>"; };
 		A20001010000000000000069 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		A20001010000000000000070 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -559,6 +561,7 @@
 			children = (
 				A20001010000000000000066 /* AddTaskView.swift */,
 				A20001010000000000000067 /* PhaseDetailView.swift */,
+				A20001010000000000000082 /* EditPhaseView.swift */,
 				A20001010000000000000068 /* ScheduleOverviewView.swift */,
 				A20001010000000000000069 /* TaskDetailView.swift */,
 			);
@@ -766,6 +769,7 @@
 				A10001010000000000000065 /* PhaseDetailViewModel.swift in Sources */,
 				A10001010000000000000066 /* AddTaskView.swift in Sources */,
 				A10001010000000000000067 /* PhaseDetailView.swift in Sources */,
+				A10001010000000000000082 /* EditPhaseView.swift in Sources */,
 				A10001010000000000000068 /* ScheduleOverviewView.swift in Sources */,
 				A10001010000000000000069 /* TaskDetailView.swift in Sources */,
 				A10001010000000000000070 /* CardView.swift in Sources */,

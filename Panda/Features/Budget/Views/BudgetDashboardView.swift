@@ -278,7 +278,7 @@ struct BudgetDashboardView: View {
                     .padding(.vertical, Spacing.md)
                 }
             } else {
-                ForEach(viewModel.categoryStatistics.filter { $0.amount > 0 }.prefix(5), id: \.category) { stat in
+                ForEach(viewModel.categoryStatistics.filter { $0.amount > 0 }, id: \.category) { stat in
                     CategoryCard(statistic: stat)
                 }
             }
