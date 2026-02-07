@@ -11,49 +11,49 @@ extension Color {
     // MARK: - Primary Colors
 
     /// 主色调 - 温暖木色
-    static let primaryWood = Color(hex: "#D4A574")
+    static let primaryWood = Color(light: "#D4A574", dark: "#E0B88A")
 
     /// 主色调 - 深色
-    static let primaryDark = Color(hex: "#A67C52")
+    static let primaryDark = Color(light: "#A67C52", dark: "#C49A6C")
 
     // MARK: - Status Colors
 
     /// 成功色 - 绿色
-    static let success = Color(hex: "#4CAF50")
+    static let success = Color(light: "#4CAF50", dark: "#66BB6A")
 
     /// 警告色 - 橙色
-    static let warning = Color(hex: "#FF9800")
+    static let warning = Color(light: "#FF9800", dark: "#FFA726")
 
     /// 错误色 - 红色
-    static let error = Color(hex: "#F44336")
+    static let error = Color(light: "#F44336", dark: "#EF5350")
 
     /// 信息色 - 蓝色
-    static let info = Color(hex: "#2196F3")
+    static let info = Color(light: "#2196F3", dark: "#42A5F5")
 
     // MARK: - Neutral Colors
 
     /// 主要文字颜色
-    static let textPrimary = Color(hex: "#212121")
+    static let textPrimary = Color(light: "#212121", dark: "#F5F5F5")
 
     /// 次要文字颜色
-    static let textSecondary = Color(hex: "#757575")
+    static let textSecondary = Color(light: "#757575", dark: "#B0B0B0")
 
     /// 提示文字颜色
-    static let textHint = Color(hex: "#9E9E9E")
+    static let textHint = Color(light: "#9E9E9E", dark: "#808080")
 
     /// 分割线颜色
-    static let divider = Color(hex: "#E0E0E0")
+    static let divider = Color(light: "#E0E0E0", dark: "#3A3A3A")
 
     // MARK: - Background Colors
 
     /// 主背景色
-    static let bgPrimary = Color(hex: "#FFFFFF")
+    static let bgPrimary = Color(light: "#FFFFFF", dark: "#1C1C1E")
 
     /// 次背景色
-    static let bgSecondary = Color(hex: "#F5F5F5")
+    static let bgSecondary = Color(light: "#F5F5F5", dark: "#2C2C2E")
 
     /// 卡片背景色
-    static let bgCard = Color(hex: "#FAFAFA")
+    static let bgCard = Color(light: "#FAFAFA", dark: "#2C2C2E")
 
     // MARK: - Helper
 
@@ -82,6 +82,15 @@ extension Color {
             blue: Double(b) / 255,
             opacity: 1
         )
+    }
+
+    /// 创建支持 light/dark 模式的动态颜色
+    init(light: String, dark: String) {
+        self.init(uiColor: UIColor { traits in
+            traits.userInterfaceStyle == .dark
+                ? UIColor(Color(hex: dark))
+                : UIColor(Color(hex: light))
+        })
     }
 }
 
