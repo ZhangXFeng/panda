@@ -268,13 +268,6 @@ struct MaterialDetailView: View {
 // MARK: - Preview
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
-
     let material = Material(
         name: "马可波罗瓷砖",
         brand: "马可波罗",
@@ -285,10 +278,7 @@ struct MaterialDetailView: View {
         status: .delivered,
         location: "客厅"
     )
-    material.notes = "客厅地砖，需要预留损耗5%"
-    material.project = project
-    context.insert(material)
 
-    return MaterialDetailView(material: material)
-        .modelContainer(container)
+    MaterialDetailView(material: material)
+        .modelContainer(for: [Project.self, Material.self], inMemory: true)
 }

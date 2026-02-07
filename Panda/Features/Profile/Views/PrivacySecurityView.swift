@@ -254,10 +254,6 @@ struct PrivacySecurityView: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: AppSettings.self, configurations: config)
-    let context = container.mainContext
-
-    let settings = AppSettings()
-    context.insert(settings)
 
     return NavigationStack {
         PrivacySecurityView()

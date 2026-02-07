@@ -444,7 +444,6 @@ private struct RelatedItemRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Phase.self, Material.self, Contact.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
     let project = Project(
         name: "我的新家",
@@ -454,18 +453,6 @@ private struct RelatedItemRow: View {
         estimatedDuration: 90,
         notes: "这是我的第一个装修项目，希望一切顺利！"
     )
-    context.insert(project)
-
-    // Add some phases
-    let phases = [
-        Phase(name: "拆除", type: .demolition, sortOrder: 1, plannedStartDate: Date(), plannedEndDate: Date().addingTimeInterval(86400 * 3)),
-        Phase(name: "水电改造", type: .plumbing, sortOrder: 2, plannedStartDate: Date(), plannedEndDate: Date().addingTimeInterval(86400 * 7))
-    ]
-    for phase in phases {
-        phase.project = project
-        context.insert(phase)
-    }
-    phases[0].isCompleted = true
 
     return NavigationStack {
         ProjectDetailView(project: project)

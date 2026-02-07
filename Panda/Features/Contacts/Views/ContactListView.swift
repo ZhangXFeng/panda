@@ -54,7 +54,7 @@ struct ContactListView: View {
                     }
             }
             .sheet(item: $selectedContact) { contact in
-                ContactDetailView(contact: contact, modelContext: modelContext)
+                ContactDetailView(contact: contact)
                     .onDisappear {
                         viewModel.loadContacts()
                     }
@@ -288,30 +288,8 @@ private struct ContactRow: View {
 // MARK: - Preview
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: config)
-    let context = container.mainContext
+    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample contacts
-    let contacts = [
-        Contact(name: "张工长", role: .foreman, phoneNumber: "13800138001", company: "专业装修队", rating: 5, isRecommended: true),
-        Contact(name: "李设计师", role: .designer, phoneNumber: "13800138002", company: "品牌设计公司", rating: 5),
-        Contact(name: "王电工", role: .electrician, phoneNumber: "13800138003", rating: 4),
-        Contact(name: "陈材料商", role: .vendor, phoneNumber: "13800138004", company: "建材市场", wechatID: "chencailiao")
-    ]
-
-    for contact in contacts {
-        contact.project = project
-        context.insert(contact)
-    }
-
-    return ContactListView(modelContext: context)
+    ContactListView(modelContext: container.mainContext)
+        .modelContainer(container)
 }

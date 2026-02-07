@@ -125,36 +125,13 @@ struct AddContactView: View {
 // MARK: - Preview
 
 #Preview("Add Contact") {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: config)
-    let context = container.mainContext
+    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-    ProjectManager.shared.currentProject = project
-
-    return AddContactView(modelContext: context)
+    AddContactView(modelContext: container.mainContext)
+        .modelContainer(container)
 }
 
 #Preview("Edit Contact") {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: config)
-    let context = container.mainContext
-
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample contact
     let contact = Contact(
         name: "张工长",
         role: .foreman,
@@ -166,8 +143,7 @@ struct AddContactView: View {
         notes: "工作认真负责，价格合理",
         isRecommended: true
     )
-    contact.project = project
-    context.insert(contact)
 
-    return AddContactView(modelContext: context, contact: contact)
+    AddContactView(modelContext: ModelContext(try! ModelContainer(for: Project.self, Contact.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))), contact: contact)
+        .modelContainer(for: [Project.self, Contact.self], inMemory: true)
 }

@@ -247,25 +247,9 @@ struct ShareSheet: UIViewControllerRepresentable {
 // MARK: - Preview
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0,
-        startDate: Date(),
-        estimatedDuration: 90
-    )
-    context.insert(project)
-
-    let manager = ProjectManager()
-    manager.selectProject(project)
-
-    return NavigationStack {
+    NavigationStack {
         DataExportView()
-            .modelContainer(container)
-            .environment(manager)
     }
+    .modelContainer(for: [Project.self], inMemory: true)
+    .environment(ProjectManager())
 }

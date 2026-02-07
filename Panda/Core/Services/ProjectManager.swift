@@ -11,7 +11,15 @@ import SwiftData
 /// 项目管理器 - 管理当前选中的项目
 @Observable
 final class ProjectManager {
+    // MARK: - Singleton
+
+    /// 共享实例
+    static let shared = ProjectManager()
+
     // MARK: - Properties
+
+    /// 当前选中的项目（仅用于 Preview）
+    var currentProject: Project?
 
     /// 当前选中项目的 ID
     private(set) var currentProjectId: UUID? {

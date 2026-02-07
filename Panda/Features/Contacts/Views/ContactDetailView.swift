@@ -411,19 +411,6 @@ private struct InfoRow: View {
 // MARK: - Preview
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Contact.self, configurations: config)
-    let context = container.mainContext
-
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample contact
     let contact = Contact(
         name: "张工长",
         role: .foreman,
@@ -435,9 +422,7 @@ private struct InfoRow: View {
         notes: "工作认真负责，价格合理，已合作多个项目，值得推荐。",
         isRecommended: true
     )
-    contact.project = project
-    context.insert(contact)
 
-    return ContactDetailView(contact: contact)
-        .modelContainer(container)
+    ContactDetailView(contact: contact)
+        .modelContainer(for: [Project.self, Contact.self], inMemory: true)
 }

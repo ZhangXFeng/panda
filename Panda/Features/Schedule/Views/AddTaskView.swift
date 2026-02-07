@@ -80,7 +80,7 @@ struct AddTaskView: View {
                         }
                     }
                     .onChange(of: viewModel.selectedPhotos) { _, _ in
-                        Task {
+                        _Concurrency.Task {
                             await viewModel.loadSelectedPhotos()
                         }
                     }
@@ -181,10 +181,6 @@ struct AddTaskView: View {
 #Preview("Add Task") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
 
     let phase = Phase(
         name: "水电改造",
@@ -193,29 +189,14 @@ struct AddTaskView: View {
         plannedStartDate: Date(),
         plannedEndDate: Date().addingTimeInterval(86400 * 15)
     )
-    phase.project = project
-    context.insert(phase)
 
-    return AddTaskView(modelContext: context, phase: phase)
+    return AddTaskView(modelContext: container.mainContext, phase: phase)
+        .modelContainer(container)
 }
 
 #Preview("Edit Task") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
-
-    let phase = Phase(
-        name: "水电改造",
-        type: .plumbing,
-        sortOrder: 1,
-        plannedStartDate: Date(),
-        plannedEndDate: Date().addingTimeInterval(86400 * 15)
-    )
-    phase.project = project
-    context.insert(phase)
 
     let task = Task(
         title: "水管布线",
@@ -226,8 +207,7 @@ struct AddTaskView: View {
         plannedStartDate: Date(),
         plannedEndDate: Date().addingTimeInterval(86400 * 3)
     )
-    task.phase = phase
-    context.insert(task)
 
-    return AddTaskView(modelContext: context, task: task)
+    return AddTaskView(modelContext: container.mainContext, task: task)
+        .modelContainer(container)
 }

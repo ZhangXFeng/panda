@@ -107,8 +107,8 @@ struct ProjectSettingsView: View {
                 // Budget Settings
                 if let budget = project.budget {
                     Section {
-                        InfoRow(label: "总预算", value: formatCurrency(budget.totalBudget))
-                        InfoRow(label: "已支出", value: formatCurrency(budget.totalSpent))
+                        InfoRow(label: "总预算", value: formatCurrency(budget.totalAmount))
+                        InfoRow(label: "已支出", value: formatCurrency(budget.totalExpenses))
                         InfoRow(label: "剩余", value: formatCurrency(budget.remainingBudget), valueColor: budget.remainingBudget >= 0 ? Colors.success : Colors.error)
                     } header: {
                         Text("预算信息")
@@ -245,28 +245,10 @@ private struct DataRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Budget.self, Phase.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0,
-        startDate: Date().addingTimeInterval(-86400 * 30),
-        estimatedDuration: 90,
-        notes: "这是一个测试项目"
-    )
-    context.insert(project)
-
-    let budget = Budget(totalBudget: 150000)
-    budget.project = project
-    context.insert(budget)
-
-    let manager = ProjectManager()
-    manager.selectProject(project)
 
     return NavigationStack {
         ProjectSettingsView()
             .modelContainer(container)
-            .environment(manager)
+            .environment(ProjectManager())
     }
 }

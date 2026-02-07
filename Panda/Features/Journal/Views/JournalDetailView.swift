@@ -268,37 +268,12 @@ extension Int: Identifiable {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample entry
     let entry = JournalEntry(
         title: "开工大吉！新家装修正式启动",
-        content: """
-        今天是个好日子，我的新家装修正式开工了！
-
-        早上8点，工长带着他的团队准时到达，一共6个人。大家先做了简单的开工仪式，工长说这是行业传统，图个吉利。
-
-        仪式结束后，工人们就开始干活了。主要是拆除工作：
-        1. 拆除老旧的墙纸和地板
-        2. 敲掉厨房和卫生间的旧瓷砖
-        3. 拆除阳台的老窗户
-
-        看着原来的老房子一点点被拆掉，心情很复杂。既期待新家的样子，又有点不舍这些陪伴多年的东西。
-
-        不过想到很快就能住进温馨舒适的新家，还是很兴奋的！加油！
-        """,
+        content: "今天是个好日子，我的新家装修正式开工了！",
         tags: ["拆除", "开工", "进展"]
     )
-    entry.project = project
-    context.insert(entry)
 
     return JournalDetailView(entry: entry)
         .modelContainer(container)

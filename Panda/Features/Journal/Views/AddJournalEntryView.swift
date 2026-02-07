@@ -57,7 +57,7 @@ struct AddJournalEntryView: View {
                         }
                     }
                     .onChange(of: viewModel.selectedPhotos) { _, _ in
-                        Task {
+                        _Concurrency.Task {
                             await viewModel.loadSelectedPhotos()
                         }
                     }
@@ -276,41 +276,21 @@ struct FlowLayout: Layout {
 #Preview("Add Entry") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-    ProjectManager.shared.currentProject = project
-
-    return AddJournalEntryView(modelContext: context)
+    return AddJournalEntryView(modelContext: container.mainContext)
+        .modelContainer(container)
 }
 
 #Preview("Edit Entry") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample entry
     let entry = JournalEntry(
         title: "开工大吉",
         content: "今天正式开工了！工长带着团队过来，先做了开工仪式，然后开始拆除工作。",
         tags: ["拆除", "开工"]
     )
-    entry.project = project
-    context.insert(entry)
 
-    return AddJournalEntryView(modelContext: context, entry: entry)
+    return AddJournalEntryView(modelContext: container.mainContext, entry: entry)
+        .modelContainer(container)
 }

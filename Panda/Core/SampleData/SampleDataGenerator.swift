@@ -101,48 +101,48 @@ enum SampleDataGenerator {
         expenses.append(Expense(
             amount: 8000,
             category: .design,
-            note: "全屋设计方案",
-            date: startDate
+            date: startDate,
+            notes: "全屋设计方案"
         ))
 
         // 拆改费用
         expenses.append(Expense(
             amount: 5500,
             category: .demolition,
-            note: "客厅阳台打通",
-            date: Calendar.current.date(byAdding: .day, value: 15, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 15, to: startDate)!,
+            notes: "客厅阳台打通"
         ))
 
         // 水电
         expenses.append(Expense(
             amount: 20000,
             category: .plumbing,
-            note: "全屋水电改造（材料+人工）",
-            date: Calendar.current.date(byAdding: .day, value: 20, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 20, to: startDate)!,
+            notes: "全屋水电改造（材料+人工）"
         ))
 
         // 瓷砖/地板
         expenses.append(Expense(
             amount: 15000,
             category: .flooring,
-            note: "客厅+厨卫瓷砖",
-            date: Calendar.current.date(byAdding: .day, value: 30, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 30, to: startDate)!,
+            notes: "客厅+厨卫瓷砖"
         ))
 
         // 泥瓦
         expenses.append(Expense(
             amount: 9000,
             category: .masonry,
-            note: "贴砖人工费",
-            date: Calendar.current.date(byAdding: .day, value: 35, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 35, to: startDate)!,
+            notes: "贴砖人工费"
         ))
 
         // 木工
         expenses.append(Expense(
             amount: 18000,
             category: .carpentry,
-            note: "吊顶+柜体板材",
-            date: Calendar.current.date(byAdding: .day, value: 40, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 40, to: startDate)!,
+            notes: "吊顶+柜体板材"
         ))
 
         return expenses
@@ -266,15 +266,15 @@ enum SampleDataGenerator {
         budget.addExpense(Expense(
             amount: 5000,
             category: .design,
-            note: "设计方案费",
-            date: startDate
+            date: startDate,
+            notes: "设计方案费"
         ))
 
         budget.addExpense(Expense(
             amount: 2000,
             category: .other,
-            note: "前期勘测费",
-            date: Calendar.current.date(byAdding: .day, value: 3, to: startDate)!
+            date: Calendar.current.date(byAdding: .day, value: 3, to: startDate)!,
+            notes: "前期勘测费"
         ))
 
         // 添加阶段 - 只有前期准备进行中
@@ -342,8 +342,8 @@ enum SampleDataGenerator {
             budget.addExpense(Expense(
                 amount: amount,
                 category: category,
-                note: note,
-                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!
+                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!,
+                notes: note
             ))
             dayOffset += 7
         }
@@ -420,8 +420,8 @@ enum SampleDataGenerator {
             budget.addExpense(Expense(
                 amount: amount,
                 category: category,
-                note: note,
-                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!
+                date: Calendar.current.date(byAdding: .day, value: dayOffset, to: startDate)!,
+                notes: note
             ))
             dayOffset += 5
         }

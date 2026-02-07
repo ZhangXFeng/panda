@@ -98,7 +98,7 @@ struct PhaseDetailView: View {
                         .foregroundColor(Colors.primary)
                 }
 
-                ProgressBar(value: viewModel.taskProgress)
+                ProgressBar(progress: viewModel.taskProgress)
 
                 if !viewModel.overdueTasks.isEmpty {
                     HStack {
@@ -281,10 +281,6 @@ private struct TaskRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
 
     let phase = Phase(
         name: "水电改造",
@@ -293,21 +289,7 @@ private struct TaskRow: View {
         plannedStartDate: Date(),
         plannedEndDate: Date().addingTimeInterval(86400 * 15)
     )
-    phase.project = project
-    context.insert(phase)
 
-    // Create sample tasks
-    let tasks = [
-        Task(title: "水管布线", status: .completed, assignee: "张师傅"),
-        Task(title: "电线布线", status: .inProgress, assignee: "李师傅"),
-        Task(title: "开关插座定位", status: .pending, assignee: "王师傅"),
-        Task(title: "打压测试", status: .pending)
-    ]
-
-    for task in tasks {
-        task.phase = phase
-        context.insert(task)
-    }
-
-    return PhaseDetailView(phase: phase, modelContext: context)
+    return PhaseDetailView(phase: phase, modelContext: container.mainContext)
+        .modelContainer(container)
 }

@@ -1,0 +1,982 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001010000000000000001 /* PandaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000001 /* PandaApp.swift */; };
+		A10001010000000000000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000002 /* MainTabView.swift */; };
+		A10001010000000000000003 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000003 /* ExpenseCategory.swift */; };
+		A10001010000000000000004 /* MaterialStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000004 /* MaterialStatus.swift */; };
+		A10001010000000000000005 /* PhaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000005 /* PhaseType.swift */; };
+		A10001010000000000000006 /* TaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000006 /* TaskStatus.swift */; };
+		A10001010000000000000007 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000007 /* AppSettings.swift */; };
+		A10001010000000000000008 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000008 /* Budget.swift */; };
+		A10001010000000000000009 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000009 /* Contact.swift */; };
+		A10001010000000000000010 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000010 /* Document.swift */; };
+		A10001010000000000000011 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000011 /* Expense.swift */; };
+		A10001010000000000000012 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000012 /* JournalEntry.swift */; };
+		A10001010000000000000013 /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000013 /* Material.swift */; };
+		A10001010000000000000014 /* Phase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000014 /* Phase.swift */; };
+		A10001010000000000000015 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000015 /* Project.swift */; };
+		A10001010000000000000016 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000016 /* Task.swift */; };
+		A10001010000000000000017 /* BudgetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000017 /* BudgetRepository.swift */; };
+		A10001010000000000000018 /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000018 /* ExpenseRepository.swift */; };
+		A10001010000000000000019 /* SampleDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000019 /* SampleDataGenerator.swift */; };
+		A10001010000000000000020 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000020 /* ProjectManager.swift */; };
+		A10001010000000000000021 /* RecordExpenseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000021 /* RecordExpenseUseCase.swift */; };
+		A10001010000000000000022 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000022 /* TestDataGenerator.swift */; };
+		A10001010000000000000023 /* AddExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000023 /* AddExpenseViewModel.swift */; };
+		A10001010000000000000024 /* BudgetDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000024 /* BudgetDashboardViewModel.swift */; };
+		A10001010000000000000025 /* ExpenseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000025 /* ExpenseListViewModel.swift */; };
+		A10001010000000000000026 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000026 /* AddExpenseView.swift */; };
+		A10001010000000000000027 /* BudgetDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000027 /* BudgetDashboardView.swift */; };
+		A10001010000000000000028 /* AddContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000028 /* AddContactViewModel.swift */; };
+		A10001010000000000000029 /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000029 /* ContactListViewModel.swift */; };
+		A10001010000000000000030 /* AddContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000030 /* AddContactView.swift */; };
+		A10001010000000000000031 /* ContactDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000031 /* ContactDetailView.swift */; };
+		A10001010000000000000032 /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000032 /* ContactListView.swift */; };
+		A10001010000000000000033 /* AddDocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000033 /* AddDocumentViewModel.swift */; };
+		A10001010000000000000034 /* DocumentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000034 /* DocumentListViewModel.swift */; };
+		A10001010000000000000035 /* AddDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000035 /* AddDocumentView.swift */; };
+		A10001010000000000000036 /* DocumentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000036 /* DocumentDetailView.swift */; };
+		A10001010000000000000037 /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000037 /* DocumentListView.swift */; };
+		A10001010000000000000038 /* CreateProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000038 /* CreateProjectView.swift */; };
+		A10001010000000000000039 /* HomeDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000039 /* HomeDashboardView.swift */; };
+		A10001010000000000000040 /* AddJournalEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000040 /* AddJournalEntryViewModel.swift */; };
+		A10001010000000000000041 /* JournalListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000041 /* JournalListViewModel.swift */; };
+		A10001010000000000000042 /* AddJournalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000042 /* AddJournalEntryView.swift */; };
+		A10001010000000000000043 /* JournalDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000043 /* JournalDetailView.swift */; };
+		A10001010000000000000044 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000044 /* JournalListView.swift */; };
+		A10001010000000000000045 /* AddMaterialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000045 /* AddMaterialViewModel.swift */; };
+		A10001010000000000000046 /* MaterialListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000046 /* MaterialListViewModel.swift */; };
+		A10001010000000000000047 /* AddMaterialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000047 /* AddMaterialView.swift */; };
+		A10001010000000000000048 /* MaterialCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000048 /* MaterialCalculatorView.swift */; };
+		A10001010000000000000049 /* MaterialDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000049 /* MaterialDetailView.swift */; };
+		A10001010000000000000050 /* MaterialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000050 /* MaterialListView.swift */; };
+		A10001010000000000000051 /* DataExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000051 /* DataExportView.swift */; };
+		A10001010000000000000052 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000052 /* GeneralSettingsView.swift */; };
+		A10001010000000000000053 /* HelpFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000053 /* HelpFeedbackView.swift */; };
+		A10001010000000000000054 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000054 /* NotificationSettingsView.swift */; };
+		A10001010000000000000055 /* PrivacySecurityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000055 /* PrivacySecurityView.swift */; };
+		A10001010000000000000056 /* ProfileDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000056 /* ProfileDashboardView.swift */; };
+		A10001010000000000000057 /* ProjectSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000057 /* ProjectSettingsView.swift */; };
+		A10001010000000000000058 /* AddProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000058 /* AddProjectViewModel.swift */; };
+		A10001010000000000000059 /* ProjectListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000059 /* ProjectListViewModel.swift */; };
+		A10001010000000000000060 /* AddProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000060 /* AddProjectView.swift */; };
+		A10001010000000000000061 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000061 /* ProjectDetailView.swift */; };
+		A10001010000000000000062 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000062 /* ProjectListView.swift */; };
+		A10001010000000000000063 /* ProjectStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000063 /* ProjectStatisticsView.swift */; };
+		A10001010000000000000064 /* AddTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000064 /* AddTaskViewModel.swift */; };
+		A10001010000000000000065 /* PhaseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000065 /* PhaseDetailViewModel.swift */; };
+		A10001010000000000000066 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000066 /* AddTaskView.swift */; };
+		A10001010000000000000067 /* PhaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000067 /* PhaseDetailView.swift */; };
+		A10001010000000000000068 /* ScheduleOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000068 /* ScheduleOverviewView.swift */; };
+		A10001010000000000000069 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000069 /* TaskDetailView.swift */; };
+		A10001010000000000000070 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000070 /* CardView.swift */; };
+		A10001010000000000000071 /* FilterChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000071 /* FilterChip.swift */; };
+		A10001010000000000000072 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000072 /* ProgressBar.swift */; };
+		A10001010000000000000073 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000073 /* ProgressRing.swift */; };
+		A10001010000000000000074 /* ProjectSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000074 /* ProjectSelectorView.swift */; };
+		A10001010000000000000075 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000075 /* Colors.swift */; };
+		A10001010000000000000076 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000076 /* Fonts.swift */; };
+		A10001010000000000000077 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000077 /* Spacing.swift */; };
+		A10001010000000000000078 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000078 /* Assets.xcassets */; };
+		A10001010000000000000079 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20001010000000000000079 /* Preview Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20001010000000000000001 /* PandaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PandaApp.swift; sourceTree = "<group>"; };
+		A20001010000000000000002 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		A20001010000000000000003 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
+		A20001010000000000000004 /* MaterialStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialStatus.swift; sourceTree = "<group>"; };
+		A20001010000000000000005 /* PhaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseType.swift; sourceTree = "<group>"; };
+		A20001010000000000000006 /* TaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatus.swift; sourceTree = "<group>"; };
+		A20001010000000000000007 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A20001010000000000000008 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
+		A20001010000000000000009 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		A20001010000000000000010 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		A20001010000000000000011 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		A20001010000000000000012 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		A20001010000000000000013 /* Material.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
+		A20001010000000000000014 /* Phase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase.swift; sourceTree = "<group>"; };
+		A20001010000000000000015 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		A20001010000000000000016 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		A20001010000000000000017 /* BudgetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetRepository.swift; sourceTree = "<group>"; };
+		A20001010000000000000018 /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
+		A20001010000000000000019 /* SampleDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataGenerator.swift; sourceTree = "<group>"; };
+		A20001010000000000000020 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
+		A20001010000000000000021 /* RecordExpenseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordExpenseUseCase.swift; sourceTree = "<group>"; };
+		A20001010000000000000022 /* TestDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataGenerator.swift; sourceTree = "<group>"; };
+		A20001010000000000000023 /* AddExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000024 /* BudgetDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDashboardViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000025 /* ExpenseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000026 /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		A20001010000000000000027 /* BudgetDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDashboardView.swift; sourceTree = "<group>"; };
+		A20001010000000000000028 /* AddContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000029 /* ContactListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000030 /* AddContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactView.swift; sourceTree = "<group>"; };
+		A20001010000000000000031 /* ContactDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000032 /* ContactListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListView.swift; sourceTree = "<group>"; };
+		A20001010000000000000033 /* AddDocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDocumentViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000034 /* DocumentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000035 /* AddDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDocumentView.swift; sourceTree = "<group>"; };
+		A20001010000000000000036 /* DocumentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000037 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
+		A20001010000000000000038 /* CreateProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProjectView.swift; sourceTree = "<group>"; };
+		A20001010000000000000039 /* HomeDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardView.swift; sourceTree = "<group>"; };
+		A20001010000000000000040 /* AddJournalEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000041 /* JournalListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000042 /* AddJournalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryView.swift; sourceTree = "<group>"; };
+		A20001010000000000000043 /* JournalDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000044 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		A20001010000000000000045 /* AddMaterialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMaterialViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000046 /* MaterialListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000047 /* AddMaterialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMaterialView.swift; sourceTree = "<group>"; };
+		A20001010000000000000048 /* MaterialCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialCalculatorView.swift; sourceTree = "<group>"; };
+		A20001010000000000000049 /* MaterialDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000050 /* MaterialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialListView.swift; sourceTree = "<group>"; };
+		A20001010000000000000051 /* DataExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportView.swift; sourceTree = "<group>"; };
+		A20001010000000000000052 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		A20001010000000000000053 /* HelpFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpFeedbackView.swift; sourceTree = "<group>"; };
+		A20001010000000000000054 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		A20001010000000000000055 /* PrivacySecurityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySecurityView.swift; sourceTree = "<group>"; };
+		A20001010000000000000056 /* ProfileDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDashboardView.swift; sourceTree = "<group>"; };
+		A20001010000000000000057 /* ProjectSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsView.swift; sourceTree = "<group>"; };
+		A20001010000000000000058 /* AddProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000059 /* ProjectListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000060 /* AddProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectView.swift; sourceTree = "<group>"; };
+		A20001010000000000000061 /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000062 /* ProjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListView.swift; sourceTree = "<group>"; };
+		A20001010000000000000063 /* ProjectStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatisticsView.swift; sourceTree = "<group>"; };
+		A20001010000000000000064 /* AddTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000065 /* PhaseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseDetailViewModel.swift; sourceTree = "<group>"; };
+		A20001010000000000000066 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		A20001010000000000000067 /* PhaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000068 /* ScheduleOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleOverviewView.swift; sourceTree = "<group>"; };
+		A20001010000000000000069 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
+		A20001010000000000000070 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		A20001010000000000000071 /* FilterChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChip.swift; sourceTree = "<group>"; };
+		A20001010000000000000072 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		A20001010000000000000073 /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
+		A20001010000000000000074 /* ProjectSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSelectorView.swift; sourceTree = "<group>"; };
+		A20001010000000000000075 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A20001010000000000000076 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		A20001010000000000000077 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		A20001010000000000000078 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20001010000000000000079 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A30001010000000000000001 /* Panda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Panda.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A40001010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A50001010000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000002 /* Panda */,
+				A50001010000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A50001010000000000000002 /* Panda */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000004 /* App */,
+				A50001010000000000000005 /* Core */,
+				A50001010000000000000006 /* Features */,
+				A50001010000000000000007 /* Shared */,
+				A50001010000000000000008 /* Resources */,
+			);
+			path = Panda;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A30001010000000000000001 /* Panda.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000001 /* PandaApp.swift */,
+				A20001010000000000000002 /* MainTabView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000005 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000009 /* Database */,
+				A50001010000000000000012 /* Repositories */,
+				A50001010000000000000013 /* SampleData */,
+				A50001010000000000000014 /* Services */,
+				A50001010000000000000015 /* UseCases */,
+				A50001010000000000000016 /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000006 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000017 /* Budget */,
+				A50001010000000000000020 /* Contacts */,
+				A50001010000000000000023 /* Documents */,
+				A50001010000000000000026 /* Home */,
+				A50001010000000000000027 /* Journal */,
+				A50001010000000000000030 /* Materials */,
+				A50001010000000000000033 /* Profile */,
+				A50001010000000000000034 /* Projects */,
+				A50001010000000000000037 /* Schedule */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000007 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000040 /* Components */,
+				A50001010000000000000041 /* Styles */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000078 /* Assets.xcassets */,
+				A50001010000000000000042 /* Preview Content */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000009 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000010 /* Enums */,
+				A50001010000000000000011 /* Models */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000010 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000003 /* ExpenseCategory.swift */,
+				A20001010000000000000004 /* MaterialStatus.swift */,
+				A20001010000000000000005 /* PhaseType.swift */,
+				A20001010000000000000006 /* TaskStatus.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000011 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000007 /* AppSettings.swift */,
+				A20001010000000000000008 /* Budget.swift */,
+				A20001010000000000000009 /* Contact.swift */,
+				A20001010000000000000010 /* Document.swift */,
+				A20001010000000000000011 /* Expense.swift */,
+				A20001010000000000000012 /* JournalEntry.swift */,
+				A20001010000000000000013 /* Material.swift */,
+				A20001010000000000000014 /* Phase.swift */,
+				A20001010000000000000015 /* Project.swift */,
+				A20001010000000000000016 /* Task.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000012 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000017 /* BudgetRepository.swift */,
+				A20001010000000000000018 /* ExpenseRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000013 /* SampleData */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000019 /* SampleDataGenerator.swift */,
+			);
+			path = SampleData;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000014 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000020 /* ProjectManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000015 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000043 /* Budget */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000016 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000022 /* TestDataGenerator.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000017 /* Budget */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000018 /* ViewModels */,
+				A50001010000000000000019 /* Views */,
+			);
+			path = Budget;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000018 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000023 /* AddExpenseViewModel.swift */,
+				A20001010000000000000024 /* BudgetDashboardViewModel.swift */,
+				A20001010000000000000025 /* ExpenseListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000019 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000026 /* AddExpenseView.swift */,
+				A20001010000000000000027 /* BudgetDashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000020 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000021 /* ViewModels */,
+				A50001010000000000000022 /* Views */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000021 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000028 /* AddContactViewModel.swift */,
+				A20001010000000000000029 /* ContactListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000022 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000030 /* AddContactView.swift */,
+				A20001010000000000000031 /* ContactDetailView.swift */,
+				A20001010000000000000032 /* ContactListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000023 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000024 /* ViewModels */,
+				A50001010000000000000025 /* Views */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000024 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000033 /* AddDocumentViewModel.swift */,
+				A20001010000000000000034 /* DocumentListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000025 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000035 /* AddDocumentView.swift */,
+				A20001010000000000000036 /* DocumentDetailView.swift */,
+				A20001010000000000000037 /* DocumentListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000026 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000044 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000027 /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000028 /* ViewModels */,
+				A50001010000000000000029 /* Views */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000028 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000040 /* AddJournalEntryViewModel.swift */,
+				A20001010000000000000041 /* JournalListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000029 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000042 /* AddJournalEntryView.swift */,
+				A20001010000000000000043 /* JournalDetailView.swift */,
+				A20001010000000000000044 /* JournalListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000030 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000031 /* ViewModels */,
+				A50001010000000000000032 /* Views */,
+			);
+			path = Materials;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000031 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000045 /* AddMaterialViewModel.swift */,
+				A20001010000000000000046 /* MaterialListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000032 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000047 /* AddMaterialView.swift */,
+				A20001010000000000000048 /* MaterialCalculatorView.swift */,
+				A20001010000000000000049 /* MaterialDetailView.swift */,
+				A20001010000000000000050 /* MaterialListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000033 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000045 /* Views */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000034 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000035 /* ViewModels */,
+				A50001010000000000000036 /* Views */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000035 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000058 /* AddProjectViewModel.swift */,
+				A20001010000000000000059 /* ProjectListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000036 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000060 /* AddProjectView.swift */,
+				A20001010000000000000061 /* ProjectDetailView.swift */,
+				A20001010000000000000062 /* ProjectListView.swift */,
+				A20001010000000000000063 /* ProjectStatisticsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000037 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				A50001010000000000000038 /* ViewModels */,
+				A50001010000000000000039 /* Views */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000038 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000064 /* AddTaskViewModel.swift */,
+				A20001010000000000000065 /* PhaseDetailViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000039 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000066 /* AddTaskView.swift */,
+				A20001010000000000000067 /* PhaseDetailView.swift */,
+				A20001010000000000000068 /* ScheduleOverviewView.swift */,
+				A20001010000000000000069 /* TaskDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000040 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000070 /* CardView.swift */,
+				A20001010000000000000071 /* FilterChip.swift */,
+				A20001010000000000000072 /* ProgressBar.swift */,
+				A20001010000000000000073 /* ProgressRing.swift */,
+				A20001010000000000000074 /* ProjectSelectorView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000041 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000075 /* Colors.swift */,
+				A20001010000000000000076 /* Fonts.swift */,
+				A20001010000000000000077 /* Spacing.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000042 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000079 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A50001010000000000000043 /* Budget */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000021 /* RecordExpenseUseCase.swift */,
+			);
+			path = Budget;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000044 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000038 /* CreateProjectView.swift */,
+				A20001010000000000000039 /* HomeDashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A50001010000000000000045 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20001010000000000000051 /* DataExportView.swift */,
+				A20001010000000000000052 /* GeneralSettingsView.swift */,
+				A20001010000000000000053 /* HelpFeedbackView.swift */,
+				A20001010000000000000054 /* NotificationSettingsView.swift */,
+				A20001010000000000000055 /* PrivacySecurityView.swift */,
+				A20001010000000000000056 /* ProfileDashboardView.swift */,
+				A20001010000000000000057 /* ProjectSettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A60001010000000000000001 /* Panda */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80001010000000000000003 /* Build configuration list for PBXNativeTarget "Panda" */;
+			buildPhases = (
+				A70001010000000000000001 /* Sources */,
+				A40001010000000000000001 /* Frameworks */,
+				A70001010000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Panda;
+			productName = Panda;
+			productReference = A30001010000000000000001 /* Panda.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A90001010000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A60001010000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A80001010000000000000001 /* Build configuration list for PBXProject "Panda" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hans",
+				en,
+				Base,
+			);
+			mainGroup = A50001010000000000000001;
+			productRefGroup = A50001010000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A60001010000000000000001 /* Panda */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A70001010000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001010000000000000078 /* Assets.xcassets in Resources */,
+				A10001010000000000000079 /* Preview Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A70001010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001010000000000000001 /* PandaApp.swift in Sources */,
+				A10001010000000000000002 /* MainTabView.swift in Sources */,
+				A10001010000000000000003 /* ExpenseCategory.swift in Sources */,
+				A10001010000000000000004 /* MaterialStatus.swift in Sources */,
+				A10001010000000000000005 /* PhaseType.swift in Sources */,
+				A10001010000000000000006 /* TaskStatus.swift in Sources */,
+				A10001010000000000000007 /* AppSettings.swift in Sources */,
+				A10001010000000000000008 /* Budget.swift in Sources */,
+				A10001010000000000000009 /* Contact.swift in Sources */,
+				A10001010000000000000010 /* Document.swift in Sources */,
+				A10001010000000000000011 /* Expense.swift in Sources */,
+				A10001010000000000000012 /* JournalEntry.swift in Sources */,
+				A10001010000000000000013 /* Material.swift in Sources */,
+				A10001010000000000000014 /* Phase.swift in Sources */,
+				A10001010000000000000015 /* Project.swift in Sources */,
+				A10001010000000000000016 /* Task.swift in Sources */,
+				A10001010000000000000017 /* BudgetRepository.swift in Sources */,
+				A10001010000000000000018 /* ExpenseRepository.swift in Sources */,
+				A10001010000000000000019 /* SampleDataGenerator.swift in Sources */,
+				A10001010000000000000020 /* ProjectManager.swift in Sources */,
+				A10001010000000000000021 /* RecordExpenseUseCase.swift in Sources */,
+				A10001010000000000000022 /* TestDataGenerator.swift in Sources */,
+				A10001010000000000000023 /* AddExpenseViewModel.swift in Sources */,
+				A10001010000000000000024 /* BudgetDashboardViewModel.swift in Sources */,
+				A10001010000000000000025 /* ExpenseListViewModel.swift in Sources */,
+				A10001010000000000000026 /* AddExpenseView.swift in Sources */,
+				A10001010000000000000027 /* BudgetDashboardView.swift in Sources */,
+				A10001010000000000000028 /* AddContactViewModel.swift in Sources */,
+				A10001010000000000000029 /* ContactListViewModel.swift in Sources */,
+				A10001010000000000000030 /* AddContactView.swift in Sources */,
+				A10001010000000000000031 /* ContactDetailView.swift in Sources */,
+				A10001010000000000000032 /* ContactListView.swift in Sources */,
+				A10001010000000000000033 /* AddDocumentViewModel.swift in Sources */,
+				A10001010000000000000034 /* DocumentListViewModel.swift in Sources */,
+				A10001010000000000000035 /* AddDocumentView.swift in Sources */,
+				A10001010000000000000036 /* DocumentDetailView.swift in Sources */,
+				A10001010000000000000037 /* DocumentListView.swift in Sources */,
+				A10001010000000000000038 /* CreateProjectView.swift in Sources */,
+				A10001010000000000000039 /* HomeDashboardView.swift in Sources */,
+				A10001010000000000000040 /* AddJournalEntryViewModel.swift in Sources */,
+				A10001010000000000000041 /* JournalListViewModel.swift in Sources */,
+				A10001010000000000000042 /* AddJournalEntryView.swift in Sources */,
+				A10001010000000000000043 /* JournalDetailView.swift in Sources */,
+				A10001010000000000000044 /* JournalListView.swift in Sources */,
+				A10001010000000000000045 /* AddMaterialViewModel.swift in Sources */,
+				A10001010000000000000046 /* MaterialListViewModel.swift in Sources */,
+				A10001010000000000000047 /* AddMaterialView.swift in Sources */,
+				A10001010000000000000048 /* MaterialCalculatorView.swift in Sources */,
+				A10001010000000000000049 /* MaterialDetailView.swift in Sources */,
+				A10001010000000000000050 /* MaterialListView.swift in Sources */,
+				A10001010000000000000051 /* DataExportView.swift in Sources */,
+				A10001010000000000000052 /* GeneralSettingsView.swift in Sources */,
+				A10001010000000000000053 /* HelpFeedbackView.swift in Sources */,
+				A10001010000000000000054 /* NotificationSettingsView.swift in Sources */,
+				A10001010000000000000055 /* PrivacySecurityView.swift in Sources */,
+				A10001010000000000000056 /* ProfileDashboardView.swift in Sources */,
+				A10001010000000000000057 /* ProjectSettingsView.swift in Sources */,
+				A10001010000000000000058 /* AddProjectViewModel.swift in Sources */,
+				A10001010000000000000059 /* ProjectListViewModel.swift in Sources */,
+				A10001010000000000000060 /* AddProjectView.swift in Sources */,
+				A10001010000000000000061 /* ProjectDetailView.swift in Sources */,
+				A10001010000000000000062 /* ProjectListView.swift in Sources */,
+				A10001010000000000000063 /* ProjectStatisticsView.swift in Sources */,
+				A10001010000000000000064 /* AddTaskViewModel.swift in Sources */,
+				A10001010000000000000065 /* PhaseDetailViewModel.swift in Sources */,
+				A10001010000000000000066 /* AddTaskView.swift in Sources */,
+				A10001010000000000000067 /* PhaseDetailView.swift in Sources */,
+				A10001010000000000000068 /* ScheduleOverviewView.swift in Sources */,
+				A10001010000000000000069 /* TaskDetailView.swift in Sources */,
+				A10001010000000000000070 /* CardView.swift in Sources */,
+				A10001010000000000000071 /* FilterChip.swift in Sources */,
+				A10001010000000000000072 /* ProgressBar.swift in Sources */,
+				A10001010000000000000073 /* ProgressRing.swift in Sources */,
+				A10001010000000000000074 /* ProjectSelectorView.swift in Sources */,
+				A10001010000000000000075 /* Colors.swift in Sources */,
+				A10001010000000000000076 /* Fonts.swift in Sources */,
+				A10001010000000000000077 /* Spacing.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B10001010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B10001010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B10001010000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Panda/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = 3H29ZPLWD7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "装修管家";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zxf.panda;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B10001010000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Panda/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = 3H29ZPLWD7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "装修管家";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zxf.panda;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80001010000000000000001 /* Build configuration list for PBXProject "Panda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B10001010000000000000001 /* Debug */,
+				B10001010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80001010000000000000003 /* Build configuration list for PBXNativeTarget "Panda" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B10001010000000000000003 /* Debug */,
+				B10001010000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A90001010000000000000001 /* Project object */;
+}

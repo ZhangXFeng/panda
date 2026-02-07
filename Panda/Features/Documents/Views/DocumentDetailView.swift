@@ -159,7 +159,7 @@ struct DocumentDetailView: View {
                             Text("\(Int(document.paymentProgress * 100))%")
                                 .foregroundColor(Colors.primary)
                         }
-                        ProgressBar(value: document.paymentProgress)
+                        ProgressBar(progress: document.paymentProgress)
                     }
                 }
             }
@@ -288,10 +288,6 @@ struct DocumentDetailView: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Document.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
 
     let document = Document(
         name: "装修施工合同",
@@ -306,8 +302,6 @@ struct DocumentDetailView: View {
         partyA: "张三",
         partyB: "XX装修公司"
     )
-    document.project = project
-    context.insert(document)
 
     return DocumentDetailView(document: document)
         .modelContainer(container)
