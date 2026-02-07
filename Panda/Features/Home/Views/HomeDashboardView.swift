@@ -9,8 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct HomeDashboardView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(ProjectManager.self) private var projectManager
     @Query(sort: \Project.updatedAt, order: .reverse) private var projects: [Project]
+    @State private var showingAddExpense = false
+    @State private var showingAddJournal = false
 
     /// 当前选中的项目
     private var currentProject: Project? {
@@ -44,6 +47,14 @@ struct HomeDashboardView: View {
                     ProjectSelectorView()
                 }
             }
+        }
+        .sheet(isPresented: $showingAddExpense) {
+            if let budget = currentProject?.budget {
+                AddExpenseView(modelContext: modelContext, budget: budget)
+            }
+        }
+        .sheet(isPresented: $showingAddJournal) {
+            AddJournalEntryView(modelContext: modelContext)
         }
         .onAppear {
             projectManager.autoSelectIfNeeded(from: projects)
@@ -192,15 +203,29 @@ struct HomeDashboardView: View {
 
             HStack(spacing: Spacing.md) {
                 QuickActionButton(icon: "plus.circle.fill", title: "记一笔") {
-                    // Navigate to add expense
+                    showingAddExpense = true
                 }
 
                 QuickActionButton(icon: "photo", title: "写日记") {
-                    // Navigate to journal
+                    showingAddJournal = true
                 }
 
-                QuickActionButton(icon: "person.crop.circle", title: "通讯录") {
-                    // Navigate to contacts
+                NavigationLink {
+                    ContactListView(modelContext: modelContext)
+                } label: {
+                    VStack(spacing: Spacing.sm) {
+                        Image(systemName: "person.crop.circle")
+                            .font(.system(size: 32))
+                            .foregroundColor(.primaryWood)
+                        Text("通讯录")
+                            .font(.captionMedium)
+                            .foregroundColor(.textPrimary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.bgCard)
+                    .cornerRadius(CornerRadius.lg)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                 }
             }
         }

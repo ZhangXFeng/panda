@@ -31,14 +31,14 @@ struct BudgetDashboardView: View {
                 if let viewModel = viewModel, viewModel.budget != nil {
                     ScrollView {
                         VStack(spacing: Spacing.md) {
-                            // 总预算卡片
+                            // 总预算卡片（含本月支出）
                             totalBudgetCard(viewModel: viewModel)
 
-                            // 本月支出
-                            monthlyExpenseSection(viewModel: viewModel)
+                            // 支出明细（最近几笔 + 查看全部入口）
+                            recentExpensesSection(viewModel: viewModel)
 
-                            // 分类预算
-                            categoryBudgetSection(viewModel: viewModel)
+                            // 分类统计
+                            categoryStatisticsSection(viewModel: viewModel)
                         }
                         .padding()
                     }
@@ -83,7 +83,7 @@ struct BudgetDashboardView: View {
             }
             .sheet(isPresented: $showingAddExpense) {
                 if let budget = viewModel?.budget {
-                    AddExpenseView(budget: budget)
+                    AddExpenseView(modelContext: modelContext, budget: budget)
                 }
             }
             .alert("设置总预算", isPresented: $showingEditBudget) {
@@ -151,6 +151,17 @@ struct BudgetDashboardView: View {
                     }
                 }
 
+                Divider()
+
+                HStack {
+                    Text("本月支出")
+                        .font(.captionRegular)
+                        .foregroundColor(.textSecondary)
+                    Spacer()
+                    Text(viewModel.currentMonthExpensesFormatted)
+                        .font(.numberSmall)
+                }
+
                 if viewModel.hasWarning {
                     HStack {
                         Image(systemName: "exclamationmark.triangle.fill")
@@ -165,26 +176,111 @@ struct BudgetDashboardView: View {
         }
     }
 
-    private func monthlyExpenseSection(viewModel: BudgetDashboardViewModel) -> some View {
-        HStack {
-            Text("本月支出")
-                .font(.captionRegular)
-                .foregroundColor(.textSecondary)
-            Spacer()
-            Text(viewModel.currentMonthExpensesFormatted)
-                .font(.numberSmall)
+    private func recentExpensesSection(viewModel: BudgetDashboardViewModel) -> some View {
+        VStack(spacing: Spacing.sm) {
+            if let budget = viewModel.budget {
+                HStack {
+                    Text("支出明细")
+                        .font(.titleSmall)
+                    Spacer()
+                    NavigationLink {
+                        ExpenseListView(budget: budget)
+                    } label: {
+                        HStack(spacing: Spacing.xs) {
+                            Text("查看全部")
+                                .font(.captionRegular)
+                                .foregroundColor(.textSecondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.textHint)
+                        }
+                    }
+                }
+
+                if viewModel.recentExpenses.isEmpty {
+                    CardView {
+                        HStack {
+                            Spacer()
+                            Text("暂无支出记录")
+                                .font(.bodyRegular)
+                                .foregroundColor(.textHint)
+                            Spacer()
+                        }
+                        .padding(.vertical, Spacing.md)
+                    }
+                } else {
+                    CardView {
+                        VStack(spacing: 0) {
+                            ForEach(Array(viewModel.recentExpenses.enumerated()), id: \.element.id) { index, expense in
+                                if index > 0 {
+                                    Divider()
+                                }
+                                HStack(spacing: Spacing.md) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(Color.primaryWood.opacity(0.1))
+                                            .frame(width: 36, height: 36)
+                                        Image(systemName: expense.category.iconName)
+                                            .foregroundColor(.primaryWood)
+                                            .font(.system(size: 16))
+                                    }
+
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(expense.category.displayName)
+                                            .font(.bodyMedium)
+                                        if !expense.vendor.isEmpty {
+                                            Text(expense.vendor)
+                                                .font(.captionRegular)
+                                                .foregroundColor(.textSecondary)
+                                                .lineLimit(1)
+                                        } else if !expense.notes.isEmpty {
+                                            Text(expense.notes)
+                                                .font(.captionRegular)
+                                                .foregroundColor(.textSecondary)
+                                                .lineLimit(1)
+                                        }
+                                    }
+
+                                    Spacer()
+
+                                    VStack(alignment: .trailing, spacing: 2) {
+                                        Text(expense.formattedAmount)
+                                            .font(.numberSmall)
+                                            .foregroundColor(.primaryWood)
+                                        Text(expense.formattedDate)
+                                            .font(.captionRegular)
+                                            .foregroundColor(.textHint)
+                                    }
+                                }
+                                .padding(.vertical, Spacing.sm)
+                            }
+                        }
+                    }
+                }
+            }
         }
-        .padding(.horizontal, Spacing.sm)
     }
 
-    private func categoryBudgetSection(viewModel: BudgetDashboardViewModel) -> some View {
+    private func categoryStatisticsSection(viewModel: BudgetDashboardViewModel) -> some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
-            Text("分类预算")
+            Text("分类统计")
                 .font(.titleSmall)
-                .padding(.horizontal, Spacing.sm)
 
-            ForEach(viewModel.categoryStatistics.prefix(5), id: \.category) { stat in
-                CategoryCard(statistic: stat)
+            if viewModel.categoryStatistics.filter({ $0.amount > 0 }).isEmpty {
+                CardView {
+                    HStack {
+                        Spacer()
+                        Text("暂无分类数据")
+                            .font(.bodyRegular)
+                            .foregroundColor(.textHint)
+                        Spacer()
+                    }
+                    .padding(.vertical, Spacing.md)
+                }
+            } else {
+                ForEach(viewModel.categoryStatistics.filter { $0.amount > 0 }.prefix(5), id: \.category) { stat in
+                    CategoryCard(statistic: stat)
+                }
             }
         }
     }

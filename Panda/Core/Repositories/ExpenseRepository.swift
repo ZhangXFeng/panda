@@ -55,10 +55,10 @@ final class ExpenseRepository {
     /// 获取指定分类的支出记录
     func fetchExpenses(for budget: Budget, category: ExpenseCategory) throws -> [Expense] {
         let budgetId = budget.id
-        let targetCategory = category
+        let targetRawValue = category.rawValue
         let descriptor = FetchDescriptor<Expense>(
             predicate: #Predicate<Expense> { expense in
-                expense.budget?.id == budgetId && expense.category == targetCategory
+                expense.budget?.id == budgetId && expense.category.rawValue == targetRawValue
             },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
@@ -150,6 +150,21 @@ final class ExpenseRepository {
                 totalAmount: total
             )
         }.sorted { $0.date > $1.date }
+    }
+
+    /// 获取最近 N 笔支出（按日期降序）
+    func fetchTopRecent(for budget: Budget, limit: Int = 3) throws -> [Expense] {
+        let budgetId = budget.id
+        var descriptor = FetchDescriptor<Expense>(
+            predicate: #Predicate<Expense> { expense in
+                expense.budget?.id == budgetId
+            }
+        )
+
+        descriptor.sortBy = [SortDescriptor(\.date, order: .reverse)]
+        descriptor.fetchLimit = limit
+
+        return try modelContext.fetch(descriptor)
     }
 
     /// 获取 TOP N 支出

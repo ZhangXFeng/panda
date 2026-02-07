@@ -9,11 +9,16 @@ import SwiftUI
 import SwiftData
 
 struct AddExpenseView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @State private var viewModel: AddExpenseViewModel?
+    @StateObject private var viewModel: AddExpenseViewModel
 
-    let budget: Budget
+    init(modelContext: ModelContext, budget: Budget, expense: Expense? = nil) {
+        _viewModel = StateObject(wrappedValue: AddExpenseViewModel(
+            modelContext: modelContext,
+            budget: budget,
+            expense: expense
+        ))
+    }
 
     var body: some View {
         NavigationStack {
@@ -24,21 +29,15 @@ struct AddExpenseView: View {
                         Text("¥")
                             .font(.numberMedium)
                             .foregroundColor(.textSecondary)
-                        TextField("0.00", text: Binding(
-                            get: { viewModel?.amount ?? "" },
-                            set: { viewModel?.amount = $0 }
-                        ))
-                        .keyboardType(.decimalPad)
-                        .font(.numberMedium)
+                        TextField("0.00", text: $viewModel.amount)
+                            .keyboardType(.decimalPad)
+                            .font(.numberMedium)
                     }
                 }
 
                 // 分类
                 Section("分类") {
-                    Picker("选择分类", selection: Binding(
-                        get: { viewModel?.category ?? .other },
-                        set: { viewModel?.category = $0 }
-                    )) {
+                    Picker("选择分类", selection: $viewModel.category) {
                         ForEach(ExpenseCategory.allCases) { category in
                             Label(category.displayName, systemImage: category.iconName)
                                 .tag(category)
@@ -48,18 +47,12 @@ struct AddExpenseView: View {
 
                 // 日期
                 Section("日期") {
-                    DatePicker("支出日期", selection: Binding(
-                        get: { viewModel?.date ?? Date() },
-                        set: { viewModel?.date = $0 }
-                    ), displayedComponents: .date)
+                    DatePicker("支出日期", selection: $viewModel.date, displayedComponents: .date)
                 }
 
                 // 付款方式
                 Section("付款方式") {
-                    Picker("选择方式", selection: Binding(
-                        get: { viewModel?.paymentType ?? .fullPayment },
-                        set: { viewModel?.paymentType = $0 }
-                    )) {
+                    Picker("选择方式", selection: $viewModel.paymentType) {
                         ForEach(PaymentType.allCases) { type in
                             Text(type.displayName).tag(type)
                         }
@@ -69,23 +62,17 @@ struct AddExpenseView: View {
 
                 // 供应商
                 Section("供应商/商家") {
-                    TextField("供应商名称（可选）", text: Binding(
-                        get: { viewModel?.vendor ?? "" },
-                        set: { viewModel?.vendor = $0 }
-                    ))
+                    TextField("供应商名称（可选）", text: $viewModel.vendor)
                 }
 
                 // 备注
                 Section("备注") {
-                    TextEditor(text: Binding(
-                        get: { viewModel?.notes ?? "" },
-                        set: { viewModel?.notes = $0 }
-                    ))
-                    .frame(height: 80)
+                    TextEditor(text: $viewModel.notes)
+                        .frame(height: 80)
                 }
 
                 // 错误提示
-                if let error = viewModel?.errorMessage {
+                if let error = viewModel.errorMessage {
                     Section {
                         Text(error)
                             .foregroundColor(.error)
@@ -93,21 +80,21 @@ struct AddExpenseView: View {
                     }
                 }
             }
-            .navigationTitle("记一笔")
+            .navigationTitle(viewModel.title)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(
-                leading: Button("取消") {
-                    dismiss()
-                },
-                trailing: Button("保存") {
-                    saveExpense()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("取消") {
+                        dismiss()
+                    }
                 }
-                .disabled(viewModel?.amount.isEmpty ?? true)
-            )
-            .task {
-                if viewModel == nil {
-                    viewModel = AddExpenseViewModel(modelContext: modelContext)
+
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("保存") {
+                        saveExpense()
+                    }
+                    .disabled(viewModel.amount.isEmpty)
                 }
             }
         }
@@ -117,14 +104,9 @@ struct AddExpenseView: View {
 
     private func saveExpense() {
         _Concurrency.Task {
-            await performSave()
-        }
-    }
-
-    @MainActor
-    private func performSave() async {
-        if await viewModel?.saveExpense(to: budget) == true {
-            dismiss()
+            if await viewModel.saveExpense() == true {
+                dismiss()
+            }
         }
     }
 }
@@ -133,7 +115,8 @@ struct AddExpenseView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Budget.self, configurations: config)
     let budget = Budget(totalAmount: 180000)
+    container.mainContext.insert(budget)
 
-    AddExpenseView(budget: budget)
+    return AddExpenseView(modelContext: container.mainContext, budget: budget)
         .modelContainer(container)
 }

@@ -22,6 +22,7 @@ final class BudgetDashboardViewModel {
     var budget: Budget?
     var statistics: BudgetStatistics?
     var categoryStatistics: [CategoryStatistic] = []
+    var recentExpenses: [Expense] = []
     var isLoading = false
     var errorMessage: String?
 
@@ -46,6 +47,7 @@ final class BudgetDashboardViewModel {
                 statistics = budgetRepository.getBudgetStatistics(for: budget)
                 categoryStatistics = Array(budgetRepository.getCategoryStatistics(for: budget).values)
                     .sorted { $0.amount > $1.amount }
+                recentExpenses = try expenseRepository.fetchTopRecent(for: budget, limit: 3)
             }
         } catch {
             errorMessage = "加载预算失败: \(error.localizedDescription)"
