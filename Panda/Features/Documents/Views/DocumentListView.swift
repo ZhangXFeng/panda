@@ -59,7 +59,7 @@ struct DocumentListView: View {
                     }
             }
             .sheet(item: $selectedDocument) { document in
-                DocumentDetailView(document: document, modelContext: modelContext)
+                DocumentDetailView(document: document)
                     .onDisappear {
                         viewModel.loadDocuments()
                     }
@@ -272,7 +272,7 @@ private struct DocumentRow: View {
                     Spacer()
 
                     ProgressBar(
-                        value: document.paymentProgress,
+                        progress: document.paymentProgress,
                         height: 6
                     )
                     .frame(width: 100)
@@ -331,43 +331,7 @@ private struct DocumentRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Document.self, configurations: config)
-    let context = container.mainContext
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample documents
-    let contract = Document(
-        name: "装修施工合同",
-        type: .contract,
-        date: Date(),
-        notes: "全包装修合同",
-        contractAmount: 100000,
-        paymentMethod: .progressive,
-        paymentRecords: [
-            PaymentRecord(name: "定金", amount: 30000, isPaid: true, paidDate: Date()),
-            PaymentRecord(name: "中期款", amount: 60000, isPaid: false),
-            PaymentRecord(name: "尾款", amount: 10000, isPaid: false)
-        ],
-        partyA: "张三",
-        partyB: "XX装修公司"
-    )
-    contract.project = project
-    context.insert(contract)
-
-    let receipt = Document(
-        name: "材料采购收据",
-        type: .receipt,
-        date: Date().addingTimeInterval(-86400),
-        notes: "瓷砖采购"
-    )
-    receipt.project = project
-    context.insert(receipt)
-
-    return DocumentListView(modelContext: context)
+    return DocumentListView(modelContext: container.mainContext)
+        .modelContainer(container)
 }

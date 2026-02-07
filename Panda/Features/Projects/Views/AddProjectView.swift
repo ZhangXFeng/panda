@@ -100,7 +100,7 @@ struct AddProjectView: View {
                             }
                         }
                         .onChange(of: viewModel.selectedPhoto) { _, _ in
-                            Task {
+                            _Concurrency.Task {
                                 await viewModel.loadSelectedPhoto()
                             }
                         }
@@ -165,15 +165,14 @@ struct AddProjectView: View {
 #Preview("Add Project") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, configurations: config)
-    let context = container.mainContext
 
-    return AddProjectView(modelContext: context)
+    return AddProjectView(modelContext: container.mainContext)
+        .modelContainer(container)
 }
 
 #Preview("Edit Project") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, configurations: config)
-    let context = container.mainContext
 
     let project = Project(
         name: "我的新家",
@@ -183,7 +182,7 @@ struct AddProjectView: View {
         estimatedDuration: 90,
         notes: "这是一个测试项目"
     )
-    context.insert(project)
 
-    return AddProjectView(modelContext: context, project: project)
+    return AddProjectView(modelContext: container.mainContext, project: project)
+        .modelContainer(container)
 }

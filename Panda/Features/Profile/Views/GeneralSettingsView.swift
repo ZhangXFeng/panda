@@ -153,15 +153,8 @@ struct GeneralSettingsView: View {
 // MARK: - Preview
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: AppSettings.self, configurations: config)
-    let context = container.mainContext
-
-    let settings = AppSettings()
-    context.insert(settings)
-
-    return NavigationStack {
+    NavigationStack {
         GeneralSettingsView()
-            .modelContainer(container)
     }
+    .modelContainer(for: [AppSettings.self], inMemory: true)
 }

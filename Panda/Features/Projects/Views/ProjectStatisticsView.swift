@@ -238,7 +238,7 @@ struct ProjectStatisticsView: View {
                             .font(Fonts.body)
                             .foregroundColor(Colors.textSecondary)
                         Spacer()
-                        Text(formatCurrency(budget.totalBudget))
+                        Text(formatCurrency(budget.totalAmount))
                             .font(Fonts.titleMedium)
                             .foregroundColor(Colors.primary)
                     }
@@ -249,7 +249,7 @@ struct ProjectStatisticsView: View {
                             .font(Fonts.body)
                             .foregroundColor(Colors.textSecondary)
                         Spacer()
-                        Text(formatCurrency(budget.totalSpent))
+                        Text(formatCurrency(budget.totalExpenses))
                             .font(Fonts.headline)
                             .foregroundColor(Colors.textPrimary)
                     }
@@ -266,12 +266,12 @@ struct ProjectStatisticsView: View {
                     }
 
                     // Progress bar
-                    if budget.totalBudget > 0 {
+                    if budget.totalAmount > 0 {
                         VStack(alignment: .leading, spacing: 4) {
-                            ProgressBar(progress: min(budget.spentPercentage, 1.0))
+                            ProgressBar(progress: min(budget.usagePercentage, 1.0))
                                 .frame(height: 8)
 
-                            Text("已使用 \(Int(budget.spentPercentage * 100))%")
+                            Text("已使用 \(Int(budget.usagePercentage * 100))%")
                                 .font(Fonts.caption)
                                 .foregroundColor(Colors.textSecondary)
                         }
@@ -420,7 +420,6 @@ private struct BreakdownRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Budget.self, Phase.self, Material.self, Contact.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
     let project = Project(
         name: "我的新家",
@@ -429,22 +428,6 @@ private struct BreakdownRow: View {
         startDate: Date().addingTimeInterval(-86400 * 30),
         estimatedDuration: 90
     )
-    context.insert(project)
-
-    let budget = Budget(totalBudget: 150000)
-    budget.project = project
-    context.insert(budget)
-
-    let phases = [
-        Phase(name: "拆除", type: .demolition, sortOrder: 1, plannedStartDate: Date(), plannedEndDate: Date().addingTimeInterval(86400 * 3)),
-        Phase(name: "水电改造", type: .plumbing, sortOrder: 2, plannedStartDate: Date(), plannedEndDate: Date().addingTimeInterval(86400 * 7)),
-        Phase(name: "泥瓦工程", type: .masonry, sortOrder: 3, plannedStartDate: Date(), plannedEndDate: Date().addingTimeInterval(86400 * 10))
-    ]
-    for phase in phases {
-        phase.project = project
-        context.insert(phase)
-    }
-    phases[0].isCompleted = true
 
     return NavigationStack {
         ProjectStatisticsView(project: project)

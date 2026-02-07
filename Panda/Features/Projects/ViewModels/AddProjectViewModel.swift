@@ -139,7 +139,7 @@ class AddProjectViewModel: ObservableObject {
 
         // Create default budget if needed
         if project.budget == nil {
-            let budget = Budget(totalBudget: 0)
+            let budget = Budget(totalAmount: 0)
             budget.project = project
             modelContext.insert(budget)
         }

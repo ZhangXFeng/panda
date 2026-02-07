@@ -87,7 +87,7 @@ struct AddDocumentView: View {
                 }
             }
             .onChange(of: viewModel.selectedPhotos) { _, _ in
-                Task { await viewModel.loadSelectedPhotos() }
+                _Concurrency.Task { await viewModel.loadSelectedPhotos() }
             }
         }
     }
@@ -142,5 +142,5 @@ struct AddDocumentView: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Document.self, configurations: config)
-    return AddDocumentView(modelContext: container.mainContext)
+    AddDocumentView(modelContext: container.mainContext)
 }

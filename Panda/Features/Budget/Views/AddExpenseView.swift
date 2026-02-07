@@ -134,6 +134,6 @@ struct AddExpenseView: View {
     let container = try! ModelContainer(for: Budget.self, configurations: config)
     let budget = Budget(totalAmount: 180000)
 
-    return AddExpenseView(budget: budget)
+    AddExpenseView(budget: budget)
         .modelContainer(container)
 }

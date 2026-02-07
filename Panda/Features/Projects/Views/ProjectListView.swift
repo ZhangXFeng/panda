@@ -134,8 +134,7 @@ struct ProjectListView: View {
                 ForEach(ProjectFilter.allCases) { filter in
                     FilterChip(
                         title: filter.rawValue,
-                        isSelected: viewModel.selectedFilter == filter,
-                        icon: filter.iconName
+                        isSelected: viewModel.selectedFilter == filter
                     ) {
                         viewModel.selectedFilter = filter
                     }
@@ -463,19 +462,9 @@ private struct StatBadge: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Budget.self, Phase.self, configurations: config)
-    let context = container.mainContext
-
-    let projects = [
-        Project(name: "我的新家", houseType: "三室两厅", area: 120.0, startDate: Date().addingTimeInterval(-86400 * 30), estimatedDuration: 90),
-        Project(name: "父母的房子", houseType: "两室一厅", area: 85.0, startDate: Date().addingTimeInterval(-86400 * 60), estimatedDuration: 60)
-    ]
-
-    for project in projects {
-        context.insert(project)
-    }
 
     return NavigationStack {
-        ProjectListView(modelContext: context)
+        ProjectListView(modelContext: container.mainContext)
     }
     .environment(ProjectManager())
     .modelContainer(container)

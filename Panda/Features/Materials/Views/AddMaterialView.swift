@@ -106,7 +106,7 @@ struct AddMaterialView: View {
                         }
                     }
                     .onChange(of: viewModel.selectedPhotos) { _, _ in
-                        Task {
+                        _Concurrency.Task {
                             await viewModel.loadSelectedPhotos()
                         }
                     }
@@ -189,22 +189,14 @@ struct AddMaterialView: View {
 #Preview("Add Material") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
-    let context = container.mainContext
 
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
-    ProjectManager.shared.currentProject = project
-
-    return AddMaterialView(modelContext: context)
+    return AddMaterialView(modelContext: container.mainContext)
+        .modelContainer(container)
 }
 
 #Preview("Edit Material") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
 
     let material = Material(
         name: "马可波罗瓷砖",
@@ -216,8 +208,7 @@ struct AddMaterialView: View {
         status: .ordered,
         location: "客厅"
     )
-    material.project = project
-    context.insert(material)
 
-    return AddMaterialView(modelContext: context, material: material)
+    return AddMaterialView(modelContext: container.mainContext, material: material)
+        .modelContainer(container)
 }

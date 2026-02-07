@@ -92,22 +92,28 @@ struct ScheduleView: View {
 
 /// 材料视图
 struct MaterialsView: View {
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        MaterialListView()
+        MaterialListView(modelContext: modelContext)
     }
 }
 
 /// 通讯录视图
 struct ContactsView: View {
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        ContactListView()
+        ContactListView(modelContext: modelContext)
     }
 }
 
 /// 日记视图
 struct JournalView: View {
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        JournalListView()
+        JournalListView(modelContext: modelContext)
     }
 }
 

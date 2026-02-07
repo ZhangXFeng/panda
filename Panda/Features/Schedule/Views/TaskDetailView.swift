@@ -137,7 +137,7 @@ struct TaskDetailView: View {
                             .font(Fonts.caption)
                             .foregroundColor(Colors.error)
                             .padding(.horizontal, Spacing.sm)
-                            .padding(.vertical: 4)
+                            .padding(.vertical, 4)
                             .background(Colors.error.opacity(0.1))
                             .cornerRadius(CornerRadius.sm)
                     }
@@ -315,21 +315,7 @@ struct TaskDetailView: View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Project.self, Phase.swift, Task.self, configurations: config)
-    let context = container.mainContext
-
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
-
-    let phase = Phase(
-        name: "水电改造",
-        type: .plumbing,
-        sortOrder: 1,
-        plannedStartDate: Date(),
-        plannedEndDate: Date().addingTimeInterval(86400 * 15)
-    )
-    phase.project = project
-    context.insert(phase)
+    let container = try! ModelContainer(for: Project.self, Phase.self, Task.self, configurations: config)
 
     let task = Task(
         title: "水管布线",
@@ -340,8 +326,6 @@ struct TaskDetailView: View {
         plannedStartDate: Date(),
         plannedEndDate: Date().addingTimeInterval(86400 * 3)
     )
-    task.phase = phase
-    context.insert(task)
 
     return TaskDetailView(task: task)
         .modelContainer(container)

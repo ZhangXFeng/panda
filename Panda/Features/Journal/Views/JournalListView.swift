@@ -54,7 +54,7 @@ struct JournalListView: View {
                     }
             }
             .sheet(item: $selectedEntry) { entry in
-                JournalDetailView(entry: entry, modelContext: modelContext)
+                JournalDetailView(entry: entry)
                     .onDisappear {
                         viewModel.loadEntries()
                     }
@@ -273,41 +273,7 @@ private struct JournalEntryRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, JournalEntry.self, configurations: config)
-    let context = container.mainContext
 
-    // Create sample project
-    let project = Project(
-        name: "我的新家",
-        houseType: "三室两厅",
-        area: 120.0
-    )
-    context.insert(project)
-
-    // Create sample journal entries
-    let entries = [
-        JournalEntry(
-            title: "开工大吉",
-            content: "今天正式开工了！工长带着团队过来，先做了开工仪式，然后开始拆除工作。看着原来的老房子一点点被拆掉，心情很复杂，既期待又有点不舍。",
-            tags: ["拆除", "开工"]
-        ),
-        JournalEntry(
-            title: "水电改造开始",
-            content: "水电师傅今天进场，开始走线。看着墙上密密麻麻的线管，感觉很专业。师傅说这个阶段最重要，一定要仔细验收。",
-            tags: ["水电", "进展"],
-            date: Date().addingTimeInterval(-86400)
-        ),
-        JournalEntry(
-            title: "瓷砖到货",
-            content: "订的瓷砖今天送到了，比预期的效果还要好！客厅的大理石纹理瓷砖特别漂亮，期待贴好的效果。",
-            tags: ["材料", "瓷砖"],
-            date: Date().addingTimeInterval(-86400 * 2)
-        )
-    ]
-
-    for entry in entries {
-        entry.project = project
-        context.insert(entry)
-    }
-
-    return JournalListView(modelContext: context)
+    return JournalListView(modelContext: container.mainContext)
+        .modelContainer(container)
 }

@@ -250,21 +250,7 @@ private struct MaterialRow: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Project.self, Material.self, configurations: config)
-    let context = container.mainContext
 
-    let project = Project(name: "我的新家", houseType: "三室两厅", area: 120.0)
-    context.insert(project)
-
-    let materials = [
-        Material(name: "马可波罗瓷砖", brand: "马可波罗", specification: "800x800mm", unitPrice: 89.90, quantity: 120, unit: "块", status: .delivered, location: "客厅"),
-        Material(name: "立邦乳胶漆", brand: "立邦", unitPrice: 268.00, quantity: 3, unit: "桶", status: .purchased, location: "全屋"),
-        Material(name: "圣象地板", brand: "圣象", unitPrice: 189.00, quantity: 85, unit: "㎡", status: .ordered, location: "卧室")
-    ]
-
-    for material in materials {
-        material.project = project
-        context.insert(material)
-    }
-
-    return MaterialListView(modelContext: context)
+    MaterialListView(modelContext: container.mainContext)
+        .modelContainer(container)
 }
